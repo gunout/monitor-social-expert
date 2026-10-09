@@ -1,0 +1,231 @@
+[
+  {
+    "nom": "Les Avirons",
+    "population": 11536,
+    "code": "97401",
+    "codesPostaux": [
+      "97425"
+    ],
+    "mr": "Sud"
+  },
+  {
+    "nom": "Bras-Panon",
+    "population": 13012,
+    "code": "97402",
+    "codesPostaux": [
+      "97412"
+    ],
+    "mr": "Est"
+  },
+  {
+    "nom": "Entre-Deux",
+    "population": 7176,
+    "code": "97403",
+    "codesPostaux": [
+      "97414"
+    ],
+    "mr": "Sud"
+  },
+  {
+    "nom": "L'Étang-Salé",
+    "population": 14464,
+    "code": "97404",
+    "codesPostaux": [
+      "97427"
+    ],
+    "mr": "Sud"
+  },
+  {
+    "nom": "Petite-Île",
+    "population": 13067,
+    "code": "97405",
+    "codesPostaux": [
+      "97429"
+    ],
+    "mr": "Sud"
+  },
+  {
+    "nom": "La Plaine-des-Palmistes",
+    "population": 6936,
+    "code": "97406",
+    "codesPostaux": [
+      "97431"
+    ],
+    "mr": "Est"
+  },
+  {
+    "nom": "Le Port",
+    "population": 33969,
+    "code": "97407",
+    "codesPostaux": [
+      "97420"
+    ],
+    "mr": "Ouest"
+  },
+  {
+    "nom": "La Possession",
+    "population": 36568,
+    "code": "97408",
+    "codesPostaux": [
+      "97419"
+    ],
+    "mr": "Ouest"
+  },
+  {
+    "nom": "Saint-André",
+    "population": 58885,
+    "code": "97409",
+    "codesPostaux": [
+      "97440"
+    ],
+    "mr": "Est"
+  },
+  {
+    "nom": "Saint-Benoît",
+    "population": 38604,
+    "code": "97410",
+    "codesPostaux": [
+      "97437",
+      "97470"
+    ],
+    "mr": "Est"
+  },
+  {
+    "nom": "Saint-Denis",
+    "population": 155634,
+    "code": "97411",
+    "codesPostaux": [
+      "97400",
+      "97417",
+      "97490"
+    ],
+    "mr": "Nord"
+  },
+  {
+    "nom": "Saint-Joseph",
+    "population": 39207,
+    "code": "97412",
+    "codesPostaux": [
+      "97480"
+    ],
+    "mr": "Sud"
+  },
+  {
+    "nom": "Saint-Leu",
+    "population": 36163,
+    "code": "97413",
+    "codesPostaux": [
+      "97416",
+      "97424",
+      "97436"
+    ],
+    "mr": "Ouest"
+  },
+  {
+    "nom": "Saint-Louis",
+    "population": 54941,
+    "code": "97414",
+    "codesPostaux": [
+      "97421",
+      "97450"
+    ],
+    "mr": "Sud"
+  },
+  {
+    "nom": "Saint-Paul",
+    "population": 108088,
+    "code": "97415",
+    "codesPostaux": [
+      "97411",
+      "97422",
+      "97423",
+      "97434",
+      "97435",
+      "97460"
+    ],
+    "mr": "Ouest"
+  },
+  {
+    "nom": "Saint-Pierre",
+    "population": 85038,
+    "code": "97416",
+    "codesPostaux": [
+      "97410",
+      "97432"
+    ],
+    "mr": "Sud"
+  },
+  {
+    "nom": "Saint-Philippe",
+    "population": 5082,
+    "code": "97417",
+    "codesPostaux": [
+      "97442"
+    ],
+    "mr": "Sud"
+  },
+  {
+    "nom": "Sainte-Marie",
+    "population": 37093,
+    "code": "97418",
+    "codesPostaux": [
+      "97438"
+    ],
+    "mr": "Nord"
+  },
+  {
+    "nom": "Sainte-Rose",
+    "population": 6557,
+    "code": "97419",
+    "codesPostaux": [
+      "97439"
+    ],
+    "mr": "Est"
+  },
+  {
+    "nom": "Sainte-Suzanne",
+    "population": 25551,
+    "code": "97420",
+    "codesPostaux": [
+      "97441"
+    ],
+    "mr": "Nord"
+  },
+  {
+    "nom": "Salazie",
+    "population": 7268,
+    "code": "97421",
+    "codesPostaux": [
+      "97433"
+    ],
+    "mr": "Est"
+  },
+  {
+    "nom": "Le Tampon",
+    "population": 82579,
+    "code": "97422",
+    "codesPostaux": [
+      "97418",
+      "97430"
+    ],
+    "mr": "Sud"
+  },
+  {
+    "nom": "Les Trois-Bassins",
+    "population": 7221,
+    "code": "97423",
+    "codesPostaux": [
+      "97426"
+    ],
+    "mr": "Ouest"
+  },
+  {
+    "nom": "Cilaos",
+    "population": 5040,
+    "code": "97424",
+    "codesPostaux": [
+      "97413"
+    ],
+    "mr": "Sud"
+  }
+]

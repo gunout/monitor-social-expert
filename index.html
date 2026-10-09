@@ -29,7 +29,7 @@
   --bg:#12141a; --panel:#1a1d24; --border:#2a2e38; --text:#f0f2f5; --muted:#7a8090;
 }
 html{height:100%}
-body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:13px;line-height:1.5;min-height:100%;-webkit-font-smoothing:antialiased;transition:background .3s,color .3s}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:13px;line-height:1.5;min-height:100%;-webkit-font-smoothing:antialiased}
 ::-webkit-scrollbar{width:8px;height:8px}
 ::-webkit-scrollbar-track{background:var(--gris-100)}
 ::-webkit-scrollbar-thumb{background:var(--gris-500);border-radius:4px}
@@ -59,6 +59,8 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:13
 .burger-menu{display:none;background:var(--panel);border:1px solid var(--border);color:var(--text);width:34px;height:34px;border-radius:6px;cursor:pointer;font-size:16px;align-items:center;justify-content:center}
 .filter-974{background:var(--or-soft);border:1px solid var(--or);color:#8a5e00;padding:4px 8px;border-radius:4px;font-size:10px;font-weight:700;font-family:var(--mono);cursor:pointer;transition:all .15s}
 .filter-974.active{background:var(--bleu);color:#fff;border-color:var(--bleu)}
+.reload-btn{background:var(--vert-soft);border:1px solid var(--vert);color:var(--vert);padding:4px 10px;border-radius:4px;font-size:10px;font-weight:700;cursor:pointer;transition:all .15s}
+.reload-btn:hover{background:var(--vert);color:#fff}
 
 .app{display:grid;grid-template-columns:290px 1fr 320px;height:calc(100vh - 130px);overflow:hidden}
 .sidebar{background:var(--panel);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;min-height:0}
@@ -101,6 +103,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:13
 .center{background:var(--bg);display:flex;flex-direction:column;overflow:hidden;min-height:0}
 .search-bar{padding:14px 16px;background:var(--panel);border-bottom:1px solid var(--border);display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .search-bar input[type=text]{flex:1;min-width:180px;background:var(--panel);border:1px solid var(--border);border-radius:4px;padding:11px 14px;font-size:14px;color:var(--text);font-family:var(--sans)}
+.search-bar input[type=text]:focus{outline:none;border-color:var(--bleu);box-shadow:0 0 0 2px var(--bleu-soft)}
 .search-bar select{background:var(--panel);border:1px solid var(--border);border-radius:4px;padding:11px 12px;font-size:13px;color:var(--text);font-family:var(--sans)}
 .btn{background:var(--bleu);color:#fff;border:1px solid var(--bleu);font-size:13px;font-weight:700;padding:11px 20px;border-radius:4px;cursor:pointer;transition:all .15s;font-family:var(--sans);white-space:nowrap}
 .btn:hover{background:var(--bleu-hi)}
@@ -147,7 +150,6 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:13
 .bar-fill.vert{background:linear-gradient(90deg,var(--vert),#22c55e)}
 .bar-fill.or{background:linear-gradient(90deg,#8a5e00,var(--or))}
 .bar-fill.rouge{background:linear-gradient(90deg,var(--rouge),#ff4444)}
-.bar-fill.violet{background:linear-gradient(90deg,var(--violet),#a78bfa)}
 .bar-row .val{text-align:right;color:var(--bleu);font-weight:700;font-family:var(--mono)}
 
 .right{background:var(--panel);border-left:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;min-height:0}
@@ -230,6 +232,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:13
 <div class="topbar">
   <div class="brand"><span class="dot offline" id="statusDot"></span>MONITOR SOCIAL EXPERT+ <span class="sub" style="color:var(--muted);font-size:12px">/ 974</span></div>
   <div class="topbar-right">
+    <button class="reload-btn" id="reloadBtn" title="Recharger">🔄 Recharger</button>
     <button class="filter-974 active" id="filter974">🇷🇪 974 uniquement</button>
     <div class="stat"><span>FICHIERS</span><span class="val vert" id="tbFiles">0</span></div>
     <div class="stat"><span>DATASETS</span><span class="val" id="tbDatasets">0</span></div>
@@ -244,20 +247,20 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:13
   <aside class="sidebar" id="sidebar">
     <div class="sb-head">
       <div class="sb-title">🎯 Scénarios</div>
-      <div class="sb-count" id="sbCount">Chargez un JSON</div>
+      <div class="sb-count" id="sbCount">Chargement…</div>
     </div>
     <div class="sb-list" id="scenarioList"></div>
     <div class="sb-head" style="border-top:1px solid var(--border)">
-      <div class="sb-title">📂 Fichiers</div>
+      <div class="sb-title">📂 Fichiers chargés</div>
       <div class="sb-count" id="filesLoadedCount">0 fichier</div>
     </div>
     <div class="sb-list compact" id="filesLoadedList">
-      <div style="text-align:center;color:var(--muted);font-size:11px;padding:10px">Aucun</div>
+      <div style="text-align:center;color:var(--muted);font-size:11px;padding:10px">Chargement…</div>
     </div>
     <div class="drop-zone" id="dropZone">
       <div class="icon">📁📁📁</div>
       <div class="title">Glissez JSON (multiple)</div>
-      <div class="sub">ou cliquez</div>
+      <div class="sub">ou cliquez pour ajouter</div>
       <input type="file" id="fileInput" accept=".json" multiple style="display:none">
     </div>
   </aside>
@@ -307,8 +310,9 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:13
     <div class="results" id="resultsArea">
       <div style="text-align:center;padding:60px 20px;color:var(--muted)">
         <div style="font-size:48px;margin-bottom:16px">🏛️</div>
-        <div style="font-weight:700;color:var(--text);margin-bottom:8px;font-size:16px">Monitor Social Expert+</div>
-        <div>Chargez un ou plusieurs fichiers JSON</div>
+        <div style="font-weight:700;color:var(--text);margin-bottom:8px;font-size:16px">Chargement automatique…</div>
+        <div>Lecture du manifeste puis des fichiers JSON</div>
+        <div style="margin-top:10px;font-size:11px;font-family:var(--mono)" id="loadProgress">Initialisation…</div>
       </div>
     </div>
 
@@ -328,7 +332,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:13
         <div class="panel-head">💚 ENVIRONNEMENT</div>
         <div class="panel-body">
           <div class="row"><span class="k">Source</span><span class="v bleu" id="ivSource">—</span></div>
-          <div class="row"><span class="k">Statut</span><span class="v or" id="ivStatus">● EN ATTENTE</span></div>
+          <div class="row"><span class="k">Statut</span><span class="v or" id="ivStatus">● CHARGEMENT…</span></div>
           <div class="row"><span class="k">Chargé le</span><span class="v" id="ivDate">—</span></div>
         </div>
       </div>
@@ -372,28 +376,21 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:13
 
 <script>
 /* =========================================================
-   MONITOR SOCIAL EXPERT+ — v5.3 (COMPLET)
+   MONITOR SOCIAL EXPERT+ — v6.1 (jsDelivr + LFS)
    ========================================================= */
+"use strict";
+
 const $ = id => document.getElementById(id);
 const escapeHtml = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const fmt = n => new Intl.NumberFormat('fr-FR').format(Math.round(n || 0));
 const fmtDec = (n, d = 2) => new Intl.NumberFormat('fr-FR', {minimumFractionDigits:d, maximumFractionDigits:d}).format(n || 0);
 
-const COMMUNES_974 = {
-  '97411': {nom:'Saint-Denis', mr:'Nord', pop:153810},
-  '97415': {nom:'Saint-Paul', mr:'Ouest', pop:105482},
-  '97416': {nom:'Saint-Pierre', mr:'Sud', pop:84062},
-  '97422': {nom:'Le Tampon', mr:'Sud', pop:79823},
-  '97409': {nom:'Saint-André', mr:'Est', pop:56858},
-  '97414': {nom:'Saint-Louis', mr:'Sud', pop:53687},
-  '97410': {nom:'Saint-Benoît', mr:'Est', pop:37515},
-  '97412': {nom:'Saint-Joseph', mr:'Sud', pop:37867},
-  '97418': {nom:'Sainte-Marie', mr:'Nord', pop:34269},
-  '97413': {nom:'Saint-Leu', mr:'Ouest', pop:34893},
-  '97408': {nom:'La Possession', mr:'Ouest', pop:32815},
-  '97407': {nom:'Le Port', mr:'Ouest', pop:33678}
-};
+// CDN jsDelivr (supporte Git LFS)
+const CDN = 'https://cdn.jsdelivr.net/gh/gunout/monitor-social-expert@main/';
 
+// ============================================================
+// STATISTIQUES
+// ============================================================
 const Stats = {
   mean(arr){ return arr.length ? arr.reduce((s,v) => s+v, 0) / arr.length : 0; },
   sum(arr){ return arr.reduce((s,v) => s+v, 0); },
@@ -429,34 +426,37 @@ const Stats = {
   detectOutliers(arr, threshold = 2){ const z = this.zScores(arr); return z.map((v, i) => Math.abs(v) > threshold ? {index:i, value:arr[i], z:v} : null).filter(Boolean); }
 };
 
+// ============================================================
+// CONFIGURATION
+// ============================================================
 const SCENARIOS = [
   {id:"s1",nom:"Bilan AAH",desc:"Évolution allocataires",theme:"AAH",badge:"ok",badgeTxt:"Recommandé",risque:"Faible",
-   procedure:["Extraction AAH","Filtrage 974","Agrégation par âge","Évolution temporelle","Micro-régions"],
-   controles:["Dates cohérentes","Secret statistique","Ruptures"],
+   procedure:["Extraction AAH","Filtrage 974","Agrégation par âge","Évolution temporelle"],
+   controles:["Dates cohérentes","Secret statistique"],
    livrable:"Tableau par tranche d'âge"},
   {id:"s2",nom:"Suivi RSA",desc:"Bénéficiaires",theme:"RSA",badge:"warn",badgeTxt:"Précautions",risque:"Moyen",
-   procedure:["Récupération RSA","⚠️ Recentralisé 2020","Reconstitution"],
-   controles:["⚠️ Rupture 2020","Doublons"],
+   procedure:["Récupération RSA","⚠️ Recentralisé 2020"],
+   controles:["⚠️ Rupture 2020"],
    livrable:"Série reconstituée"},
   {id:"s3",nom:"Prestations familiales",desc:"PAJE, AF, ARS",theme:"Famille",badge:"ok",badgeTxt:"Officiel",risque:"Faible",
-   procedure:["Extraction","Agrégation","Montants moyens","Comparaison DOM"],
-   controles:["Unités","Effectifs"],
+   procedure:["Extraction","Agrégation"],
+   controles:["Unités"],
    livrable:"Rapport prestations"},
   {id:"s4",nom:"Multi-prestations",desc:"Croisement",theme:"Multi",badge:"violet",badgeTxt:"Expert",risque:"Moyen",
-   procedure:["Inter-prestations","Corrélation","Segmentation"],
-   controles:["Périodes","Périmètres"],
+   procedure:["Inter-prestations","Corrélation"],
+   controles:["Périodes"],
    livrable:"Matrice co-occurrence"},
   {id:"s5",nom:"Anomalies",desc:"Outliers",theme:"Anomalies",badge:"violet",badgeTxt:"Expert",risque:"Moyen",
-   procedure:["Z-scores","Outliers","Classification"],
-   controles:["Seuil Z","Vérification"],
+   procedure:["Z-scores","Outliers"],
+   controles:["Seuil Z"],
    livrable:"Rapport anomalies"},
   {id:"s6",nom:"Projections",desc:"Modèle linéaire",theme:"Projection",badge:"cyan",badgeTxt:"Modèle",risque:"Moyen",
-   procedure:["Régression","R² et IC","Projection 3 ans"],
+   procedure:["Régression","R² et IC"],
    controles:["R² > 0.6"],
    livrable:"Courbes projection"},
   {id:"s7",nom:"⚠️ À ÉVITER",desc:"Brutes",theme:"Critique",badge:"danger",badgeTxt:"Proscrit",risque:"Élevé",
    procedure:["❌ NE PAS UTILISER"],
-   controles:["Source","Licence"],
+   controles:["Source"],
    livrable:"Aucun"}
 ];
 
@@ -469,20 +469,39 @@ const INDICATEURS = [
   {id:"concentration",nom:"Gini",full:"Concentration",formule:"Σ|xi-xj| / (2n²μ)",unite:"0-1",seuils:[0,0.2,0.4,0.6,0.8,1],classes:["très égalitaire","égalitaire","moyen","inégalitaire","très inégalitaire"],note:"Inégalité"}
 ];
 
+// ============================================================
+// ÉTAT GLOBAL
+// ============================================================
 const state = {
-  allDatasets: [], allDatasetsBruts: [], filteredDatasets: [], filesHistory: [],
-  source: "Aucune", loadedAt: null,
-  activeScenario:"s1", activeView:"overview",
-  query:"", sort:"default",
+  allDatasets: [],
+  allDatasetsBruts: [],
+  filteredDatasets: [],
+  filesHistory: [],
+  source: "Aucune",
+  loadedAt: null,
+  activeScenario: "s1",
+  activeView: "overview",
+  query: "",
+  sort: "default",
   theme: localStorage.getItem('monitor-theme') || 'light',
   filter974: true,
-  seriesByTheme: {}, anomalies: [], forecasts: {}, correlations: null, microRegions: {}
+  seriesByTheme: {},
+  anomalies: [],
+  forecasts: {},
+  correlations: null,
+  microRegions: {}
 };
 
+let COMMUNES_974 = [];
+
+// ============================================================
+// THÈME
+// ============================================================
 function applyTheme(){
   document.documentElement.setAttribute('data-theme', state.theme);
   const b = $('themeToggle'); if (b) b.textContent = state.theme === 'dark' ? '☀️' : '🌙';
 }
+
 function toggleTheme(){
   state.theme = state.theme === 'dark' ? 'light' : 'dark';
   localStorage.setItem('monitor-theme', state.theme);
@@ -490,6 +509,9 @@ function toggleTheme(){
   if (state.allDatasets.length) renderAll();
 }
 
+// ============================================================
+// DROP ZONE
+// ============================================================
 function setupDropZone(){
   const dz = $('dropZone'), fi = $('fileInput');
   if (!dz || !fi) return;
@@ -505,7 +527,7 @@ async function handleFiles(files){
   const jsonFiles = files.filter(f => f.name.toLowerCase().endsWith('.json'));
   if (!jsonFiles.length){ toast('❌ Aucun .json', 'error'); return; }
 
-  toast(`📂 Chargement de ${jsonFiles.length} fichier(s)…`, 'info', 1500);
+  toast(`📂 Ajout de ${jsonFiles.length} fichier(s)…`, 'info', 1500);
   const loadedBruts = [];
   const fileReports = [];
 
@@ -515,9 +537,9 @@ async function handleFiles(files){
       const data = JSON.parse(text);
       const bruts = extractBruts(data, file.name);
       loadedBruts.push(...bruts);
-      fileReports.push({name:file.name, nbBrut:bruts.length, date:Date.now(), ok:true, ids:[]});
+      fileReports.push({name:file.name, nbBrut:bruts.length, date:Date.now(), ok:true});
     } catch (err){
-      fileReports.push({name:file.name, nbBrut:0, date:Date.now(), ok:false, error:err.message, ids:[]});
+      fileReports.push({name:file.name, nbBrut:0, date:Date.now(), ok:false, error:err.message});
       toast(`❌ ${file.name} : ${err.message}`, 'error', 4000);
     }
   }
@@ -527,28 +549,13 @@ async function handleFiles(files){
   state.allDatasetsBruts.push(...loadedBruts);
   state.allDatasets = aggregateAllCaf(state.allDatasetsBruts);
   state.filteredDatasets = [...state.allDatasets];
-
-  state.source = state.filesHistory.length + fileReports.filter(f => f.ok).length === 1
-    ? fileReports.find(f => f.ok).name
-    : `${state.filesHistory.length + fileReports.filter(f => f.ok).length} fichiers`;
-  state.loadedAt = new Date();
   state.filesHistory.push(...fileReports.filter(f => f.ok));
+  state.source = `${state.filesHistory.length} fichiers`;
+  state.loadedAt = new Date();
 
   computeAll();
-
-  safeSet('tbSource', state.source.length > 18 ? state.source.slice(0, 16) + '…' : state.source, 'val vert');
-  safeSet('ivSource', state.source, 'v bleu');
-  safeSet('ivStatus', '● CHARGÉ', 'v vert');
-  safeSet('ivDate', state.loadedAt.toLocaleString('fr-FR'));
-
-  const dot = $('statusDot'); if (dot) dot.classList.remove('offline');
-  $('warningBanner').hidden = false;
-  ['exportCsv','exportJson','exportHtml','exportDce'].forEach(id => $(id).disabled = false);
-
-  updateStats(); updateRightPanel(); renderRulesEngine();
-  applyFilters(); renderScenarios(); renderFilesLoaded(); renderAll();
-
-  toast(`✅ ${state.allDatasets.length} datasets · ${Object.keys(state.seriesByTheme).length} séries`, 'success', 4000);
+  updateAllUI();
+  toast(`✅ ${state.allDatasets.length} datasets`, 'success', 4000);
 }
 
 function extractBruts(data, filename){
@@ -558,14 +565,15 @@ function extractBruts(data, filename){
   else if (data.records && Array.isArray(data.records)) arr = data.records.map(r => r.fields || r);
   else if (data.results && Array.isArray(data.results)) arr = data.results.map(r => r.fields || r);
   else arr = [data];
-  return arr.map(o => ({...o, _sourceFile: filename}));
+  return arr.map(o => Object.assign({}, o, {_sourceFile: filename}));
 }
 
-/* ============ AGRÉGATION ============ */
+// ============================================================
+// AGRÉGATION
+// ============================================================
 function aggregateAllCaf(bruts){
   const cafRecords = bruts.filter(b => isCafFormat(b));
   const autresRecords = bruts.filter(b => !isCafFormat(b));
-
   const datasets = [];
 
   if (cafRecords.length){
@@ -575,17 +583,12 @@ function aggregateAllCaf(bruts){
       if (!parTheme[theme]) parTheme[theme] = [];
       parTheme[theme].push(r);
     }
-
-    for (const [theme, lignes] of Object.entries(parTheme)){
-      const ds = aggregateCafTheme(lignes, theme);
-      datasets.push(...ds);
+    for (const theme of Object.keys(parTheme)){
+      datasets.push(...aggregateCafTheme(parTheme[theme], theme));
     }
   }
 
-  for (const a of autresRecords){
-    datasets.push(normalizeDataset(a));
-  }
-
+  for (const a of autresRecords) datasets.push(normalizeDataset(a));
   return datasets;
 }
 
@@ -594,7 +597,7 @@ function isCafFormat(obj){
   const keys = Object.keys(obj);
   const hasDtreffre = keys.some(k => k === 'dtreffre' || k === 'date');
   const hasIndic = keys.some(k => /^ind(foy|nbp|mtt|ben)_/.test(k));
-  const hasGeo = keys.some(k => ['numdep','dep','departement','numregi','nomregi','nomdep'].includes(k));
+  const hasGeo = keys.some(k => ['numdep','dep','departement','numregi','nomregi','nomdep'].indexOf(k) >= 0);
   const hasCafField = keys.some(k => /^(aah_|rsa_|pa_|af_|paje_|asf_|aeeh_|aspa_)/.test(k) || k === 'lieures');
   return (hasDtreffre && hasIndic && (hasGeo || hasCafField));
 }
@@ -629,7 +632,6 @@ function aggregateCafTheme(lignes, theme){
   const sample = lignesFiltrees[0];
   const keys = Object.keys(sample);
   const isWideFormat = keys.some(k => k === 'indfoy_aah' || k === 'indfoy_rsa' || k === 'indfoy_ppa');
-
   if (isWideFormat) return aggregateWideFormat(lignesFiltrees, theme);
   return aggregateClassicFormat(lignesFiltrees, theme);
 }
@@ -640,70 +642,43 @@ function aggregateWideFormat(lignes, theme){
   const filterSlug = state.filter974 ? '974' : 'france';
 
   const PRESTATIONS = [
-    {code:'aah', nom:'AAH', label:'Allocation Adultes Handicapés'},
-    {code:'rsa', nom:'RSA', label:'Revenu Solidarité Active'},
-    {code:'ppa', nom:'PPA', label:'Prime d\'activité'},
-    {code:'af', nom:'AF', label:'Allocations familiales'},
-    {code:'cf', nom:'CF', label:'Complément familial'},
-    {code:'ars', nom:'ARS', label:'Allocation rentrée scolaire'},
-    {code:'asf', nom:'ASF', label:'Allocation soutien familial'},
-    {code:'aeeh', nom:'AEEH', label:'Allocation éducation handicapé'},
-    {code:'paje', nom:'PAJE', label:'Prestation accueil jeune enfant'},
-    {code:'cmg', nom:'CMG', label:'Complément mode de garde'},
-    {code:'prepare', nom:'PreParE', label:'Prestation partagée éducation'},
-    {code:'pn', nom:'PN', label:'Prime naissance'},
-    {code:'ab', nom:'AB', label:'Allocation de base'},
-    {code:'apl', nom:'APL', label:'Aide personnalisée logement'},
-    {code:'als', nom:'ALS', label:'Allocation logement sociale'},
-    {code:'alf', nom:'ALF', label:'Allocation logement familiale'},
-    {code:'ndural', nom:'Aides logement', label:'Toutes aides logement'},
-    {code:'ajpp', nom:'AJPP', label:'Allocation présence parentale'},
-    {code:'ajpa', nom:'AJPA', label:'Allocation parent isolé'},
-    {code:'rso', nom:'RSO', label:'Revenu solidarité outre-mer'},
-    {code:'ndur', nom:'Total', label:'Total prestations'},
-    {code:'ndurej', nom:'Enfance Jeunesse', label:'Total enfance jeunesse'},
-    {code:'ndurhd', nom:'Handicap Dépendance', label:'Total handicap dépendance'}
+    {code:'aah', nom:'AAH'},{code:'rsa', nom:'RSA'},{code:'ppa', nom:'PPA'},
+    {code:'af', nom:'AF'},{code:'cf', nom:'CF'},{code:'ars', nom:'ARS'},
+    {code:'asf', nom:'ASF'},{code:'aeeh', nom:'AEEH'},{code:'paje', nom:'PAJE'},
+    {code:'cmg', nom:'CMG'},{code:'prepare', nom:'PreParE'},{code:'pn', nom:'PN'},
+    {code:'ab', nom:'AB'},{code:'apl', nom:'APL'},{code:'als', nom:'ALS'},
+    {code:'alf', nom:'ALF'},{code:'ndural', nom:'Aides logement'},
+    {code:'ajpp', nom:'AJPP'},{code:'ajpa', nom:'AJPA'},{code:'rso', nom:'RSO'},
+    {code:'ndur', nom:'Total'},{code:'ndurej', nom:'Enfance Jeunesse'},{code:'ndurhd', nom:'Handicap Dépendance'}
   ];
 
   for (const p of PRESTATIONS){
     for (const type of ['foy', 'nbp', 'mtt']){
-      const champ = `ind${type}_${p.code}`;
+      const champ = 'ind' + type + '_' + p.code;
       if (!Object.prototype.hasOwnProperty.call(lignes[0], champ)) continue;
-
       const serie = dates.map(d => {
         const l = lignes.find(x => x.dtreffre === d);
         return {date: d, valeur: l ? Number(l[champ] || 0) : 0};
       }).filter(pt => pt.valeur > 0);
-
       if (serie.length < 3) continue;
-
       const vals = serie.map(pt => pt.valeur);
       const typeLabel = {foy: 'Foyers', nbp: 'Personnes', mtt: 'Montants'}[type];
-      const unite = type === 'mtt' ? '€' : 'individus';
-
       datasets.push({
-        id: `caf_${filterSlug}_${p.code}_${type}`,
-        titre: `${p.nom} — ${typeLabel}`,
-        description: `${typeLabel} ${p.label} (${serie.length} mois)`,
-        annee: dates[dates.length-1]?.slice(0, 4) || '—',
-        anneeFull: `${dates[0]} → ${dates[dates.length-1]}`,
+        id: 'caf_' + filterSlug + '_' + p.code + '_' + type,
+        titre: p.nom + ' — ' + typeLabel,
+        description: typeLabel + ' ' + p.nom + ' (' + serie.length + ' mois)',
+        annee: dates[dates.length-1] ? dates[dates.length-1].slice(0, 4) : '—',
+        anneeFull: dates[0] + ' → ' + dates[dates.length-1],
         type: type === 'mtt' ? 'Dépenses' : 'Effectifs',
-        theme: theme,
-        prestation: p.nom,
-        organisation: 'CNAF',
-        portail: 'data.caf.fr',
+        theme: theme, prestation: p.nom,
+        organisation: 'CNAF', portail: 'data.caf.fr',
         license: 'Licence Ouverte v2.0 (Etalab)',
         tags: ['caf', p.code, type, '974', 'mensuel'],
         statistiques: {
-          nb_periodes: serie.length,
-          periode_debut: dates[0],
-          periode_fin: dates[dates.length-1],
-          effectif_min: Stats.min(vals),
-          effectif_max: Stats.max(vals),
-          effectif_moyen: Stats.mean(vals),
-          effectif_total: Stats.sum(vals),
-          unite: unite,
-          serie: serie
+          nb_periodes: serie.length, periode_debut: dates[0], periode_fin: dates[dates.length-1],
+          effectif_min: Stats.min(vals), effectif_max: Stats.max(vals),
+          effectif_moyen: Stats.mean(vals), effectif_total: Stats.sum(vals),
+          unite: type === 'mtt' ? '€' : 'individus', serie: serie
         },
         qualite: 4, comparabilite: 4, ecologie: 4, reproductibilite: 4
       });
@@ -712,26 +687,20 @@ function aggregateWideFormat(lignes, theme){
 
   const datesSerie = dates.map(d => {
     const l = lignes.find(x => x.dtreffre === d);
-    if (!l) return {date:d, valeur:0};
-    return {date:d, valeur: Number(l.indfoy_ndur || 0)};
+    return {date:d, valeur: l ? Number(l.indfoy_ndur || 0) : 0};
   });
-
   datasets.unshift({
-    id: `caf_${filterSlug}_synthese`,
-    titre: `Toutes prestations CAF — Synthèse 974`,
-    description: `Foyers allocataires toutes prestations · ${dates.length} mois`,
-    annee: dates[dates.length-1]?.slice(0, 4),
-    anneeFull: `${dates[0]} → ${dates[dates.length-1]}`,
-    type: 'Effectifs',
-    theme: theme,
-    organisation: 'CNAF',
-    portail: 'data.caf.fr',
+    id: 'caf_' + filterSlug + '_synthese',
+    titre: 'Toutes prestations CAF — Synthèse 974',
+    description: 'Foyers allocataires toutes prestations · ' + dates.length + ' mois',
+    annee: dates[dates.length-1] ? dates[dates.length-1].slice(0, 4) : '—',
+    anneeFull: dates[0] + ' → ' + dates[dates.length-1],
+    type: 'Effectifs', theme: theme,
+    organisation: 'CNAF', portail: 'data.caf.fr',
     license: 'Licence Ouverte v2.0 (Etalab)',
     tags: ['caf', 'synthese', '974', 'mensuel'],
     statistiques: {
-      nb_periodes: dates.length,
-      periode_debut: dates[0],
-      periode_fin: dates[dates.length-1],
+      nb_periodes: dates.length, periode_debut: dates[0], periode_fin: dates[dates.length-1],
       effectif_min: Stats.min(datesSerie.map(p => p.valeur)),
       effectif_max: Stats.max(datesSerie.map(p => p.valeur)),
       effectif_moyen: Stats.mean(datesSerie.map(p => p.valeur)),
@@ -749,108 +718,77 @@ function aggregateClassicFormat(lignes, theme){
   const themeSlug = theme.toLowerCase().replace(/\s/g,'_').replace(/[^\w]/g,'');
 
   const effectifKey = Object.keys(lignes[0] || {}).find(k => /^ind(ben|nbp|foy)_/.test(k));
-  if (!effectifKey){
-    console.warn('Aucun champ effectif pour', theme);
-    return [];
-  }
+  if (!effectifKey) return [];
 
   const serie = dates.map(d => {
-    const lignesDate = lignes.filter(l => l.dtreffre === d);
     let total = 0;
-    for (const l of lignesDate){
-      total += Number(l[effectifKey] || 0);
-    }
+    for (const l of lignes) if (l.dtreffre === d) total += Number(l[effectifKey] || 0);
     return {date: d, valeur: total};
   }).filter(p => p.valeur > 0);
-
   if (serie.length < 2) return [];
-
   const vals = serie.map(p => p.valeur);
 
   const datasets = [{
-    id: `caf_${filterSlug}_${themeSlug}_synthese`,
-    titre: `${theme} — Synthèse ${state.filter974 ? '974' : 'France'}`,
-    description: `Total ${theme} · ${serie.length} périodes · ${lignes.length} lignes`,
-    annee: dates[dates.length-1]?.slice(0, 4) || '—',
-    anneeFull: `${dates[0]} → ${dates[dates.length-1]}`,
-    type: 'Effectifs',
-    theme: theme,
-    organisation: 'CNAF',
-    portail: 'data.caf.fr',
+    id: 'caf_' + filterSlug + '_' + themeSlug + '_synthese',
+    titre: theme + ' — Synthèse ' + (state.filter974 ? '974' : 'France'),
+    description: 'Total ' + theme + ' · ' + serie.length + ' périodes · ' + lignes.length + ' lignes',
+    annee: dates[dates.length-1] ? dates[dates.length-1].slice(0, 4) : '—',
+    anneeFull: dates[0] + ' → ' + dates[dates.length-1],
+    type: 'Effectifs', theme: theme,
+    organisation: 'CNAF', portail: 'data.caf.fr',
     license: 'Licence Ouverte v2.0 (Etalab)',
     tags: ['caf', themeSlug, state.filter974 ? '974' : 'france', 'synthese'],
     statistiques: {
-      nb_lignes: lignes.length,
-      nb_periodes: serie.length,
-      periode_debut: dates[0],
-      periode_fin: dates[dates.length-1],
-      effectif_min: Stats.min(vals),
-      effectif_max: Stats.max(vals),
-      effectif_moyen: Stats.mean(vals),
-      effectif_total: Stats.sum(vals),
+      nb_lignes: lignes.length, nb_periodes: serie.length,
+      periode_debut: dates[0], periode_fin: dates[dates.length-1],
+      effectif_min: Stats.min(vals), effectif_max: Stats.max(vals),
+      effectif_moyen: Stats.mean(vals), effectif_total: Stats.sum(vals),
       serie: serie
     },
     qualite: 4, comparabilite: 4, ecologie: 4, reproductibilite: 4
   }];
 
-  // MULTI-DIMENSIONS
-  const dimKeys = Object.keys(lignes[0]).filter(k => 
+  const dimKeys = Object.keys(lignes[0]).filter(k =>
     k === 'aah_complaah' || k === 'complement' ||
     k === 'aah_age_5' || k === 'aah_age_1' ||
     k === 'aah_tx_inca' || k === 'taux_incapacite' ||
     k === 'type_presta' || k === 'taux'
   );
 
-  console.log(`📊 ${dimKeys.length} dimension(s) pour ${theme}:`, dimKeys);
-
   for (const dimKey of dimKeys){
     const dims = [...new Set(lignes.map(l => l[dimKey]).filter(Boolean))];
-    console.log(`  → ${dims.length} valeurs pour ${dimKey}`);
-
     for (const dim of dims){
       const lignesDim = lignes.filter(l => l[dimKey] === dim);
       const serieDim = dates.map(d => {
-        const ld = lignesDim.filter(l => l.dtreffre === d);
         let t = 0;
-        for (const l of ld){ t += Number(l[effectifKey] || 0); }
+        for (const l of lignesDim) if (l.dtreffre === d) t += Number(l[effectifKey] || 0);
         return {date: d, valeur: t};
       }).filter(p => p.valeur > 0);
-
       if (serieDim.length < 2) continue;
       const vd = serieDim.map(p => p.valeur);
       const dimSlug = String(dim).toLowerCase().replace(/\s/g,'_').replace(/[^\w]/g,'').slice(0, 40);
       const dimPrefix = dimKey.replace('aah_', '').replace(/_/g, '').slice(0, 8);
-
       datasets.push({
-        id: `caf_${filterSlug}_${themeSlug}_${dimPrefix}_${dimSlug}`,
-        titre: `${theme} — ${dim}`,
-        description: `${dim} · ${serieDim.length} périodes · ${lignesDim.length} lignes`,
-        annee: dates[dates.length-1]?.slice(0, 4) || '—',
-        anneeFull: `${dates[0]} → ${dates[dates.length-1]}`,
-        type: 'Effectifs',
-        theme: theme,
-        dimension: dimKey,
-        organisation: 'CNAF',
-        portail: 'data.caf.fr',
+        id: 'caf_' + filterSlug + '_' + themeSlug + '_' + dimPrefix + '_' + dimSlug,
+        titre: theme + ' — ' + dim,
+        description: dim + ' · ' + serieDim.length + ' périodes · ' + lignesDim.length + ' lignes',
+        annee: dates[dates.length-1] ? dates[dates.length-1].slice(0, 4) : '—',
+        anneeFull: dates[0] + ' → ' + dates[dates.length-1],
+        type: 'Effectifs', theme: theme, dimension: dimKey,
+        organisation: 'CNAF', portail: 'data.caf.fr',
         license: 'Licence Ouverte v2.0 (Etalab)',
         tags: ['caf', themeSlug, dimPrefix, dimSlug, state.filter974 ? '974' : 'france'],
         statistiques: {
-          nb_lignes: lignesDim.length,
-          nb_periodes: serieDim.length,
-          periode_debut: dates[0],
-          periode_fin: dates[dates.length-1],
-          effectif_min: Stats.min(vd),
-          effectif_max: Stats.max(vd),
-          effectif_moyen: Stats.mean(vd),
-          effectif_total: Stats.sum(vd),
+          nb_lignes: lignesDim.length, nb_periodes: serieDim.length,
+          periode_debut: dates[0], periode_fin: dates[dates.length-1],
+          effectif_min: Stats.min(vd), effectif_max: Stats.max(vd),
+          effectif_moyen: Stats.mean(vd), effectif_total: Stats.sum(vd),
           serie: serieDim
         },
         qualite: 4, comparabilite: 4, ecologie: 4, reproductibilite: 4
       });
     }
   }
-
-  console.log(`  ✅ ${datasets.length} datasets générés pour ${theme}`);
   return datasets;
 }
 
@@ -859,15 +797,12 @@ function normalizeDataset(d){
   let id = d.id || 'auto_' + hashString(JSON.stringify(d).slice(0, 200));
   const titre = d.titre || d.title || d.descriptif || 'Dataset';
   return {
-    id, titre,
+    id: id, titre: titre,
     description: d.description || d.descriptif || '',
     annee: d.annee || '—', anneeFull: d.annee || '—',
-    type: d.type || 'Indicateur',
-    theme: d.theme || 'Autre',
-    organisation: d.organisation || 'CNAF',
-    portail: d.portail || 'data.caf.fr',
-    license: d.license || 'Licence Ouverte v2.0 (Etalab)',
-    tags: d.tags || [],
+    type: d.type || 'Indicateur', theme: d.theme || 'Autre',
+    organisation: d.organisation || 'CNAF', portail: d.portail || 'data.caf.fr',
+    license: d.license || 'Licence Ouverte v2.0 (Etalab)', tags: d.tags || [],
     qualite: d.qualite || 2, comparabilite: d.comparabilite || 2,
     ecologie: d.ecologie || 2, reproductibilite: d.reproductibilite || 2,
     statistiques: d.statistiques || null, valeur: d.valeur || null
@@ -880,39 +815,41 @@ function hashString(s){
   return Math.abs(h).toString(36);
 }
 
-/* ============ COMPUTE ============ */
+// ============================================================
+// CALCULS
+// ============================================================
 function computeAll(){
   computeSeriesByTheme();
   computeAnomalies();
   computeForecasts();
   computeCorrelations();
-  computeMicroRegions();
 }
 
 function computeSeriesByTheme(){
   state.seriesByTheme = {};
   for (const d of state.allDatasets){
-    if (!d.statistiques?.serie) continue;
-    const key = d.titre; // une série par dataset
+    if (!d.statistiques || !d.statistiques.serie) continue;
+    const key = d.titre;
     if (!state.seriesByTheme[key]) state.seriesByTheme[key] = [];
-    state.seriesByTheme[key].push(...d.statistiques.serie.map(p => ({date:p.date, valeur:p.valeur})));
+    for (const p of d.statistiques.serie) state.seriesByTheme[key].push({date:p.date, valeur:p.valeur});
   }
   for (const key of Object.keys(state.seriesByTheme)){
     const map = {};
-    for (const p of state.seriesByTheme[key]){ map[p.date] = p.valeur; }
-    state.seriesByTheme[key] = Object.entries(map).map(([date, valeur]) => ({date, valeur})).sort((a,b) => a.date.localeCompare(b.date));
+    for (const p of state.seriesByTheme[key]) map[p.date] = p.valeur;
+    state.seriesByTheme[key] = Object.keys(map).map(date => ({date: date, valeur: map[date]})).sort((a,b) => a.date.localeCompare(b.date));
   }
 }
 
 function computeAnomalies(){
   state.anomalies = [];
-  for (const [theme, series] of Object.entries(state.seriesByTheme)){
+  for (const theme of Object.keys(state.seriesByTheme)){
+    const series = state.seriesByTheme[theme];
     if (series.length < 12) continue;
     const vals = series.map(p => p.valeur);
     const outliers = Stats.detectOutliers(vals, 2.5);
     for (const o of outliers){
       state.anomalies.push({
-        theme, date: series[o.index].date, valeur: o.value, z: o.z,
+        theme: theme, date: series[o.index].date, valeur: o.value, z: o.z,
         type: o.z > 0 ? 'pic' : 'creux',
         severite: Math.abs(o.z) > 3.5 ? 'critique' : Math.abs(o.z) > 3 ? 'élevée' : 'modérée'
       });
@@ -924,24 +861,27 @@ function computeAnomalies(){
 
 function computeForecasts(){
   state.forecasts = {};
-  for (const [theme, series] of Object.entries(state.seriesByTheme)){
+  for (const theme of Object.keys(state.seriesByTheme)){
+    const series = state.seriesByTheme[theme];
     if (series.length < 24) continue;
     const x = series.map((p, i) => i);
     const y = series.map(p => p.valeur);
     const xF = [y.length, y.length+1, y.length+2, y.length+3, y.length+4, y.length+5];
-    const {yPred, yMin, yMax, r2, slope} = Stats.forecastLinear(x, y, xF);
+    const res = Stats.forecastLinear(x, y, xF);
     const lastDate = series[series.length-1].date;
-    const [yr, mo] = lastDate.split('-').map(Number);
+    const parts = lastDate.split('-');
+    const yr = Number(parts[0]);
+    const mo = Number(parts[1]);
     const futDates = xF.map((_, i) => {
       const m = mo + i + 1;
       const addY = Math.floor((m - 1) / 12);
       const newM = ((m - 1) % 12) + 1;
-      return `${yr + addY}-${String(newM).padStart(2,'0')}`;
+      return (yr + addY) + '-' + String(newM).padStart(2,'0');
     });
     state.forecasts[theme] = {
       historique: series,
-      futur: futDates.map((d, i) => ({date:d, valeur:yPred[i], min:yMin[i], max:yMax[i]})),
-      r2, slope, fiable: r2 > 0.6
+      futur: futDates.map((d, i) => ({date:d, valeur:res.yPred[i], min:res.yMin[i], max:res.yMax[i]})),
+      r2: res.r2, slope: res.slope, fiable: res.r2 > 0.6
     };
   }
 }
@@ -958,33 +898,45 @@ function computeCorrelations(){
       const common = Object.keys(m1).filter(d => d in m2);
       if (common.length < 6) continue;
       const x = common.map(d => m1[d]), y = common.map(d => m2[d]);
-      matrices[t1 + '||' + t2] = {t1, t2, pearson: Stats.pearson(x, y), spearman: Stats.spearman(x, y), n: common.length};
+      matrices[t1 + '||' + t2] = {t1: t1, t2: t2, pearson: Stats.pearson(x, y), spearman: Stats.spearman(x, y), n: common.length};
     }
   }
-  state.correlations = {themes: keys, matrices};
+  state.correlations = {themes: keys, matrices: matrices};
 }
 
-function computeMicroRegions(){
-  state.microRegions = {Nord:[], Sud:[], Est:[], Ouest:[]};
-  for (const [code, c] of Object.entries(COMMUNES_974)){
-    if (state.microRegions[c.mr]) state.microRegions[c.mr].push({code, ...c});
+async function computeMicroRegions(){
+  try {
+    const resp = await fetch(CDN + 'communes_974.json');
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    COMMUNES_974 = await resp.json();
+    state.microRegions = {Nord:[], Sud:[], Est:[], Ouest:[]};
+    for (const c of COMMUNES_974){
+      if (c.mr && state.microRegions[c.mr]) state.microRegions[c.mr].push(c);
+    }
+    console.log('✅ ' + COMMUNES_974.length + ' communes chargées');
+  } catch (err){
+    console.warn('⚠️ communes_974.json non chargé :', err.message);
+    COMMUNES_974 = [];
+    state.microRegions = {};
   }
 }
 
 function evaluateRules(){
   const rules = [];
-  const r = (id, nom, cond, msg, niv) => { if (cond) rules.push({id, nom, message:msg, niveau:niv}); };
-  r('R1', 'Filtre 974', state.filter974, `Filtrage La Réunion actif`, 'vert');
-  r('R2', 'Rupture RSA 2020', true, `RSA recentralisé depuis 2020`, 'rouge');
-  r('R3', 'Secret statistique', true, `Floutage petits effectifs`, 'or');
-  r('R4', 'Non-recours', true, `Taux ~30 %`, 'or');
-  if (state.anomalies.length > 10) r('R5', 'Anomalies', true, `${state.anomalies.length} anomalies`, 'or');
-  r('R6', 'Licence', true, `Licence Ouverte v2.0`, 'vert');
-  if (Object.values(state.forecasts).some(f => f.fiable)) r('R7', 'Projections fiables', true, `R² > 0.6`, 'vert');
+  const r = (id, nom, cond, msg, niv) => { if (cond) rules.push({id:id, nom:nom, message:msg, niveau:niv}); };
+  r('R1', 'Filtre 974', state.filter974, 'Filtrage La Réunion actif', 'vert');
+  r('R2', 'Rupture RSA 2020', true, 'RSA recentralisé depuis 2020', 'rouge');
+  r('R3', 'Secret statistique', true, 'Floutage petits effectifs', 'or');
+  r('R4', 'Non-recours', true, 'Taux ~30 %', 'or');
+  if (state.anomalies.length > 10) r('R5', 'Anomalies', true, state.anomalies.length + ' anomalies', 'or');
+  r('R6', 'Licence', true, 'Licence Ouverte v2.0', 'vert');
+  if (Object.keys(state.forecasts).some(k => state.forecasts[k].fiable)) r('R7', 'Projections fiables', true, 'R² > 0.6', 'vert');
   return rules;
 }
 
-/* ============ UI ============ */
+// ============================================================
+// UI
+// ============================================================
 function updateStats(){
   const all = state.allDatasets;
   safeSet('tbDatasets', fmt(all.length));
@@ -1002,10 +954,10 @@ function updateRightPanel(){
   if (!all.length) return;
   const scores = all.map(d => (d.qualite + d.comparabilite + d.ecologie + d.reproductibilite) / 16 * 100);
   safeSet('ivScore', fmtDec(Stats.mean(scores), 1) + '%', 'v bleu');
-  const themes = Object.entries(state.seriesByTheme).filter(([t,s]) => s.length >= 12);
+  const themes = Object.keys(state.seriesByTheme).filter(k => state.seriesByTheme[k].length >= 12);
   let trend = 'stable';
   if (themes.length){
-    const slopes = themes.map(([t,s]) => Stats.linearRegression(s.map((_,i)=>i), s.map(p => p.valeur)).a);
+    const slopes = themes.map(k => Stats.linearRegression(state.seriesByTheme[k].map((_,i)=>i), state.seriesByTheme[k].map(p => p.valeur)).a);
     const meanSlope = Stats.mean(slopes);
     trend = meanSlope > 0 ? 'croissance' : meanSlope < 0 ? 'décroissance' : 'stable';
   }
@@ -1013,6 +965,18 @@ function updateRightPanel(){
   safeSet('ivAnomalies', fmt(state.anomalies.length), state.anomalies.length > 10 ? 'v rouge' : 'v or');
   safeSet('ivProj', Object.keys(state.forecasts).length, 'v cyan');
   safeSet('ivCorr', state.correlations ? Object.keys(state.correlations.matrices).length : 0, 'v rose');
+}
+
+function updateAllUI(){
+  safeSet('tbSource', state.source.length > 18 ? state.source.slice(0, 16) + '…' : state.source, 'val vert');
+  safeSet('ivSource', state.source, 'v bleu');
+  safeSet('ivStatus', '● CHARGÉ', 'v vert');
+  safeSet('ivDate', state.loadedAt ? state.loadedAt.toLocaleString('fr-FR') : '—');
+  const dot = $('statusDot'); if (dot) dot.classList.remove('offline');
+  $('warningBanner').hidden = false;
+  ['exportCsv','exportJson','exportHtml','exportDce'].forEach(id => { const el = $(id); if (el) el.disabled = false; });
+  updateStats(); updateRightPanel(); renderRulesEngine();
+  applyFilters(); renderScenarios(); renderFilesLoaded(); renderAll();
 }
 
 function renderRulesEngine(){
@@ -1023,34 +987,32 @@ function renderRulesEngine(){
     return;
   }
   const rules = evaluateRules();
-  el.innerHTML = rules.map(r => `
-    <div style="padding:6px 0;border-bottom:1px dashed var(--gris-100);font-size:11px">
-      <div style="display:flex;justify-content:space-between;margin-bottom:2px">
-        <strong style="color:var(--${r.niveau === 'rouge' ? 'rouge' : r.niveau === 'or' ? 'or' : 'vert'})">${r.id} · ${escapeHtml(r.nom)}</strong>
-      </div>
-      <div style="color:var(--gris-700);font-size:10px">${escapeHtml(r.message)}</div>
-    </div>
-  `).join('');
+  el.innerHTML = rules.map(r => '<div style="padding:6px 0;border-bottom:1px dashed var(--gris-100);font-size:11px">' +
+    '<div style="display:flex;justify-content:space-between;margin-bottom:2px">' +
+    '<strong style="color:var(--' + (r.niveau === 'rouge' ? 'rouge' : r.niveau === 'or' ? 'or' : 'vert') + ')">' + r.id + ' · ' + escapeHtml(r.nom) + '</strong>' +
+    '</div>' +
+    '<div style="color:var(--gris-700);font-size:10px">' + escapeHtml(r.message) + '</div>' +
+    '</div>').join('');
 }
 
 function renderScenarios(){
   const el = $('scenarioList');
   if (!el) return;
   if (!state.allDatasets.length){
-    el.innerHTML = `<div style="text-align:center;padding:20px;color:var(--muted);font-size:11px">Aucune donnée.</div>`;
-    safeSet('sbCount', 'Chargez un JSON');
+    el.innerHTML = '<div style="text-align:center;padding:20px;color:var(--muted);font-size:11px">Chargement…</div>';
+    safeSet('sbCount', 'Chargement…');
     return;
   }
-  safeSet('sbCount', `${state.allDatasets.length} datasets`);
+  safeSet('sbCount', state.allDatasets.length + ' datasets');
   el.innerHTML = SCENARIOS.map(s => {
     const n = state.allDatasets.filter(d => s.theme === 'Critique' || s.theme === 'Multi' || s.theme === 'Anomalies' || s.theme === 'Projection' || d.theme === s.theme).length;
     const cls = s.badge === 'danger' ? 'forbidden' : s.badge === 'violet' ? 'violet' : s.badge === 'cyan' ? 'cyan' : '';
     const bcls = s.badge === 'danger' ? 'danger' : s.badge === 'violet' ? 'violet' : s.badge === 'cyan' ? 'cyan' : s.badge === 'warn' ? 'warn' : 'ok';
-    return `<div class="scenario-item ${state.activeScenario === s.id ? 'active' : ''} ${cls}" data-id="${s.id}">
-      <div class="scenario-name">${escapeHtml(s.nom)}</div>
-      <div class="scenario-desc">${escapeHtml(s.desc)}</div>
-      <span class="scenario-badge badge-${bcls}">${escapeHtml(s.badgeTxt)} · ${n}</span>
-    </div>`;
+    return '<div class="scenario-item ' + (state.activeScenario === s.id ? 'active' : '') + ' ' + cls + '" data-id="' + s.id + '">' +
+      '<div class="scenario-name">' + escapeHtml(s.nom) + '</div>' +
+      '<div class="scenario-desc">' + escapeHtml(s.desc) + '</div>' +
+      '<span class="scenario-badge badge-' + bcls + '">' + escapeHtml(s.badgeTxt) + ' · ' + n + '</span>' +
+      '</div>';
   }).join('');
   el.querySelectorAll('.scenario-item').forEach(item => item.addEventListener('click', () => {
     state.activeScenario = item.dataset.id;
@@ -1060,23 +1022,19 @@ function renderScenarios(){
 
 function renderKPIs(){
   if (!state.allDatasets.length){
-    $('kpiStrip').innerHTML = `
-      <div class="kpi or"><div class="label">Statut</div><div class="value">ATTENTE</div></div>
-      <div class="kpi cyan"><div class="label">Vues</div><div class="value">20</div></div>
-    `;
+    $('kpiStrip').innerHTML = '<div class="kpi or"><div class="label">Statut</div><div class="value">CHARGEMENT</div></div>' +
+      '<div class="kpi cyan"><div class="label">Vues</div><div class="value">20</div></div>';
     return;
   }
-  const all = state.allDatasets;
-  const scores = all.map(d => (d.qualite + d.comparabilite + d.ecologie + d.reproductibilite) / 16 * 100);
   const kpis = [
     {label:'Fichiers', value:state.filesHistory.length, cls:'vert'},
-    {label:'Datasets', value:fmt(all.length), cls:''},
+    {label:'Datasets', value:fmt(state.allDatasets.length), cls:''},
     {label:'Séries', value:Object.keys(state.seriesByTheme).length, cls:'violet'},
     {label:'Anomalies', value:state.anomalies.length, cls:'or'},
     {label:'Projections', value:Object.keys(state.forecasts).length, cls:'cyan'},
     {label:'Corrélations', value:state.correlations ? Object.keys(state.correlations.matrices).length : 0, cls:'rose'}
   ];
-  $('kpiStrip').innerHTML = kpis.map(k => `<div class="kpi ${k.cls}"><div class="label">${k.label}</div><div class="value">${k.value}</div></div>`).join('');
+  $('kpiStrip').innerHTML = kpis.map(k => '<div class="kpi ' + k.cls + '"><div class="label">' + k.label + '</div><div class="value">' + k.value + '</div></div>').join('');
 }
 
 function applyFilters(){
@@ -1084,7 +1042,7 @@ function applyFilters(){
   state.filteredDatasets = state.allDatasets.filter(d => {
     if (!q) return true;
     const hay = [d.titre, d.description, d.annee, d.type, d.theme, d.organisation, d.tags.join(' ')].join(' ').toLowerCase();
-    return hay.includes(q);
+    return hay.indexOf(q) >= 0;
   });
   state.filteredDatasets.sort((a, b) => {
     switch(state.sort){
@@ -1102,10 +1060,10 @@ function renderView(){
   const area = $('resultsArea');
   if (!area) return;
   if (!state.allDatasets.length){
-    area.innerHTML = `<div style="text-align:center;padding:60px 20px;color:var(--muted)">
-      <div style="font-size:48px;margin-bottom:16px">🏛️</div>
-      <div style="font-weight:700;font-size:16px">Monitor Social Expert+</div>
-      <div>Chargez un ou plusieurs fichiers JSON</div></div>`;
+    area.innerHTML = '<div style="text-align:center;padding:60px 20px;color:var(--muted)">' +
+      '<div style="font-size:48px;margin-bottom:16px">🏛️</div>' +
+      '<div style="font-weight:700;font-size:16px">Chargement…</div>' +
+      '<div style="margin-top:10px;font-size:11px;font-family:var(--mono)" id="loadProgress">Lecture du manifeste…</div></div>';
     return;
   }
   const views = {
@@ -1125,56 +1083,41 @@ function renderOverview(area){
   const all = state.allDatasets;
   const themes = {};
   for (const d of all) themes[d.theme] = (themes[d.theme] || 0) + 1;
-  const max = Math.max(...Object.values(themes), 1);
-  area.innerHTML = `
-    <div class="card" style="border-left-color:var(--vert)">
-      <h3>🇷🇪 Filtrage La Réunion (974) actif</h3>
-    </div>
-    <div class="card">
-      <h3>📊 Synthèse globale</h3>
-      <table class="matrix">
-        <thead><tr><th>Indicateur</th><th>Valeur</th></tr></thead>
-        <tbody>
-          <tr><td>Fichiers</td><td class="num">${state.filesHistory.length}</td></tr>
-          <tr><td>Lignes brutes</td><td class="num">${fmt(state.allDatasetsBruts.length)}</td></tr>
-          <tr><td>Datasets analytiques</td><td class="num">${fmt(all.length)}</td></tr>
-          <tr><td>Séries temporelles</td><td class="num">${Object.keys(state.seriesByTheme).length}</td></tr>
-          <tr><td>Anomalies</td><td class="num">${state.anomalies.length}</td></tr>
-          <tr><td>Projections</td><td class="num">${Object.keys(state.forecasts).length}</td></tr>
-          <tr><td>Corrélations</td><td class="num">${state.correlations ? Object.keys(state.correlations.matrices).length : 0}</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="card">
-      <h3>🗂️ Répartition par thème</h3>
-      ${Object.entries(themes).sort((a,b) => b[1]-a[1]).map(([t, n]) => `
-        <div class="bar-row"><div class="name">${escapeHtml(t)}</div><div class="bar-track"><div class="bar-fill" style="width:${(n/max)*100}%"></div></div><div class="val">${n}</div></div>
-      `).join('')}
-    </div>
-  `;
+  const max = Math.max.apply(null, Object.keys(themes).map(k => themes[k]).concat([1]));
+  area.innerHTML = '<div class="card" style="border-left-color:var(--vert)">' +
+    '<h3>🇷🇪 Filtrage La Réunion (974) actif</h3>' +
+    '<p>Chargement auto via jsDelivr · ' + state.filesHistory.length + ' fichier(s)</p></div>' +
+    '<div class="card"><h3>📊 Synthèse globale</h3>' +
+    '<table class="matrix"><thead><tr><th>Indicateur</th><th>Valeur</th></tr></thead><tbody>' +
+    '<tr><td>Fichiers</td><td class="num">' + state.filesHistory.length + '</td></tr>' +
+    '<tr><td>Lignes brutes</td><td class="num">' + fmt(state.allDatasetsBruts.length) + '</td></tr>' +
+    '<tr><td>Datasets analytiques</td><td class="num">' + fmt(all.length) + '</td></tr>' +
+    '<tr><td>Séries temporelles</td><td class="num">' + Object.keys(state.seriesByTheme).length + '</td></tr>' +
+    '<tr><td>Anomalies</td><td class="num">' + state.anomalies.length + '</td></tr>' +
+    '<tr><td>Projections</td><td class="num">' + Object.keys(state.forecasts).length + '</td></tr>' +
+    '<tr><td>Corrélations</td><td class="num">' + (state.correlations ? Object.keys(state.correlations.matrices).length : 0) + '</td></tr>' +
+    '</tbody></table></div>' +
+    '<div class="card"><h3>🗂️ Répartition par thème</h3>' +
+    Object.keys(themes).sort((a,b) => themes[b]-themes[a]).map(t =>
+      '<div class="bar-row"><div class="name">' + escapeHtml(t) + '</div><div class="bar-track"><div class="bar-fill" style="width:' + (themes[t]/max*100) + '%"></div></div><div class="val">' + themes[t] + '</div></div>'
+    ).join('') + '</div>';
 }
 
 function renderDatasets(area){
   const filtered = state.filteredDatasets;
   if (!filtered.length){ area.innerHTML = '<div class="card"><p>Aucun dataset.</p></div>'; return; }
-  area.innerHTML = `
-    <div class="card" style="border-left-color:var(--or)">
-      <h3>🗂️ ${filtered.length} dataset(s) / ${state.allDatasets.length}</h3>
-    </div>
-    ${filtered.slice(0, 100).map(d => `
-      <div class="card">
-        <h3>${escapeHtml(d.titre)}</h3>
-        <p>${escapeHtml(d.description.slice(0, 200))}</p>
-        <div class="meta">
-          <span class="tag bleu">${escapeHtml(d.annee)}</span>
-          <span class="tag">${escapeHtml(d.type)}</span>
-          <span class="tag">${escapeHtml(d.theme)}</span>
-          ${d.statistiques?.nb_periodes ? `<span class="tag cyan">${d.statistiques.nb_periodes} périodes</span>` : ''}
-          ${d.statistiques?.effectif_total ? `<span class="tag or">Total: ${fmt(d.statistiques.effectif_total)}</span>` : ''}
-        </div>
-      </div>
-    `).join('')}
-  `;
+  area.innerHTML = '<div class="card" style="border-left-color:var(--or)"><h3>🗂️ ' + filtered.length + ' dataset(s) / ' + state.allDatasets.length + '</h3></div>' +
+    filtered.slice(0, 100).map(d =>
+      '<div class="card"><h3>' + escapeHtml(d.titre) + '</h3>' +
+      '<p>' + escapeHtml(d.description.slice(0, 200)) + '</p>' +
+      '<div class="meta">' +
+      '<span class="tag bleu">' + escapeHtml(d.annee) + '</span>' +
+      '<span class="tag">' + escapeHtml(d.type) + '</span>' +
+      '<span class="tag">' + escapeHtml(d.theme) + '</span>' +
+      (d.statistiques && d.statistiques.nb_periodes ? '<span class="tag cyan">' + d.statistiques.nb_periodes + ' périodes</span>' : '') +
+      (d.statistiques && d.statistiques.effectif_total ? '<span class="tag or">Total: ' + fmt(d.statistiques.effectif_total) + '</span>' : '') +
+      '</div></div>'
+    ).join('');
 }
 
 function renderPrestations(area){
@@ -1184,79 +1127,59 @@ function renderPrestations(area){
     if (m){
       const p = m[1];
       if (!byPresta[p]) byPresta[p] = {foy:null, nbp:null, mtt:null};
-      if (d.titre.includes('Foyers')) byPresta[p].foy = d;
-      if (d.titre.includes('Personnes')) byPresta[p].nbp = d;
-      if (d.titre.includes('Montants')) byPresta[p].mtt = d;
+      if (d.titre.indexOf('Foyers') >= 0) byPresta[p].foy = d;
+      if (d.titre.indexOf('Personnes') >= 0) byPresta[p].nbp = d;
+      if (d.titre.indexOf('Montants') >= 0) byPresta[p].mtt = d;
     }
   }
-  area.innerHTML = `
-    <div class="card" style="border-left-color:var(--violet)">
-      <h3>💶 Prestations CAF — ${Object.keys(byPresta).length} prestations</h3>
-    </div>
-    <div class="card">
-      <table class="matrix">
-        <thead><tr><th>Prestation</th><th>Foyers</th><th>Personnes</th><th>Montant</th><th>Évolution</th></tr></thead>
-        <tbody>
-          ${Object.entries(byPresta).map(([p, data]) => {
-            const foy = data.foy?.statistiques?.serie;
-            const nbp = data.nbp?.statistiques?.serie;
-            const mtt = data.mtt?.statistiques?.serie;
-            const lastFoy = foy ? foy[foy.length-1].valeur : 0;
-            const lastNbp = nbp ? nbp[nbp.length-1].valeur : 0;
-            const lastMtt = mtt ? mtt[mtt.length-1].valeur : 0;
-            const firstFoy = foy ? foy[0].valeur : 0;
-            const evo = firstFoy ? ((lastFoy - firstFoy) / firstFoy * 100) : 0;
-            return `<tr>
-              <td><strong>${escapeHtml(p)}</strong></td>
-              <td class="num">${fmt(lastFoy)}</td>
-              <td class="num">${fmt(lastNbp)}</td>
-              <td class="num">${fmt(lastMtt)} €</td>
-              <td class="num trend-${evo > 0 ? 'up' : evo < 0 ? 'down' : 'flat'}">${evo > 0 ? '▲' : evo < 0 ? '▼' : '='} ${evo.toFixed(1)} %</td>
-            </tr>`;
-          }).join('')}
-        </tbody>
-      </table>
-    </div>
-  `;
+  area.innerHTML = '<div class="card" style="border-left-color:var(--violet)"><h3>💶 Prestations CAF — ' + Object.keys(byPresta).length + ' prestations</h3></div>' +
+    '<div class="card"><table class="matrix"><thead><tr><th>Prestation</th><th>Foyers</th><th>Personnes</th><th>Montant</th><th>Évolution</th></tr></thead><tbody>' +
+    Object.keys(byPresta).map(p => {
+      const data = byPresta[p];
+      const foy = data.foy && data.foy.statistiques ? data.foy.statistiques.serie : null;
+      const nbp = data.nbp && data.nbp.statistiques ? data.nbp.statistiques.serie : null;
+      const mtt = data.mtt && data.mtt.statistiques ? data.mtt.statistiques.serie : null;
+      const lastFoy = foy ? foy[foy.length-1].valeur : 0;
+      const lastNbp = nbp ? nbp[nbp.length-1].valeur : 0;
+      const lastMtt = mtt ? mtt[mtt.length-1].valeur : 0;
+      const firstFoy = foy ? foy[0].valeur : 0;
+      const evo = firstFoy ? ((lastFoy - firstFoy) / firstFoy * 100) : 0;
+      return '<tr><td><strong>' + escapeHtml(p) + '</strong></td>' +
+        '<td class="num">' + fmt(lastFoy) + '</td>' +
+        '<td class="num">' + fmt(lastNbp) + '</td>' +
+        '<td class="num">' + fmt(lastMtt) + ' €</td>' +
+        '<td class="num trend-' + (evo > 0 ? 'up' : evo < 0 ? 'down' : 'flat') + '">' + (evo > 0 ? '▲' : evo < 0 ? '▼' : '=') + ' ' + evo.toFixed(1) + ' %</td></tr>';
+    }).join('') + '</tbody></table></div>';
 }
 
 function renderEvolution(area){
-  const series = Object.entries(state.seriesByTheme)
-    .filter(([t, s]) => s.length >= 12)
-    .sort((a, b) => b[1].length - a[1].length);
+  const series = Object.keys(state.seriesByTheme).filter(k => state.seriesByTheme[k].length >= 12)
+    .sort((a, b) => state.seriesByTheme[b].length - state.seriesByTheme[a].length);
   if (!series.length){ area.innerHTML = '<div class="card"><p>Aucune série.</p></div>'; return; }
-  area.innerHTML = `<div class="card"><h3>📈 ${series.length} séries temporelles</h3></div>` +
-    series.slice(0, 30).map(([titre, s]) => {
+  area.innerHTML = '<div class="card"><h3>📈 ' + series.length + ' séries temporelles</h3></div>' +
+    series.slice(0, 30).map(titre => {
+      const s = state.seriesByTheme[titre];
       const W = 700, H = 120, PAD = 20;
       const innerW = W - 2*PAD, innerH = H - 2*PAD;
       const vals = s.map(p => p.valeur);
       const minV = Stats.min(vals), maxV = Stats.max(vals);
       const range = maxV - minV || 1;
-      const points = s.map((p, i) => ({
-        x: PAD + (i / Math.max(1, s.length-1)) * innerW,
-        y: PAD + innerH - ((p.valeur - minV) / range) * innerH
-      }));
-      const linePath = points.map((p, i) => (i === 0 ? 'M' : 'L') + ` ${p.x} ${p.y}`).join(' ');
+      const points = s.map((p, i) => ({x: PAD + (i / Math.max(1, s.length-1)) * innerW, y: PAD + innerH - ((p.valeur - minV) / range) * innerH}));
+      const linePath = points.map((p, i) => (i === 0 ? 'M' : 'L') + ' ' + p.x + ' ' + p.y).join(' ');
       const slope = Stats.linearRegression(s.map((_,i)=>i), vals).a;
       const evo = ((vals[vals.length-1] - vals[0]) / vals[0] * 100);
-      return `<div class="card">
-        <h3>📈 ${escapeHtml(titre)} <span class="trend-${slope > 0 ? 'up' : slope < 0 ? 'down' : 'flat'}">${slope > 0 ? '▲' : slope < 0 ? '▼' : '='} ${evo.toFixed(1)} %</span></h3>
-        <div class="meta">
-          <span class="tag bleu">${s.length} pts</span>
-          <span class="tag">${s[0].date} → ${s[s.length-1].date}</span>
-          <span class="tag">Moy: ${fmtDec(Stats.mean(vals), 0)}</span>
-        </div>
-        <svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;margin-top:8px">
-          <path d="${linePath}" fill="none" stroke="var(--bleu)" stroke-width="1.5"/>
-        </svg>
-      </div>`;
+      return '<div class="card"><h3>📈 ' + escapeHtml(titre) + ' <span class="trend-' + (slope > 0 ? 'up' : slope < 0 ? 'down' : 'flat') + '">' + (slope > 0 ? '▲' : slope < 0 ? '▼' : '=') + ' ' + evo.toFixed(1) + ' %</span></h3>' +
+        '<div class="meta"><span class="tag bleu">' + s.length + ' pts</span>' +
+        '<span class="tag">' + s[0].date + ' → ' + s[s.length-1].date + '</span>' +
+        '<span class="tag">Moy: ' + fmtDec(Stats.mean(vals), 0) + '</span></div>' +
+        '<svg viewBox="0 0 ' + W + ' ' + H + '" style="width:100%;height:auto;margin-top:8px"><path d="' + linePath + '" fill="none" stroke="var(--bleu)" stroke-width="1.5"/></svg></div>';
     }).join('');
 }
 
 function renderMensuel(area){
   const moisData = {};
-  for (const [titre, serie] of Object.entries(state.seriesByTheme)){
-    for (const p of serie){
+  for (const titre of Object.keys(state.seriesByTheme)){
+    for (const p of state.seriesByTheme[titre]){
       if (!/^\d{4}-\d{2}$/.test(p.date)) continue;
       const mois = p.date.slice(5, 7);
       if (!moisData[mois]) moisData[mois] = {total:0, count:0};
@@ -1270,76 +1193,59 @@ function renderMensuel(area){
     return moisData[m] ? moisData[m].total / moisData[m].count : 0;
   });
   const moyGen = Stats.mean(moyennes);
-  area.innerHTML = `
-    <div class="card" style="border-left-color:var(--cyan)"><h3>📆 Moyennes mensuelles</h3></div>
-    <div class="card">
-      <table class="matrix">
-        <thead><tr><th>Mois</th><th>Moyenne</th><th>Indice (base 100)</th></tr></thead>
-        <tbody>${moisNoms.map((m, i) => {
-          const v = moyennes[i];
-          const indice = moyGen ? (v/moyGen*100) : 0;
-          return `<tr><td>${m}</td><td class="num">${fmt(v)}</td><td class="num">${indice.toFixed(0)}</td></tr>`;
-        }).join('')}</tbody>
-      </table>
-    </div>
-  `;
+  area.innerHTML = '<div class="card" style="border-left-color:var(--cyan)"><h3>📆 Moyennes mensuelles</h3></div>' +
+    '<div class="card"><table class="matrix"><thead><tr><th>Mois</th><th>Moyenne</th><th>Indice</th></tr></thead><tbody>' +
+    moisNoms.map((m, i) => {
+      const v = moyennes[i];
+      const indice = moyGen ? (v/moyGen*100) : 0;
+      return '<tr><td>' + m + '</td><td class="num">' + fmt(v) + '</td><td class="num">' + indice.toFixed(0) + '</td></tr>';
+    }).join('') + '</tbody></table></div>';
 }
 
 function renderForecast(area){
-  const forecasts = Object.entries(state.forecasts).sort((a,b) => b[1].r2 - a[1].r2).slice(0, 20);
-  if (!forecasts.length){ area.innerHTML = '<div class="card"><p>Données insuffisantes (min 24 mois).</p></div>'; return; }
-  area.innerHTML = `<div class="card"><h3>🔮 ${forecasts.length} projections</h3></div>` +
-    forecasts.map(([theme, f]) => `
-      <div class="card">
-        <h3>🔮 ${escapeHtml(theme)} <span class="forecast-badge">R² = ${f.r2.toFixed(3)}</span></h3>
-        <div class="meta">
-          <span class="tag ${f.fiable ? 'vert' : 'or'}">${f.fiable ? 'Fiable' : 'Prudence'}</span>
-          <span class="tag">Pente: ${f.slope.toFixed(2)}</span>
-        </div>
-        <table class="matrix" style="margin-top:8px">
-          <thead><tr><th>Mois</th><th>Prédiction</th><th>IC 95 %</th></tr></thead>
-          <tbody>${f.futur.map(p => `<tr><td>${p.date}</td><td class="num">${fmt(p.valeur)}</td><td class="num">[${fmt(p.min)} ; ${fmt(p.max)}]</td></tr>`).join('')}</tbody>
-        </table>
-      </div>
-    `).join('');
+  const forecasts = Object.keys(state.forecasts).sort((a,b) => state.forecasts[b].r2 - state.forecasts[a].r2).slice(0, 20);
+  if (!forecasts.length){ area.innerHTML = '<div class="card"><p>Données insuffisantes.</p></div>'; return; }
+  area.innerHTML = '<div class="card"><h3>🔮 ' + forecasts.length + ' projections</h3></div>' +
+    forecasts.map(theme => {
+      const f = state.forecasts[theme];
+      return '<div class="card"><h3>🔮 ' + escapeHtml(theme) + ' <span class="forecast-badge">R² = ' + f.r2.toFixed(3) + '</span></h3>' +
+        '<div class="meta"><span class="tag ' + (f.fiable ? 'vert' : 'or') + '">' + (f.fiable ? 'Fiable' : 'Prudence') + '</span>' +
+        '<span class="tag">Pente: ' + f.slope.toFixed(2) + '</span></div>' +
+        '<table class="matrix" style="margin-top:8px"><thead><tr><th>Mois</th><th>Prédiction</th><th>IC 95 %</th></tr></thead><tbody>' +
+        f.futur.map(p => '<tr><td>' + p.date + '</td><td class="num">' + fmt(p.valeur) + '</td><td class="num">[' + fmt(p.min) + ' ; ' + fmt(p.max) + ']</td></tr>').join('') +
+        '</tbody></table></div>';
+    }).join('');
 }
 
 function renderAnomalies(area){
   if (!state.anomalies.length){ area.innerHTML = '<div class="card" style="border-left-color:var(--vert)"><h3>✅ Aucune anomalie</h3></div>'; return; }
-  area.innerHTML = `
-    <div class="card" style="border-left-color:var(--rouge)"><h3>🚨 ${state.anomalies.length} anomalies (|Z|>2.5)</h3></div>
-    <div class="card">
-      <table class="matrix">
-        <thead><tr><th>Série</th><th>Date</th><th>Valeur</th><th>Z</th><th>Sévérité</th></tr></thead>
-        <tbody>${state.anomalies.slice(0, 60).map(a => `<tr><td style="text-align:left;font-size:10px">${escapeHtml(a.theme.slice(0, 40))}</td><td>${a.date}</td><td class="num">${fmt(a.valeur)}</td><td class="num" style="color:var(--${a.z > 0 ? 'vert' : 'rouge'})">${a.z > 0 ? '+' : ''}${a.z.toFixed(2)}</td><td><span class="tag ${a.severite === 'critique' ? 'rouge' : a.severite === 'élevée' ? 'or' : 'mono'}">${a.severite}</span></td></tr>`).join('')}</tbody>
-      </table>
-    </div>
-  `;
+  area.innerHTML = '<div class="card" style="border-left-color:var(--rouge)"><h3>🚨 ' + state.anomalies.length + ' anomalies (|Z|>2.5)</h3></div>' +
+    '<div class="card"><table class="matrix"><thead><tr><th>Série</th><th>Date</th><th>Valeur</th><th>Z</th><th>Sévérité</th></tr></thead><tbody>' +
+    state.anomalies.slice(0, 60).map(a =>
+      '<tr><td style="text-align:left;font-size:10px">' + escapeHtml(a.theme.slice(0, 40)) + '</td>' +
+      '<td>' + a.date + '</td>' +
+      '<td class="num">' + fmt(a.valeur) + '</td>' +
+      '<td class="num" style="color:var(--' + (a.z > 0 ? 'vert' : 'rouge') + ')">' + (a.z > 0 ? '+' : '') + a.z.toFixed(2) + '</td>' +
+      '<td><span class="tag ' + (a.severite === 'critique' ? 'rouge' : a.severite === 'élevée' ? 'or' : 'mono') + '">' + a.severite + '</span></td></tr>'
+    ).join('') + '</tbody></table></div>';
 }
 
 function renderCorrelations(area){
   if (!state.correlations || !Object.keys(state.correlations.matrices).length){
-    area.innerHTML = '<div class="card"><p>Données insuffisantes.</p></div>';
-    return;
+    area.innerHTML = '<div class="card"><p>Données insuffisantes.</p></div>'; return;
   }
-  const matrices = Object.values(state.correlations.matrices)
+  const matrices = Object.keys(state.correlations.matrices)
+    .map(k => state.correlations.matrices[k])
     .filter(m => Math.abs(m.pearson) > 0.7)
-    .sort((a,b) => Math.abs(b.pearson) - Math.abs(a.pearson))
-    .slice(0, 30);
-  area.innerHTML = `
-    <div class="card" style="border-left-color:var(--rose)"><h3>🔗 Corrélations fortes (|r| > 0.7)</h3></div>
-    <div class="card">
-      <table class="matrix">
-        <thead><tr><th>Série 1</th><th>Série 2</th><th>r</th><th>n</th></tr></thead>
-        <tbody>${matrices.map(m => `<tr>
-          <td style="text-align:left;font-size:10px">${escapeHtml(m.t1.slice(0, 35))}</td>
-          <td style="text-align:left;font-size:10px">${escapeHtml(m.t2.slice(0, 35))}</td>
-          <td class="num" style="color:var(--${m.pearson > 0 ? 'vert' : 'rouge'})"><strong>${m.pearson.toFixed(3)}</strong></td>
-          <td class="num">${m.n}</td>
-        </tr>`).join('')}</tbody>
-      </table>
-    </div>
-  `;
+    .sort((a,b) => Math.abs(b.pearson) - Math.abs(a.pearson)).slice(0, 30);
+  area.innerHTML = '<div class="card" style="border-left-color:var(--rose)"><h3>🔗 Corrélations fortes (|r| > 0.7)</h3></div>' +
+    '<div class="card"><table class="matrix"><thead><tr><th>Série 1</th><th>Série 2</th><th>r</th><th>n</th></tr></thead><tbody>' +
+    matrices.map(m =>
+      '<tr><td style="text-align:left;font-size:10px">' + escapeHtml(m.t1.slice(0, 35)) + '</td>' +
+      '<td style="text-align:left;font-size:10px">' + escapeHtml(m.t2.slice(0, 35)) + '</td>' +
+      '<td class="num" style="color:var(--' + (m.pearson > 0 ? 'vert' : 'rouge') + ')"><strong>' + m.pearson.toFixed(3) + '</strong></td>' +
+      '<td class="num">' + m.n + '</td></tr>'
+    ).join('') + '</tbody></table></div>';
 }
 
 function renderTimeline(area){
@@ -1354,21 +1260,18 @@ function renderTimeline(area){
   }
   const annees = Object.keys(timeline).sort();
   if (!annees.length){ area.innerHTML = '<div class="card"><p>Aucune année.</p></div>'; return; }
-  const maxN = Math.max(...annees.map(a => timeline[a].n), 1);
-  area.innerHTML = `<div class="card"><h3>📅 Timeline ${annees[0]} → ${annees[annees.length-1]}</h3></div>
-    <div class="card">
-      ${annees.map(a => {
-        const t = timeline[a];
-        const pct = (t.n / maxN) * 100;
-        const themes = Object.entries(t.themes).map(([th, c]) => `<span class="tag bleu" style="margin:2px">${th} ×${c}</span>`).join('');
-        return `<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--gris-100)">
-          <div style="background:var(--bleu);color:#fff;padding:4px 10px;border-radius:4px;font-family:var(--mono);font-weight:800;font-size:12px;min-width:60px;text-align:center">${a}</div>
-          <div style="flex:1"><div style="font-weight:700;margin-bottom:4px">${t.n}</div>
-          <div style="background:var(--gris-100);height:6px;border-radius:3px;overflow:hidden"><div style="width:${pct}%;height:100%;background:var(--bleu)"></div></div>
-          <div style="margin-top:4px">${themes}</div></div>
-        </div>`;
-      }).join('')}
-    </div>`;
+  const maxN = Math.max.apply(null, annees.map(a => timeline[a].n).concat([1]));
+  area.innerHTML = '<div class="card"><h3>📅 Timeline ' + annees[0] + ' → ' + annees[annees.length-1] + '</h3></div>' +
+    '<div class="card">' + annees.map(a => {
+      const t = timeline[a];
+      const pct = (t.n / maxN) * 100;
+      const themes = Object.keys(t.themes).map(th => '<span class="tag bleu" style="margin:2px">' + th + ' ×' + t.themes[th] + '</span>').join('');
+      return '<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--gris-100)">' +
+        '<div style="background:var(--bleu);color:#fff;padding:4px 10px;border-radius:4px;font-family:var(--mono);font-weight:800;font-size:12px;min-width:60px;text-align:center">' + a + '</div>' +
+        '<div style="flex:1"><div style="font-weight:700;margin-bottom:4px">' + t.n + '</div>' +
+        '<div style="background:var(--gris-100);height:6px;border-radius:3px;overflow:hidden"><div style="width:' + pct + '%;height:100%;background:var(--bleu)"></div></div>' +
+        '<div style="margin-top:4px">' + themes + '</div></div></div>';
+    }).join('') + '</div>';
 }
 
 function renderMatrix(area){
@@ -1376,146 +1279,187 @@ function renderMatrix(area){
   const annees = [...new Set(state.allDatasets.map(d => d.annee))].sort();
   const m = {};
   let max = 0;
-  for (const d of state.allDatasets){ const k = d.annee+'||'+d.theme; m[k] = (m[k]||0)+1; if (m[k] > max) max = m[k]; }
-  area.innerHTML = `<div class="card"><h3>🔲 Matrice Années × Thèmes</h3>
-    <table class="matrix">
-      <thead><tr><th class="row-head">Année \\ Thème</th>${themes.map(t => `<th>${escapeHtml(t)}</th>`).join('')}</tr></thead>
-      <tbody>${annees.map(a => `<tr><td class="row-head">${escapeHtml(a)}</td>${themes.map(t => {
-        const v = m[a+'||'+t] || 0;
+  for (const d of state.allDatasets){
+    const k = d.annee + '||' + d.theme;
+    m[k] = (m[k] || 0) + 1;
+    if (m[k] > max) max = m[k];
+  }
+  area.innerHTML = '<div class="card"><h3>🔲 Matrice Années × Thèmes</h3>' +
+    '<table class="matrix"><thead><tr><th class="row-head">Année \\ Thème</th>' + themes.map(t => '<th>' + escapeHtml(t) + '</th>').join('') + '</tr></thead>' +
+    '<tbody>' + annees.map(a => '<tr><td class="row-head">' + escapeHtml(a) + '</td>' +
+      themes.map(t => {
+        const v = m[a + '||' + t] || 0;
         if (!v) return '<td class="cell zero">·</td>';
         const i = 0.15 + 0.85 * (v/max);
-        return `<td class="cell" style="background:rgba(0,0,145,${i});color:${i > 0.5 ? '#fff' : 'var(--bleu)'}">${v}</td>`;
-      }).join('')}</tr>`).join('')}</tbody>
-    </table>
-  </div>`;
+        return '<td class="cell" style="background:rgba(0,0,145,' + i + ');color:' + (i > 0.5 ? '#fff' : 'var(--bleu)') + '">' + v + '</td>';
+      }).join('') + '</tr>').join('') + '</tbody></table></div>';
 }
 
 function renderStats(area){
   const all = state.allDatasets;
   const scores = all.map(d => (d.qualite + d.comparabilite + d.ecologie + d.reproductibilite) / 16 * 100);
   const nbSeries = Object.keys(state.seriesByTheme).length;
-  const nbPeriodes = Object.values(state.seriesByTheme).reduce((s, arr) => s + arr.length, 0);
-  area.innerHTML = `
-    <div class="card">
-      <h3>📊 Statistiques globales</h3>
-      <table class="matrix">
-        <thead><tr><th>Métrique</th><th>Valeur</th></tr></thead>
-        <tbody>
-          <tr><td>Datasets</td><td class="num">${fmt(all.length)}</td></tr>
-          <tr><td>Lignes brutes</td><td class="num">${fmt(state.allDatasetsBruts.length)}</td></tr>
-          <tr><td>Séries temporelles</td><td class="num">${nbSeries}</td></tr>
-          <tr><td>Total points de données</td><td class="num">${fmt(nbPeriodes)}</td></tr>
-          <tr><td>Score qualité moyen</td><td class="num">${fmtDec(Stats.mean(scores), 1)} %</td></tr>
-          <tr><td>Médiane</td><td class="num">${fmtDec(Stats.median(scores), 1)} %</td></tr>
-          <tr><td>Écart-type</td><td class="num">${fmtDec(Stats.std(scores), 2)}</td></tr>
-          <tr><td>Anomalies</td><td class="num">${state.anomalies.length}</td></tr>
-          <tr><td>Projections</td><td class="num">${Object.keys(state.forecasts).length}</td></tr>
-          <tr><td>Corrélations</td><td class="num">${state.correlations ? Object.keys(state.correlations.matrices).length : 0}</td></tr>
-        </tbody>
-      </table>
-    </div>
-  `;
+  let nbPeriodes = 0;
+  for (const k of Object.keys(state.seriesByTheme)) nbPeriodes += state.seriesByTheme[k].length;
+  area.innerHTML = '<div class="card"><h3>📊 Statistiques globales</h3>' +
+    '<table class="matrix"><thead><tr><th>Métrique</th><th>Valeur</th></tr></thead><tbody>' +
+    '<tr><td>Datasets</td><td class="num">' + fmt(all.length) + '</td></tr>' +
+    '<tr><td>Lignes brutes</td><td class="num">' + fmt(state.allDatasetsBruts.length) + '</td></tr>' +
+    '<tr><td>Séries temporelles</td><td class="num">' + nbSeries + '</td></tr>' +
+    '<tr><td>Total points de données</td><td class="num">' + fmt(nbPeriodes) + '</td></tr>' +
+    '<tr><td>Score qualité moyen</td><td class="num">' + fmtDec(Stats.mean(scores), 1) + ' %</td></tr>' +
+    '<tr><td>Médiane</td><td class="num">' + fmtDec(Stats.median(scores), 1) + ' %</td></tr>' +
+    '<tr><td>Écart-type</td><td class="num">' + fmtDec(Stats.std(scores), 2) + '</td></tr>' +
+    '<tr><td>Anomalies</td><td class="num">' + state.anomalies.length + '</td></tr>' +
+    '<tr><td>Projections</td><td class="num">' + Object.keys(state.forecasts).length + '</td></tr>' +
+    '<tr><td>Corrélations</td><td class="num">' + (state.correlations ? Object.keys(state.correlations.matrices).length : 0) + '</td></tr>' +
+    '</tbody></table></div>';
 }
 
 function renderIndicators(area){
-  area.innerHTML = INDICATEURS.map(ind => `
-    <div class="card">
-      <h3>📐 ${escapeHtml(ind.nom)} — ${escapeHtml(ind.full)}</h3>
-      <div class="formula">${escapeHtml(ind.nom)} = ${escapeHtml(ind.formule)}</div>
-      <table class="matrix">
-        <thead><tr><th>Classe</th><th>Seuil</th><th>Qualification</th></tr></thead>
-        <tbody>${ind.classes.map((c, i) => `<tr><td>${i+1}</td><td>${ind.seuils[i]} - ${ind.seuils[i+1]}</td><td><strong>${escapeHtml(c)}</strong></td></tr>`).join('')}</tbody>
-      </table>
-      <p style="margin-top:10px;font-size:11px;color:var(--or)">⚠️ ${escapeHtml(ind.note)}</p>
-    </div>
-  `).join('');
+  area.innerHTML = INDICATEURS.map(ind =>
+    '<div class="card"><h3>📐 ' + escapeHtml(ind.nom) + ' — ' + escapeHtml(ind.full) + '</h3>' +
+    '<div class="formula">' + escapeHtml(ind.nom) + ' = ' + escapeHtml(ind.formule) + '</div>' +
+    '<table class="matrix"><thead><tr><th>Classe</th><th>Seuil</th><th>Qualification</th></tr></thead><tbody>' +
+    ind.classes.map((c, i) => '<tr><td>' + (i+1) + '</td><td>' + ind.seuils[i] + ' - ' + ind.seuils[i+1] + '</td><td><strong>' + escapeHtml(c) + '</strong></td></tr>').join('') +
+    '</tbody></table><p style="margin-top:10px;font-size:11px;color:var(--or)">⚠️ ' + escapeHtml(ind.note) + '</p></div>'
+  ).join('');
 }
 
 function renderMicroRegions(area){
+  if (!COMMUNES_974.length){
+    area.innerHTML = '<div class="card" style="border-left-color:var(--or)"><h3>🏝️ Micro-régions — Données non disponibles</h3>' +
+      '<p>Ajoutez <code>communes_974.json</code> à la racine du dépôt.</p></div>';
+    return;
+  }
   const mrColors = {Nord:'mr-nord', Sud:'mr-sud', Est:'mr-est', Ouest:'mr-ouest'};
-  area.innerHTML = `<div class="card" style="border-left-color:var(--cyan)"><h3>🏝️ Micro-régions de La Réunion</h3></div>` +
-    Object.entries(state.microRegions).map(([mr, communes]) => {
-      const pop = Stats.sum(communes.map(c => c.pop));
-      return `<div class="card">
-        <h3><span class="micro-region ${mrColors[mr]}">${mr}</span> — ${communes.length} communes</h3>
-        <div class="meta"><span class="tag bleu">${fmt(pop)} hab.</span></div>
-        <table class="matrix" style="margin-top:10px">
-          <thead><tr><th>Commune</th><th>Code</th><th>Population</th></tr></thead>
-          <tbody>${communes.sort((a,b) => b.pop - a.pop).map(c => `<tr><td>${escapeHtml(c.nom)}</td><td class="num">${c.code}</td><td class="num">${fmt(c.pop)}</td></tr>`).join('')}</tbody>
-        </table>
-      </div>`;
+  const totalPop = Stats.sum(COMMUNES_974.map(c => c.population));
+  area.innerHTML = '<div class="card" style="border-left-color:var(--cyan)">' +
+    '<h3>🏝️ Micro-régions de La Réunion</h3>' +
+    '<p>' + COMMUNES_974.length + ' communes · ' + fmt(totalPop) + ' hab. (INSEE)</p></div>' +
+    Object.keys(state.microRegions).map(mr => {
+      const communes = state.microRegions[mr];
+      if (!communes.length) return '';
+      const pop = Stats.sum(communes.map(c => c.population));
+      return '<div class="card"><h3><span class="micro-region ' + mrColors[mr] + '">' + mr + '</span> — ' + communes.length + ' communes</h3>' +
+        '<div class="meta"><span class="tag bleu">' + fmt(pop) + ' hab.</span>' +
+        '<span class="tag">' + (pop/totalPop*100).toFixed(1) + ' % de la population</span></div>' +
+        '<table class="matrix" style="margin-top:10px"><thead><tr><th>Commune</th><th>Code</th><th>Population</th></tr></thead><tbody>' +
+        communes.sort((a,b) => b.population - a.population).map(c =>
+          '<tr><td>' + escapeHtml(c.nom) + '</td><td class="num">' + c.code + '</td><td class="num">' + fmt(c.population) + '</td></tr>'
+        ).join('') + '</tbody></table></div>';
     }).join('');
 }
 
 function renderGeographie(area){
-  const communes = Object.entries(COMMUNES_974).map(([code, c]) => ({code, ...c})).sort((a,b) => b.pop - a.pop);
-  const totalPop = Stats.sum(communes.map(c => c.pop));
+  if (!COMMUNES_974.length){
+    area.innerHTML = '<div class="card" style="border-left-color:var(--or)"><h3>🗺️ Géographie — Données non disponibles</h3>' +
+      '<p>Ajoutez <code>communes_974.json</code> à la racine du dépôt.</p></div>';
+    return;
+  }
+  const communes = [...COMMUNES_974].sort((a,b) => b.population - a.population);
+  const totalPop = Stats.sum(communes.map(c => c.population));
   const mrColors = {Nord:'mr-nord', Sud:'mr-sud', Est:'mr-est', Ouest:'mr-ouest'};
-  area.innerHTML = `<div class="card" style="border-left-color:var(--cyan)"><h3>🗺️ ${communes.length} communes · ${fmt(totalPop)} hab.</h3></div>
-    <div class="card"><table class="matrix">
-      <thead><tr><th>Commune</th><th>Code</th><th>MR</th><th>Population</th></tr></thead>
-      <tbody>${communes.map(c => `<tr><td>${escapeHtml(c.nom)}</td><td class="num">${c.code}</td><td><span class="micro-region ${mrColors[c.mr]}">${c.mr}</span></td><td class="num">${fmt(c.pop)}</td></tr>`).join('')}</tbody>
-    </table></div>`;
+  area.innerHTML = '<div class="card" style="border-left-color:var(--cyan)"><h3>🗺️ ' + communes.length + ' communes · ' + fmt(totalPop) + ' hab. (INSEE)</h3></div>' +
+    '<div class="card"><table class="matrix"><thead><tr><th>Commune</th><th>Code INSEE</th><th>Codes postaux</th><th>Micro-région</th><th>Population</th><th>% pop.</th></tr></thead><tbody>' +
+    communes.map(c =>
+      '<tr><td><strong>' + escapeHtml(c.nom) + '</strong></td>' +
+      '<td class="num">' + c.code + '</td>' +
+      '<td class="num">' + ((c.codesPostaux || []).join(', ')) + '</td>' +
+      '<td>' + (c.mr ? '<span class="micro-region ' + mrColors[c.mr] + '">' + c.mr + '</span>' : '—') + '</td>' +
+      '<td class="num">' + fmt(c.population) + '</td>' +
+      '<td class="num">' + (c.population / totalPop * 100).toFixed(2) + ' %</td></tr>'
+    ).join('') + '</tbody></table></div>';
 }
 
 function renderComparaison(area){
-  const series = Object.entries(state.seriesByTheme).filter(([t,s]) => s.length >= 12).slice(0, 20);
-  area.innerHTML = `<div class="card" style="border-left-color:var(--violet)"><h3>⚖️ Comparaison multi-séries</h3></div>
-    <div class="card"><table class="matrix">
-      <thead><tr><th>Série</th><th>Points</th><th>Min</th><th>Max</th><th>Moyenne</th><th>CV %</th></tr></thead>
-      <tbody>${series.map(([t, s]) => {
-        const v = s.map(p => p.valeur);
-        return `<tr><td style="text-align:left;font-size:10px">${escapeHtml(t.slice(0, 40))}</td><td class="num">${v.length}</td><td class="num">${fmt(Stats.min(v))}</td><td class="num">${fmt(Stats.max(v))}</td><td class="num">${fmtDec(Stats.mean(v))}</td><td class="num">${fmtDec(Stats.cv(v), 1)}</td></tr>`;
-      }).join('')}</tbody>
-    </table></div>`;
+  const series = Object.keys(state.seriesByTheme).filter(t => state.seriesByTheme[t].length >= 12).slice(0, 20);
+  area.innerHTML = '<div class="card" style="border-left-color:var(--violet)"><h3>⚖️ Comparaison multi-séries</h3></div>' +
+    '<div class="card"><table class="matrix"><thead><tr><th>Série</th><th>Points</th><th>Min</th><th>Max</th><th>Moyenne</th><th>CV %</th></tr></thead><tbody>' +
+    series.map(t => {
+      const v = state.seriesByTheme[t].map(p => p.valeur);
+      return '<tr><td style="text-align:left;font-size:10px">' + escapeHtml(t.slice(0, 40)) + '</td>' +
+        '<td class="num">' + v.length + '</td>' +
+        '<td class="num">' + fmt(Stats.min(v)) + '</td>' +
+        '<td class="num">' + fmt(Stats.max(v)) + '</td>' +
+        '<td class="num">' + fmtDec(Stats.mean(v)) + '</td>' +
+        '<td class="num">' + fmtDec(Stats.cv(v), 1) + '</td></tr>';
+    }).join('') + '</tbody></table></div>';
 }
 
 function renderBenchmark(area){
-  const dom = [
-    {nom:'La Réunion', pop:871000, aah:22683, rsa:94431, ppa:90780},
-    {nom:'Guadeloupe', pop:390000, aah:11000, rsa:38000, ppa:19000},
-    {nom:'Martinique', pop:360000, aah:10500, rsa:35000, ppa:17500},
-    {nom:'Guyane', pop:290000, aah:6500, rsa:27000, ppa:12000},
-    {nom:'Mayotte', pop:320000, aah:3500, rsa:22000, ppa:8000}
-  ];
-  area.innerHTML = `<div class="card" style="border-left-color:var(--violet)"><h3>🏆 Benchmark DOM</h3></div>
-    <div class="card"><table class="matrix">
-      <thead><tr><th>Territoire</th><th>Population</th><th>AAH</th><th>RSA</th><th>AAH/1000</th><th>RSA/1000</th></tr></thead>
-      <tbody>${dom.map(d => `<tr><td>${d.nom}${d.nom === 'La Réunion' ? ' ⭐' : ''}</td><td class="num">${fmt(d.pop)}</td><td class="num">${fmt(d.aah)}</td><td class="num">${fmt(d.rsa)}</td><td class="num">${(d.aah/d.pop*1000).toFixed(2)}</td><td class="num">${(d.rsa/d.pop*1000).toFixed(2)}</td></tr>`).join('')}</tbody>
-    </table></div>`;
+  const domData = {};
+  for (const d of state.allDatasets){
+    if (!d.statistiques || !d.statistiques.serie) continue;
+    const matchDep = d.titre.match(/(\d{3})/);
+    const matchPresta = d.titre.match(/^(AAH|RSA|PPA|AF)/);
+    if (matchDep && matchPresta && d.titre.indexOf('Foyers') >= 0){
+      const dep = matchDep[1];
+      const presta = matchPresta[1];
+      if (!domData[dep]) domData[dep] = {};
+      const serie = d.statistiques.serie;
+      domData[dep][presta] = serie[serie.length-1] ? serie[serie.length-1].valeur : 0;
+    }
+  }
+  const deps = Object.keys(domData).sort();
+  if (!deps.length){
+    area.innerHTML = '<div class="card" style="border-left-color:var(--or)"><h3>🏆 Benchmark DOM — Données non disponibles</h3>' +
+      '<p>Chargez les fichiers des DOM (971, 972, 973, 976) pour activer cette vue.</p></div>';
+    return;
+  }
+  const nomsDep = {'971':'Guadeloupe','972':'Martinique','973':'Guyane','974':'La Réunion','976':'Mayotte'};
+  area.innerHTML = '<div class="card" style="border-left-color:var(--violet)"><h3>🏆 Benchmark DOM — ' + deps.length + ' territoires</h3></div>' +
+    '<div class="card"><table class="matrix"><thead><tr><th>Territoire</th><th>AAH</th><th>RSA</th><th>PPA</th><th>AF</th></tr></thead><tbody>' +
+    deps.map(dep =>
+      '<tr><td><strong>' + (nomsDep[dep] || dep) + '</strong></td>' +
+      '<td class="num">' + fmt(domData[dep].AAH || 0) + '</td>' +
+      '<td class="num">' + fmt(domData[dep].RSA || 0) + '</td>' +
+      '<td class="num">' + fmt(domData[dep].PPA || 0) + '</td>' +
+      '<td class="num">' + fmt(domData[dep].AF || 0) + '</td></tr>'
+    ).join('') + '</tbody></table></div>';
 }
 
 function renderSimulateur(area){
-  area.innerHTML = `
-    <div class="card" style="border-left-color:var(--violet)"><h3>🧪 Simulateur</h3></div>
-    <div class="card">
-      <div style="display:grid;gap:12px">
-        <label><span style="font-size:11px;color:var(--gris-500)">Augmentation AAH (%)</span>
-          <input type="range" id="simAAH" min="-20" max="50" value="0" oninput="runSimulation()">
-          <span id="simAAHVal" style="font-family:var(--mono);font-weight:700">0 %</span></label>
-        <label><span style="font-size:11px;color:var(--gris-500)">Réduction non-recours (%)</span>
-          <input type="range" id="simRecours" min="0" max="50" value="0" oninput="runSimulation()">
-          <span id="simRecoursVal" style="font-family:var(--mono);font-weight:700">0 %</span></label>
-      </div>
-    </div>
-    <div class="card"><h4>Résultats</h4><div id="simResults"><p style="color:var(--muted)">Ajustez.</p></div></div>
-  `;
+  const aahDataset = state.allDatasets.find(d => d.theme === 'AAH' && d.titre.indexOf('Foyers') >= 0) ||
+                     state.allDatasets.find(d => d.titre.indexOf('AAH — Synthèse') >= 0);
+  const rsaDataset = state.allDatasets.find(d => d.theme === 'RSA' && d.titre.indexOf('Foyers') >= 0);
+  const bA = aahDataset && aahDataset.statistiques && aahDataset.statistiques.serie ?
+    aahDataset.statistiques.serie[aahDataset.statistiques.serie.length-1].valeur : 0;
+  const bR = rsaDataset && rsaDataset.statistiques && rsaDataset.statistiques.serie ?
+    rsaDataset.statistiques.serie[rsaDataset.statistiques.serie.length-1].valeur : 0;
+
+  if (!bA && !bR){
+    area.innerHTML = '<div class="card" style="border-left-color:var(--or)"><h3>🧪 Simulateur — Données non disponibles</h3>' +
+      '<p>Chargez les fichiers AAH et RSA.</p></div>';
+    return;
+  }
+
+  area.innerHTML = '<div class="card" style="border-left-color:var(--violet)"><h3>🧪 Simulateur</h3>' +
+    '<p>Basé sur les valeurs réelles : <strong>AAH = ' + fmt(bA) + '</strong> · <strong>RSA = ' + fmt(bR) + '</strong></p></div>' +
+    '<div class="card"><div style="display:grid;gap:12px">' +
+    '<label><span style="font-size:11px;color:var(--gris-500)">Augmentation AAH (%)</span>' +
+    '<input type="range" id="simAAH" min="-20" max="50" value="0" oninput="runSimulation(' + bA + ',' + bR + ')">' +
+    '<span id="simAAHVal" style="font-family:var(--mono);font-weight:700">0 %</span></label>' +
+    '<label><span style="font-size:11px;color:var(--gris-500)">Réduction non-recours (%)</span>' +
+    '<input type="range" id="simRecours" min="0" max="50" value="0" oninput="runSimulation(' + bA + ',' + bR + ')">' +
+    '<span id="simRecoursVal" style="font-family:var(--mono);font-weight:700">0 %</span></label>' +
+    '</div></div><div class="card"><h4>Résultats</h4><div id="simResults"><p style="color:var(--muted)">Ajustez.</p></div></div>';
 }
 
-function runSimulation(){
-  const aah = parseFloat($('simAAH')?.value || 0);
-  const rec = parseFloat($('simRecours')?.value || 0);
+function runSimulation(bA, bR){
+  bA = bA || 0;
+  bR = bR || 0;
+  const aah = parseFloat(($('simAAH') && $('simAAH').value) || 0);
+  const rec = parseFloat(($('simRecours') && $('simRecours').value) || 0);
   if ($('simAAHVal')) $('simAAHVal').textContent = aah + ' %';
   if ($('simRecoursVal')) $('simRecoursVal').textContent = rec + ' %';
-  const bA = 22683, bR = 94431;
   const nA = bA * (1 + aah/100 * 0.5) * (1 + rec/100 * 0.3);
   const nR = bR * (1 + rec/100 * 0.3);
   const d = (nA + nR) - (bA + bR);
-  if ($('simResults')) $('simResults').innerHTML = `
-    <div class="row"><span class="k">AAH simulés</span><span class="v bleu">${fmt(nA)}</span></div>
-    <div class="row"><span class="k">RSA simulés</span><span class="v bleu">${fmt(nR)}</span></div>
-    <div class="row"><span class="k">Δ bénéficiaires</span><span class="v ${d > 0 ? 'vert' : 'rouge'}">${d > 0 ? '+' : ''}${fmt(d)}</span></div>
-  `;
+  if ($('simResults')) $('simResults').innerHTML =
+    '<div class="row"><span class="k">AAH simulés</span><span class="v bleu">' + fmt(nA) + '</span></div>' +
+    '<div class="row"><span class="k">RSA simulés</span><span class="v bleu">' + fmt(nR) + '</span></div>' +
+    '<div class="row"><span class="k">Δ bénéficiaires</span><span class="v ' + (d > 0 ? 'vert' : 'rouge') + '">' + (d > 0 ? '+' : '') + fmt(d) + '</span></div>';
 }
 
 function renderWarnings(area){
@@ -1526,64 +1470,49 @@ function renderWarnings(area){
     {n:'or',t:'Périodicité variable',d:'Mensuelle, trimestrielle ou annuelle.'},
     {n:'or',t:'Hétérogénéité MDPH/CAF',d:'Décisions ≠ paiements.'}
   ];
-  area.innerHTML = w.map(x => `<div class="card" style="border-left-color:var(--${x.n === 'rouge' ? 'rouge' : 'or'})"><h3>${x.n === 'rouge' ? '🚫' : '⚠️'} ${escapeHtml(x.t)}</h3><p>${escapeHtml(x.d)}</p></div>`).join('');
+  area.innerHTML = w.map(x =>
+    '<div class="card" style="border-left-color:var(--' + (x.n === 'rouge' ? 'rouge' : 'or') + ')">' +
+    '<h3>' + (x.n === 'rouge' ? '🚫' : '⚠️') + ' ' + escapeHtml(x.t) + '</h3>' +
+    '<p>' + escapeHtml(x.d) + '</p></div>'
+  ).join('');
 }
 
 function renderDCE(area){
-  area.innerHTML = `
-    <div class="card" style="border-left-color:var(--or)">
-      <h3>🏛️ Rapport Officiel</h3>
-      <p>${state.filesHistory.length} source(s) · ${fmt(state.allDatasets.length)} datasets · ${Object.keys(state.seriesByTheme).length} séries</p>
-    </div>
-    <div class="card">
-      <h3>Territoires et compétences</h3>
-      <table class="matrix">
-        <thead><tr><th>Échelon</th><th>Compétence</th><th>Dispositif</th></tr></thead>
-        <tbody>
-          <tr><td>MDPH</td><td>Handicap</td><td>AAH · AEEH · PCH</td></tr>
-          <tr><td>CAF</td><td>Prestations</td><td>AAH · RSA · PPA · AF</td></tr>
-          <tr><td>Département</td><td>Action sociale</td><td>Pass Loisirs · Cart'Monétik</td></tr>
-          <tr><td>Région</td><td>Transport</td><td>Pass transport</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="card">
-      <h3>Incertitudes</h3>
-      <table class="matrix">
-        <thead><tr><th>Source</th><th>Amplitude</th></tr></thead>
-        <tbody>
-          <tr><td>Secret statistique</td><td>Floutage &lt; 5</td></tr>
-          <tr><td>RSA recentralisé</td><td>Rupture 2020</td></tr>
-          <tr><td>Pass → Cart'Monétik</td><td>2025</td></tr>
-        </tbody>
-      </table>
-    </div>
-  `;
+  area.innerHTML = '<div class="card" style="border-left-color:var(--or)">' +
+    '<h3>🏛️ Rapport Officiel</h3>' +
+    '<p>' + state.filesHistory.length + ' source(s) · ' + fmt(state.allDatasets.length) + ' datasets · ' + Object.keys(state.seriesByTheme).length + ' séries</p></div>' +
+    '<div class="card"><h3>Territoires et compétences</h3>' +
+    '<table class="matrix"><thead><tr><th>Échelon</th><th>Compétence</th><th>Dispositif</th></tr></thead><tbody>' +
+    '<tr><td>MDPH</td><td>Handicap</td><td>AAH · AEEH · PCH</td></tr>' +
+    '<tr><td>CAF</td><td>Prestations</td><td>AAH · RSA · PPA · AF</td></tr>' +
+    '<tr><td>Département</td><td>Action sociale</td><td>Pass Loisirs · Cart\'Monétik</td></tr>' +
+    '<tr><td>Région</td><td>Transport</td><td>Pass transport</td></tr>' +
+    '</tbody></table></div>' +
+    '<div class="card"><h3>Incertitudes</h3>' +
+    '<table class="matrix"><thead><tr><th>Source</th><th>Amplitude</th></tr></thead><tbody>' +
+    '<tr><td>Secret statistique</td><td>Floutage &lt; 5</td></tr>' +
+    '<tr><td>RSA recentralisé</td><td>Rupture 2020</td></tr>' +
+    '<tr><td>Pass → Cart\'Monétik</td><td>2025</td></tr>' +
+    '</tbody></table></div>';
 }
 
 function renderAudit(area){
   const rules = evaluateRules();
-  area.innerHTML = `
-    <div class="card" style="border-left-color:var(--or)"><h3>📋 Audit — ${new Date().toLocaleString('fr-FR')}</h3></div>
-    <div class="card">
-      <h3>Inventaire</h3>
-      <table class="matrix">
-        <thead><tr><th>Élément</th><th>Valeur</th></tr></thead>
-        <tbody>
-          <tr><td>Fichiers chargés</td><td class="num">${state.filesHistory.length}</td></tr>
-          <tr><td>Lignes brutes</td><td class="num">${fmt(state.allDatasetsBruts.length)}</td></tr>
-          <tr><td>Datasets générés</td><td class="num">${fmt(state.allDatasets.length)}</td></tr>
-          <tr><td>Séries temporelles</td><td class="num">${Object.keys(state.seriesByTheme).length}</td></tr>
-          <tr><td>Anomalies</td><td class="num">${state.anomalies.length}</td></tr>
-          <tr><td>Projections fiables</td><td class="num">${Object.values(state.forecasts).filter(f => f.fiable).length}</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="card">
-      <h3>Règles métier</h3>
-      ${rules.map(r => `<div class="proc-step"><div class="proc-num ${r.niveau === 'rouge' ? 'rouge' : r.niveau === 'or' ? '' : 'vert'}">${r.niveau === 'rouge' ? '!' : r.niveau === 'or' ? '?' : '✓'}</div><div class="proc-txt"><strong>${escapeHtml(r.nom)}</strong><br>${escapeHtml(r.message)}</div></div>`).join('')}
-    </div>
-  `;
+  area.innerHTML = '<div class="card" style="border-left-color:var(--or)"><h3>📋 Audit — ' + new Date().toLocaleString('fr-FR') + '</h3></div>' +
+    '<div class="card"><h3>Inventaire</h3>' +
+    '<table class="matrix"><thead><tr><th>Élément</th><th>Valeur</th></tr></thead><tbody>' +
+    '<tr><td>Fichiers chargés</td><td class="num">' + state.filesHistory.length + '</td></tr>' +
+    '<tr><td>Lignes brutes</td><td class="num">' + fmt(state.allDatasetsBruts.length) + '</td></tr>' +
+    '<tr><td>Datasets générés</td><td class="num">' + fmt(state.allDatasets.length) + '</td></tr>' +
+    '<tr><td>Séries temporelles</td><td class="num">' + Object.keys(state.seriesByTheme).length + '</td></tr>' +
+    '<tr><td>Anomalies</td><td class="num">' + state.anomalies.length + '</td></tr>' +
+    '<tr><td>Projections fiables</td><td class="num">' + Object.keys(state.forecasts).filter(k => state.forecasts[k].fiable).length + '</td></tr>' +
+    '</tbody></table></div>' +
+    '<div class="card"><h3>Règles métier</h3>' +
+    rules.map(r =>
+      '<div class="proc-step"><div class="proc-num ' + (r.niveau === 'rouge' ? 'rouge' : r.niveau === 'or' ? '' : 'vert') + '">' + (r.niveau === 'rouge' ? '!' : r.niveau === 'or' ? '?' : '✓') + '</div>' +
+      '<div class="proc-txt"><strong>' + escapeHtml(r.nom) + '</strong><br>' + escapeHtml(r.message) + '</div></div>'
+    ).join('') + '</div>';
 }
 
 function renderFilesLoaded(){
@@ -1592,18 +1521,17 @@ function renderFilesLoaded(){
   if (!el || !cnt) return;
   const nb = state.filesHistory.length;
   safeSet('tbFiles', nb);
-  cnt.textContent = `${nb} fichier(s) · ${state.allDatasets.length} datasets`;
+  cnt.textContent = nb + ' fichier(s) · ' + state.allDatasets.length + ' datasets';
   if (!nb){
-    el.innerHTML = '<div style="text-align:center;color:var(--muted);font-size:11px;padding:10px">Aucun</div>';
+    el.innerHTML = '<div style="text-align:center;color:var(--muted);font-size:11px;padding:10px">Chargement…</div>';
     return;
   }
-  el.innerHTML = state.filesHistory.map((f, idx) => `
-    <div class="file-item ${f.ok === false ? 'error' : ''}">
-      <button class="file-remove" data-remove="${idx}">×</button>
-      <div class="file-name">${f.ok === false ? '⚠ ' : ''}${escapeHtml(f.name)}</div>
-      <div class="file-meta">${f.ok === false ? 'Erreur' : `${fmt(f.nbBrut)} lignes`}</div>
-    </div>
-  `).join('');
+  el.innerHTML = state.filesHistory.map((f, idx) =>
+    '<div class="file-item ' + (f.ok === false ? 'error' : '') + '">' +
+    '<button class="file-remove" data-remove="' + idx + '">×</button>' +
+    '<div class="file-name">' + (f.ok === false ? '⚠ ' : '') + escapeHtml(f.name) + '</div>' +
+    '<div class="file-meta">' + (f.ok === false ? 'Erreur' : fmt(f.nbBrut) + ' lignes') + '</div></div>'
+  ).join('');
   el.querySelectorAll('[data-remove]').forEach(btn => btn.addEventListener('click', e => {
     e.stopPropagation();
     removeFile(parseInt(btn.dataset.remove));
@@ -1613,15 +1541,15 @@ function renderFilesLoaded(){
 function removeFile(idx){
   const f = state.filesHistory[idx];
   if (!f) return;
-  if (!confirm(`Retirer "${f.name}" ?`)) return;
+  if (!confirm('Retirer "' + f.name + '" ?')) return;
   state.filesHistory.splice(idx, 1);
   state.allDatasetsBruts = state.allDatasetsBruts.filter(b => b._sourceFile !== f.name);
   state.allDatasets = aggregateAllCaf(state.allDatasetsBruts);
   state.filteredDatasets = [...state.allDatasets];
   if (!state.allDatasets.length){ resetEmpty(); return; }
   computeAll();
-  updateStats(); updateRightPanel(); renderRulesEngine(); applyFilters(); renderScenarios(); renderFilesLoaded(); renderAll();
-  toast(`🗑️ Fichier retiré · ${state.allDatasets.length} datasets`, 'info');
+  updateAllUI();
+  toast('🗑️ Fichier retiré · ' + state.allDatasets.length + ' datasets', 'info');
 }
 
 function resetEmpty(){
@@ -1634,23 +1562,29 @@ function resetEmpty(){
   safeSet('ivTotal', '—'); safeSet('ivAAH', '—'); safeSet('ivBenef', '—'); safeSet('ivSeries', '—');
   safeSet('ivScore', '—'); safeSet('ivTrend', '—'); safeSet('ivAnomalies', '—'); safeSet('ivProj', '—'); safeSet('ivCorr', '—');
   const dot = $('statusDot'); if (dot) dot.classList.add('offline');
-  ['exportCsv','exportJson','exportHtml','exportDce'].forEach(id => $(id).disabled = true);
+  ['exportCsv','exportJson','exportHtml','exportDce'].forEach(id => { const el = $(id); if (el) el.disabled = true; });
   $('rulesEngine').innerHTML = '<div style="text-align:center;color:var(--muted);font-size:11px;padding:8px">En attente</div>';
   renderScenarios(); renderFilesLoaded(); renderAll();
 }
 
-/* ============ EXPORTS ============ */
+// ============================================================
+// EXPORTS
+// ============================================================
 function exportCSV(){
-  const cols = ["titre","annee","type","theme","nb_periodes","effectif_total"];
-  const esc = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
-  const rows = [cols.join(",")];
+  const cols = ['titre','annee','type','theme','nb_periodes','effectif_total'];
+  const esc = v => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"';
+  const rows = [cols.join(',')];
   for (const d of state.filteredDatasets){
-    rows.push([d.titre, d.annee, d.type, d.theme, d.statistiques?.nb_periodes || 0, d.statistiques?.effectif_total || 0].map(esc).join(","));
+    rows.push([
+      d.titre, d.annee, d.type, d.theme,
+      (d.statistiques && d.statistiques.nb_periodes) || 0,
+      (d.statistiques && d.statistiques.effectif_total) || 0
+    ].map(esc).join(','));
   }
   const blob = new Blob(['\ufeff' + rows.join('\n')], {type:'text/csv;charset=utf-8'});
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = `monitor-social-${Date.now()}.csv`;
+  a.download = 'monitor-social-' + Date.now() + '.csv';
   a.click();
   toast('📥 CSV exporté', 'success');
 }
@@ -1667,53 +1601,67 @@ function exportJSON(){
   const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = `monitor-social-${Date.now()}.json`;
+  a.download = 'monitor-social-' + Date.now() + '.json';
   a.click();
   toast('📥 JSON exporté', 'success');
 }
 
 function exportHTML(){
-  const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Rapport Monitor Social</title>
-<style>body{font-family:system-ui;max-width:1100px;margin:2em auto;padding:0 1em;line-height:1.6}h1{color:#000091;border-bottom:3px solid #E1000F;padding-bottom:.5em}h2{color:#000091;margin-top:2em;border-left:4px solid #fbbf24;padding-left:.5em}table{border-collapse:collapse;width:100%;margin:1em 0}th,td{border:1px solid #ddd;padding:.5em;text-align:left}th{background:#000091;color:#fff}</style></head><body>
-<h1>🏛️ Monitor Social Expert+ — Rapport</h1>
-<p>Date : ${new Date().toLocaleString('fr-FR')}</p>
-<p>Filtrage : ${state.filter974 ? '🇷🇪 974' : '🌍 France'}</p>
-<h2>Synthèse</h2>
-<table><tr><th>Indicateur</th><th>Valeur</th></tr>
-<tr><td>Fichiers</td><td>${state.filesHistory.length}</td></tr>
-<tr><td>Lignes brutes</td><td>${fmt(state.allDatasetsBruts.length)}</td></tr>
-<tr><td>Datasets</td><td>${fmt(state.allDatasets.length)}</td></tr>
-<tr><td>Séries temporelles</td><td>${Object.keys(state.seriesByTheme).length}</td></tr>
-<tr><td>Anomalies</td><td>${state.anomalies.length}</td></tr>
-<tr><td>Projections</td><td>${Object.keys(state.forecasts).length}</td></tr>
-</table>
-</body></html>`;
+  let html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Rapport Monitor Social</title>';
+  html += '<style>body{font-family:system-ui;max-width:1100px;margin:2em auto;padding:0 1em;line-height:1.6}';
+  html += 'h1{color:#000091;border-bottom:3px solid #E1000F;padding-bottom:.5em}';
+  html += 'h2{color:#000091;margin-top:2em;border-left:4px solid #fbbf24;padding-left:.5em}';
+  html += 'table{border-collapse:collapse;width:100%;margin:1em 0}';
+  html += 'th,td{border:1px solid #ddd;padding:.5em;text-align:left}';
+  html += 'th{background:#000091;color:#fff}</style></head><body>';
+  html += '<h1>🏛️ Monitor Social Expert+ — Rapport</h1>';
+  html += '<p>Date : ' + new Date().toLocaleString('fr-FR') + '</p>';
+  html += '<p>Filtrage : ' + (state.filter974 ? '🇷🇪 974' : '🌍 France') + '</p>';
+  html += '<h2>Synthèse</h2>';
+  html += '<table><tr><th>Indicateur</th><th>Valeur</th></tr>';
+  html += '<tr><td>Fichiers</td><td>' + state.filesHistory.length + '</td></tr>';
+  html += '<tr><td>Lignes brutes</td><td>' + fmt(state.allDatasetsBruts.length) + '</td></tr>';
+  html += '<tr><td>Datasets</td><td>' + fmt(state.allDatasets.length) + '</td></tr>';
+  html += '<tr><td>Séries temporelles</td><td>' + Object.keys(state.seriesByTheme).length + '</td></tr>';
+  html += '<tr><td>Anomalies</td><td>' + state.anomalies.length + '</td></tr>';
+  html += '<tr><td>Projections</td><td>' + Object.keys(state.forecasts).length + '</td></tr>';
+  html += '</table></body></html>';
   const blob = new Blob([html], {type:'text/html;charset=utf-8'});
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = `rapport-${Date.now()}.html`;
+  a.download = 'rapport-' + Date.now() + '.html';
   a.click();
   toast('📥 Rapport HTML exporté', 'success');
 }
 
 function exportDCE(){
-  const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Rapport officiel</title>
-<style>body{font-family:system-ui;max-width:1100px;margin:2em auto;padding:0 1em}h1{text-align:center;color:#000091;border-bottom:3px solid #E1000F;padding-bottom:.5em}h2{color:#000091;background:#e3e3fd;padding:.5em}table{border-collapse:collapse;width:100%}th,td{border:1px solid #ddd;padding:.5em}th{background:#000091;color:#fff}</style></head><body>
-<h1>RAPPORT OFFICIEL<br>Suivi des politiques sociales<br>La Réunion — 974</h1>
-<p>Date : ${new Date().toLocaleDateString('fr-FR')}</p>
-<p>Datasets : ${fmt(state.allDatasets.length)}</p>
-<p>Séries : ${Object.keys(state.seriesByTheme).length}</p>
-<p>Signature : ____________</p>
-</body></html>`;
+  let html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Rapport officiel</title>';
+  html += '<style>body{font-family:system-ui;max-width:1100px;margin:2em auto;padding:0 1em}';
+  html += 'h1{text-align:center;color:#000091;border-bottom:3px solid #E1000F;padding-bottom:.5em}';
+  html += 'h2{color:#000091;background:#e3e3fd;padding:.5em}';
+  html += 'table{border-collapse:collapse;width:100%}';
+  html += 'th,td{border:1px solid #ddd;padding:.5em}';
+  html += 'th{background:#000091;color:#fff}</style></head><body>';
+  html += '<h1>RAPPORT OFFICIEL<br>Suivi des politiques sociales<br>La Réunion — 974</h1>';
+  html += '<p>Date : ' + new Date().toLocaleDateString('fr-FR') + '</p>';
+  html += '<p>Datasets : ' + fmt(state.allDatasets.length) + '</p>';
+  html += '<p>Séries : ' + Object.keys(state.seriesByTheme).length + '</p>';
+  html += '<p>Signature : ____________</p>';
+  html += '</body></html>';
   const blob = new Blob([html], {type:'text/html;charset=utf-8'});
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = `rapport-officiel-${Date.now()}.html`;
+  a.download = 'rapport-officiel-' + Date.now() + '.html';
   a.click();
   toast('🏛️ Rapport officiel exporté', 'success');
 }
 
-function toast(msg, type = 'info', duration = 3000){
+// ============================================================
+// UTILITAIRES
+// ============================================================
+function toast(msg, type, duration){
+  type = type || 'info';
+  duration = duration || 3000;
   const el = document.createElement('div');
   el.className = 'toast ' + type;
   el.textContent = msg;
@@ -1722,14 +1670,22 @@ function toast(msg, type = 'info', duration = 3000){
 }
 
 function safeSet(id, v, cls){
-  const e = $(id); if (!e) return;
+  const e = $(id);
+  if (!e) return;
   if (v !== undefined) e.textContent = v;
   if (cls !== undefined) e.className = cls;
 }
 
-/* ============ ÉVÉNEMENTS ============ */
-$('themeToggle')?.addEventListener('click', toggleTheme);
-$('filter974')?.addEventListener('click', () => {
+// ============================================================
+// ÉVÉNEMENTS
+// ============================================================
+$('themeToggle') && $('themeToggle').addEventListener('click', toggleTheme);
+$('reloadBtn') && $('reloadBtn').addEventListener('click', () => {
+  resetEmpty();
+  setTimeout(chargerFichiersAuto, 300);
+  toast('🔄 Rechargement…', 'info');
+});
+$('filter974') && $('filter974').addEventListener('click', () => {
   state.filter974 = !state.filter974;
   const btn = $('filter974');
   btn.classList.toggle('active', state.filter974);
@@ -1738,41 +1694,48 @@ $('filter974')?.addEventListener('click', () => {
     state.allDatasets = aggregateAllCaf(state.allDatasetsBruts);
     state.filteredDatasets = [...state.allDatasets];
     computeAll();
-    updateStats(); updateRightPanel(); renderRulesEngine(); applyFilters(); renderScenarios(); renderAll();
+    updateAllUI();
   }
 });
-$('burgerMenu')?.addEventListener('click', () => {
-  $('sidebar')?.classList.toggle('open');
-  $('mobileOverlay')?.classList.toggle('visible');
+$('burgerMenu') && $('burgerMenu').addEventListener('click', () => {
+  const sb = $('sidebar'); if (sb) sb.classList.toggle('open');
+  const mo = $('mobileOverlay'); if (mo) mo.classList.toggle('visible');
 });
-$('mobileOverlay')?.addEventListener('click', () => {
-  $('sidebar')?.classList.remove('open');
-  $('mobileOverlay')?.classList.remove('visible');
+$('mobileOverlay') && $('mobileOverlay').addEventListener('click', () => {
+  const sb = $('sidebar'); if (sb) sb.classList.remove('open');
+  const mo = $('mobileOverlay'); if (mo) mo.classList.remove('visible');
 });
-$('queryInput')?.addEventListener('input', e => {
+$('queryInput') && $('queryInput').addEventListener('input', e => {
   state.query = e.target.value;
   clearTimeout(window._deb);
   window._deb = setTimeout(() => {
-    if (state.allDatasets.length){ applyFilters(); if (['datasets','prestations','stats'].includes(state.activeView)) renderView(); }
+    if (state.allDatasets.length){
+      applyFilters();
+      if (['datasets','prestations','stats'].indexOf(state.activeView) >= 0) renderView();
+    }
   }, 200);
 });
-$('sortSelect')?.addEventListener('change', e => { state.sort = e.target.value; if (state.allDatasets.length){ applyFilters(); renderView(); } });
-$('btnAnalyze')?.addEventListener('click', () => {
+$('sortSelect') && $('sortSelect').addEventListener('change', e => {
+  state.sort = e.target.value;
+  if (state.allDatasets.length){ applyFilters(); renderView(); }
+});
+$('btnAnalyze') && $('btnAnalyze').addEventListener('click', () => {
   if (!state.allDatasets.length){ toast('❌ Chargez un fichier', 'error'); return; }
   computeAll();
-  updateStats(); updateRightPanel(); renderRulesEngine(); renderAll();
-  toast(`✅ ${state.anomalies.length} anomalies · ${Object.keys(state.forecasts).length} projections`, 'success');
+  updateAllUI();
+  toast('✅ ' + state.anomalies.length + ' anomalies · ' + Object.keys(state.forecasts).length + ' projections', 'success');
 });
-$('btnReset')?.addEventListener('click', () => {
+$('btnReset') && $('btnReset').addEventListener('click', () => {
   state.query = ''; state.sort = 'default'; state.activeScenario = 's1'; state.activeView = 'overview';
   $('queryInput').value = ''; $('sortSelect').value = 'default';
   document.querySelectorAll('.mode-tab').forEach(t => t.classList.toggle('active', t.dataset.view === 'overview'));
   if (state.allDatasets.length) applyFilters();
   renderScenarios(); renderAll();
 });
-$('clearBtn')?.addEventListener('click', () => {
+$('clearBtn') && $('clearBtn').addEventListener('click', () => {
   if (state.allDatasets.length && !confirm('Effacer toutes les données ?')) return;
-  resetEmpty(); toast('🗑️ Effacé', 'info');
+  resetEmpty();
+  toast('🗑️ Effacé', 'info');
 });
 document.querySelectorAll('.mode-tab').forEach(t => t.addEventListener('click', () => {
   document.querySelectorAll('.mode-tab').forEach(x => x.classList.remove('active'));
@@ -1780,21 +1743,108 @@ document.querySelectorAll('.mode-tab').forEach(t => t.addEventListener('click', 
   state.activeView = t.dataset.view;
   renderView();
 }));
-$('exportCsv')?.addEventListener('click', exportCSV);
-$('exportJson')?.addEventListener('click', exportJSON);
-$('exportHtml')?.addEventListener('click', exportHTML);
-$('exportDce')?.addEventListener('click', exportDCE);
+$('exportCsv') && $('exportCsv').addEventListener('click', exportCSV);
+$('exportJson') && $('exportJson').addEventListener('click', exportJSON);
+$('exportHtml') && $('exportHtml').addEventListener('click', exportHTML);
+$('exportDce') && $('exportDce').addEventListener('click', exportDCE);
 document.addEventListener('keydown', e => {
-  if (e.key === '/' && !['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName)){ e.preventDefault(); $('queryInput')?.focus(); }
+  if (e.key === '/' && ['INPUT','TEXTAREA','SELECT'].indexOf(e.target.tagName) < 0){
+    e.preventDefault();
+    if ($('queryInput')) $('queryInput').focus();
+  }
 });
 
+// ============================================================
+// CHARGEMENT AUTOMATIQUE VIA JSDELIVR
+// ============================================================
+async function chargerFichiersAuto(){
+  console.log('🔄 Chargement automatique via jsDelivr...');
+  const progress = $('loadProgress');
+  if (progress) progress.textContent = 'Lecture du manifeste…';
+
+  try {
+    const response = await fetch(CDN + 'manifest.json');
+    if (!response.ok) throw new Error('manifest.json : HTTP ' + response.status);
+    const manifest = await response.json();
+    const fichiers = manifest.files || [];
+
+    if (!fichiers.length){
+      console.log('ℹ️ Manifeste vide');
+      if (progress) progress.textContent = 'Manifeste vide';
+      return;
+    }
+
+    console.log('📂 ' + fichiers.length + ' fichier(s) à charger');
+    if (progress) progress.textContent = '0 / ' + fichiers.length;
+
+    const loadedBruts = [];
+    const fileReports = [];
+
+    for (let i = 0; i < fichiers.length; i++){
+      const fichier = fichiers[i];
+      try {
+        console.log('  ⏳ ' + fichier + '...');
+        if (progress) progress.textContent = (i+1) + ' / ' + fichiers.length + ' · ' + fichier;
+
+        const resp = await fetch(CDN + fichier);
+        if (!resp.ok) throw new Error('HTTP ' + resp.status);
+        const text = await resp.text();
+
+        // Vérifier si c'est un pointeur LFS
+        if (text.indexOf('version https://git-lfs') === 0){
+          throw new Error('Pointeur LFS (non résolu)');
+        }
+
+        const data = JSON.parse(text);
+        const bruts = extractBruts(data, fichier);
+        loadedBruts.push(...bruts);
+        fileReports.push({name:fichier, nbBrut:bruts.length, date:Date.now(), ok:true});
+        console.log('  ✅ ' + fichier + ' : ' + bruts.length.toLocaleString('fr-FR') + ' lignes');
+      } catch (err){
+        console.error('  ❌ ' + fichier + ' : ' + err.message);
+        fileReports.push({name:fichier, nbBrut:0, date:Date.now(), ok:false, error:err.message});
+      }
+    }
+
+    if (!loadedBruts.length){
+      console.warn('⚠️ Aucun fichier chargé');
+      if (progress) progress.textContent = 'Aucun fichier';
+      toast('⚠️ Aucun fichier chargé · Glissez-les manuellement', 'info', 5000);
+      return;
+    }
+
+    if (progress) progress.textContent = 'Agrégation…';
+    state.allDatasetsBruts = loadedBruts;
+    state.allDatasets = aggregateAllCaf(loadedBruts);
+    state.filteredDatasets = [...state.allDatasets];
+    state.filesHistory = fileReports.filter(f => f.ok);
+    state.source = state.filesHistory.length + ' fichiers (jsDelivr)';
+    state.loadedAt = new Date();
+
+    computeAll();
+    updateAllUI();
+
+    console.log('✅ ' + state.allDatasets.length + ' datasets · ' + Object.keys(state.seriesByTheme).length + ' séries');
+    toast('✅ ' + state.allDatasets.length + ' datasets chargés', 'success', 4000);
+
+  } catch (err){
+    console.error('❌ Erreur chargement auto :', err.message);
+    if (progress) progress.textContent = 'Erreur : ' + err.message;
+    toast('⚠️ Chargement auto impossible · Glissez les fichiers', 'info', 5000);
+  }
+}
+
+// ============================================================
+// INITIALISATION
+// ============================================================
 (async () => {
   applyTheme();
   setupDropZone();
-  computeMicroRegions();
+  await computeMicroRegions();
   const dot = $('statusDot'); if (dot) dot.classList.add('offline');
   renderScenarios(); renderFilesLoaded(); renderAll();
-  toast('🏛️ Monitor Social Expert+ v5.3 — Prêt', 'info', 4000);
+  toast('🏛️ Monitor Social Expert+ v6.1 — Prêt', 'info', 3000);
+  setTimeout(chargerFichiersAuto, 1000);
 })();
 </script>
 </body>
