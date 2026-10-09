@@ -1,1 +1,9 @@
-*.json filter=lfs diff=lfs merge=lfs -text
+# Gros fichiers > 10 Mo (via LFS)
+aah_s_tx_inca_age_1_nat.json filter=lfs diff=lfs merge=lfs -text
+aah_s_tx_inca_dep.json filter=lfs diff=lfs merge=lfs -text
+
+# Petits fichiers < 10 Mo (en clair)
+aah_s_complaah_age_5_dep.json -filter -diff -merge text
+s_ben_dep.json -filter -diff -merge text
+communes_974.json -filter -diff -merge text
+manifest.json -filter -diff -merge text
