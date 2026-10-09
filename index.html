@@ -1763,7 +1763,7 @@ async function chargerFichiersAuto(){
   if (progress) progress.textContent = 'Lecture du manifeste…';
 
   try {
-    const response = await fetch(CDN + 'manifest.json');
+    const response = await fetch(CDN + 'manifest_974.json');
     if (!response.ok) throw new Error('manifest.json : HTTP ' + response.status);
     const manifest = await response.json();
     const fichiers = manifest.files || [];
