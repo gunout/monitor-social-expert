@@ -345,7 +345,7 @@ Ouvrez une [issue](https://github.com/gunout/monitor-social-expert/issues) avec 
 5. Ouvrez une Pull Request
 
 ---
-## MISE A JOUR 2026-2027
+## BONUS - MISE A JOUR ( 2026-2027 ) *
 
 ## 🎯 Pour ajouter les prochaines années
 
