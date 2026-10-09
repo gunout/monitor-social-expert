@@ -1,0 +1,1851 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🏛️ Monitor Social Expert+ — MDPH · CAF · Département · Région · La Réunion</title>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bleu:#000091; --bleu-hi:#1212ff; --bleu-soft:#e3e3fd;
+  --rouge:#E1000F; --rouge-soft:#ffe9e9;
+  --or:#fbbf24; --or-hi:#f59e0b; --or-soft:rgba(251,191,36,.15);
+  --vert:#16a34a; --vert-soft:#dcfce7;
+  --violet:#7c3aed; --violet-soft:#ede9fe;
+  --cyan:#0891b2; --cyan-soft:#cffafe;
+  --rose:#db2777; --rose-soft:#fce7f3;
+  --blanc:#fff; --gris-50:#f6f6f6; --gris-100:#eee; --gris-200:#e5e5e5;
+  --gris-500:#929292; --gris-700:#3a3a3a; --gris-900:#1e1e1e;
+  --mono:'SF Mono',Menlo,Consolas,monospace;
+  --sans:'Marianne',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --bg:#f6f6f6; --panel:#fff; --border:#e5e5e5; --text:#1e1e1e; --muted:#929292;
+}
+[data-theme="dark"]{
+  --blanc:#1a1d24; --gris-50:#12141a; --gris-100:#1e2129; --gris-200:#2a2e38;
+  --gris-500:#7a8090; --gris-700:#b8bcc6; --gris-900:#f0f2f5;
+  --bleu-soft:#1e1e4d; --rouge-soft:#3a1a1e; --vert-soft:#1a3a24; --violet-soft:#2a1e4d;
+  --cyan-soft:#0a2a30; --rose-soft:#3a1a2a;
+  --or-soft:rgba(251,191,36,.1);
+  --bg:#12141a; --panel:#1a1d24; --border:#2a2e38; --text:#f0f2f5; --muted:#7a8090;
+}
+html{height:100%}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:13px;line-height:1.5;min-height:100%;-webkit-font-smoothing:antialiased}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-track{background:var(--gris-100)}
+::-webkit-scrollbar-thumb{background:var(--gris-500);border-radius:4px}
+
+.tricolore{height:6px;background:linear-gradient(to right,#000091 0 33.33%,#fff 33.33% 66.66%,#E1000F 66.66% 100%)}
+.header{display:flex;align-items:center;gap:12px;padding:10px 16px;background:var(--panel);border-bottom:1px solid var(--border)}
+.marianne{width:38px;height:38px;border-radius:50%;background:#000091;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;border:2px solid #E1000F;flex-shrink:0}
+.header-txt strong{display:block;color:var(--bleu);font-size:12px;text-transform:uppercase;letter-spacing:.5px}
+.header-txt span{font-size:11px;color:var(--gris-700)}
+.header-devise{margin-left:auto;font-size:9px;color:var(--gris-500);text-transform:uppercase;letter-spacing:1.2px;text-align:right}
+
+.topbar{background:var(--panel);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:10px 16px;gap:12px;position:sticky;top:6px;z-index:100;flex-wrap:wrap}
+.brand{font-size:14px;font-weight:800;color:var(--bleu);display:flex;align-items:center;gap:8px}
+.brand .dot{width:10px;height:10px;border-radius:50%;background:var(--vert);box-shadow:0 0 0 3px rgba(22,163,74,.2);animation:pulse 1.8s infinite}
+.brand .dot.offline{background:var(--rouge);animation:none}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.topbar-right{margin-left:auto;display:flex;gap:10px;font-family:var(--mono);font-size:11px;align-items:center;flex-wrap:wrap}
+.stat{display:flex;gap:5px;color:var(--gris-700);align-items:center;white-space:nowrap}
+.stat .val{color:var(--bleu);font-weight:700;padding:2px 6px;border-radius:3px;background:var(--bleu-soft)}
+.stat .val.vert{color:var(--vert);background:var(--vert-soft)}
+.stat .val.or{color:#8a5e00;background:var(--or-soft)}
+.stat .val.rouge{color:var(--rouge);background:var(--rouge-soft)}
+.stat .val.violet{color:var(--violet);background:var(--violet-soft)}
+.stat .val.cyan{color:var(--cyan);background:var(--cyan-soft)}
+.theme-toggle{background:var(--panel);border:1px solid var(--border);color:var(--text);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.theme-toggle:hover{background:var(--bleu-soft);border-color:var(--bleu);transform:scale(1.05)}
+.burger-menu{display:none;background:var(--panel);border:1px solid var(--border);color:var(--text);width:34px;height:34px;border-radius:6px;cursor:pointer;font-size:16px;align-items:center;justify-content:center}
+.filter-974{background:var(--or-soft);border:1px solid var(--or);color:#8a5e00;padding:4px 8px;border-radius:4px;font-size:10px;font-weight:700;font-family:var(--mono);cursor:pointer;transition:all .15s}
+.filter-974.active{background:var(--bleu);color:#fff;border-color:var(--bleu)}
+.reload-btn{background:var(--vert-soft);border:1px solid var(--vert);color:var(--vert);padding:4px 10px;border-radius:4px;font-size:10px;font-weight:700;cursor:pointer;transition:all .15s}
+.reload-btn:hover{background:var(--vert);color:#fff}
+
+.app{display:grid;grid-template-columns:290px 1fr 320px;height:calc(100vh - 130px);overflow:hidden}
+.sidebar{background:var(--panel);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;min-height:0}
+.sb-head{padding:14px 16px;border-bottom:1px solid var(--border);background:var(--gris-50);flex-shrink:0}
+.sb-title{font-size:12px;font-weight:700;color:var(--bleu);letter-spacing:.5px;text-transform:uppercase;display:flex;align-items:center;gap:8px}
+.sb-title::before{content:'';width:4px;height:14px;background:var(--or)}
+.sb-count{font-family:var(--mono);font-size:11px;color:var(--gris-500);margin-top:6px}
+.sb-list{flex:1;overflow-y:auto;padding:8px;min-height:0}
+.sb-list.compact{max-height:170px;flex:0 0 auto}
+
+.scenario-item{background:var(--panel);border:1px solid var(--border);border-left:4px solid var(--gris-500);border-radius:4px;padding:10px 12px;margin-bottom:6px;cursor:pointer;transition:all .15s}
+.scenario-item:hover{border-color:var(--bleu);background:var(--bleu-soft);transform:translateX(2px)}
+.scenario-item.active{background:var(--bleu-soft);border-color:var(--bleu);border-left-color:var(--bleu);box-shadow:0 0 0 2px var(--bleu-soft)}
+.scenario-item.forbidden{border-left-color:var(--rouge)}
+.scenario-item.violet{border-left-color:var(--violet)}
+.scenario-item.cyan{border-left-color:var(--cyan)}
+.scenario-name{font-size:12px;font-weight:700;line-height:1.3;margin-bottom:4px;color:var(--text)}
+.scenario-desc{font-size:10px;color:var(--gris-500);font-family:var(--mono)}
+.scenario-badge{display:inline-block;font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;margin-top:4px;text-transform:uppercase}
+.badge-ok{background:var(--vert-soft);color:var(--vert)}
+.badge-warn{background:var(--or-soft);color:#8a5e00}
+.badge-danger{background:var(--rouge-soft);color:var(--rouge)}
+.badge-violet{background:var(--violet-soft);color:var(--violet)}
+.badge-cyan{background:var(--cyan-soft);color:var(--cyan)}
+
+.file-item{background:var(--gris-50);border-left:3px solid var(--vert);border-radius:3px;padding:6px 8px;margin-bottom:4px;font-size:10px;position:relative;padding-right:28px;transition:all .15s}
+.file-item:hover{background:var(--vert-soft)}
+.file-item.error{border-left-color:var(--rouge)}
+.file-name{font-weight:700;color:var(--text);word-break:break-all;line-height:1.3}
+.file-meta{font-family:var(--mono);color:var(--gris-500);margin-top:2px;font-size:9px}
+.file-remove{position:absolute;top:4px;right:4px;background:transparent;border:none;color:var(--gris-500);cursor:pointer;font-size:14px;font-weight:700;padding:0;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.file-remove:hover{background:var(--rouge);color:#fff}
+
+.drop-zone{border:2px dashed var(--border);border-radius:8px;padding:16px;text-align:center;background:var(--gris-50);transition:all .2s;cursor:pointer;margin:8px;flex-shrink:0}
+.drop-zone:hover,.drop-zone.dragover{border-color:var(--bleu);background:var(--bleu-soft)}
+.drop-zone .icon{font-size:28px;margin-bottom:6px}
+.drop-zone .title{font-weight:700;color:var(--bleu);margin-bottom:4px;font-size:12px}
+.drop-zone .sub{font-size:10px;color:var(--gris-500)}
+
+.center{background:var(--bg);display:flex;flex-direction:column;overflow:hidden;min-height:0}
+.search-bar{padding:14px 16px;background:var(--panel);border-bottom:1px solid var(--border);display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.search-bar input[type=text]{flex:1;min-width:180px;background:var(--panel);border:1px solid var(--border);border-radius:4px;padding:11px 14px;font-size:14px;color:var(--text);font-family:var(--sans)}
+.search-bar input[type=text]:focus{outline:none;border-color:var(--bleu);box-shadow:0 0 0 2px var(--bleu-soft)}
+.search-bar select{background:var(--panel);border:1px solid var(--border);border-radius:4px;padding:11px 12px;font-size:13px;color:var(--text);font-family:var(--sans)}
+.btn{background:var(--bleu);color:#fff;border:1px solid var(--bleu);font-size:13px;font-weight:700;padding:11px 20px;border-radius:4px;cursor:pointer;transition:all .15s;font-family:var(--sans);white-space:nowrap}
+.btn:hover{background:var(--bleu-hi)}
+.btn.secondary{background:var(--panel);color:var(--text);border-color:var(--border)}
+.btn.secondary:hover{border-color:var(--bleu);color:var(--bleu);background:var(--bleu-soft)}
+
+.mode-tabs{display:flex;padding:0 10px;border-bottom:1px solid var(--border);background:var(--panel);flex-shrink:0;overflow-x:auto}
+.mode-tab{background:transparent;border:none;color:var(--gris-700);font-size:11.5px;padding:9px 12px;cursor:pointer;border-bottom:3px solid transparent;font-family:var(--sans);white-space:nowrap}
+.mode-tab.active{color:var(--bleu);border-bottom-color:var(--bleu);font-weight:700}
+
+.warning-banner{padding:12px 16px;background:var(--or-soft);border-bottom:1px solid var(--or);color:#8a5e00;font-size:12px;display:flex;align-items:center;gap:10px;flex-shrink:0}
+.warning-banner[hidden]{display:none}
+
+.kpi-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;padding:14px;background:var(--panel);border-bottom:1px solid var(--border);flex-shrink:0}
+.kpi{background:var(--gris-50);border:1px solid var(--border);border-left:4px solid var(--bleu);border-radius:4px;padding:10px 12px}
+.kpi .label{font-size:9px;font-weight:700;color:var(--gris-500);text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px}
+.kpi .value{font-size:16px;font-weight:800;color:var(--bleu);font-family:var(--mono);line-height:1.1;word-break:break-all}
+.kpi .sub{font-size:9px;color:var(--gris-500);margin-top:3px;font-family:var(--mono)}
+.kpi.vert{border-left-color:var(--vert)} .kpi.vert .value{color:var(--vert)}
+.kpi.or{border-left-color:var(--or)} .kpi.or .value{color:#8a5e00}
+.kpi.rouge{border-left-color:var(--rouge)} .kpi.rouge .value{color:var(--rouge)}
+.kpi.violet{border-left-color:var(--violet)} .kpi.violet .value{color:var(--violet)}
+.kpi.cyan{border-left-color:var(--cyan)} .kpi.cyan .value{color:var(--cyan)}
+.kpi.rose{border-left-color:var(--rose)} .kpi.rose .value{color:var(--rose)}
+
+.results{flex:1;overflow-y:auto;padding:14px;min-height:0}
+.card{background:var(--panel);border:1px solid var(--border);border-left:4px solid var(--bleu);border-radius:4px;padding:14px 16px;margin-bottom:10px}
+.card h3{font-size:14px;color:var(--bleu);margin-bottom:8px}
+.card h4{font-size:12px;color:var(--bleu);margin:10px 0 6px;text-transform:uppercase}
+.card p{font-size:12px;color:var(--gris-700);margin-bottom:6px}
+.card .meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.tag{background:var(--gris-50);padding:3px 8px;border-radius:3px;border:1px solid var(--border);font-family:var(--mono);font-size:10px;color:var(--gris-700);white-space:nowrap}
+.tag.bleu{background:var(--bleu-soft);color:var(--bleu);border-color:var(--bleu-soft)}
+.tag.vert{background:var(--vert-soft);color:var(--vert);border-color:var(--vert-soft)}
+.tag.rouge{background:var(--rouge-soft);color:var(--rouge);border-color:var(--rouge-soft)}
+.tag.or{background:var(--or-soft);color:#8a5e00;border-color:var(--or-soft)}
+.tag.violet{background:var(--violet-soft);color:var(--violet);border-color:var(--violet-soft)}
+.tag.cyan{background:var(--cyan-soft);color:var(--cyan);border-color:var(--cyan-soft)}
+
+.bar-row{display:grid;grid-template-columns:180px 1fr 70px;align-items:center;gap:8px;margin-bottom:8px;font-size:11px}
+.bar-row .name{color:var(--gris-700);overflow:hidden;text-overflow:ellipsis;font-family:var(--mono);font-weight:600}
+.bar-track{background:var(--gris-100);border-radius:3px;height:18px;overflow:hidden}
+.bar-fill{height:100%;background:linear-gradient(90deg,var(--bleu),var(--bleu-hi));border-radius:3px;transition:width 1s}
+.bar-fill.vert{background:linear-gradient(90deg,var(--vert),#22c55e)}
+.bar-fill.or{background:linear-gradient(90deg,#8a5e00,var(--or))}
+.bar-fill.rouge{background:linear-gradient(90deg,var(--rouge),#ff4444)}
+.bar-row .val{text-align:right;color:var(--bleu);font-weight:700;font-family:var(--mono)}
+
+.right{background:var(--panel);border-left:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;min-height:0}
+.rs-head{padding:14px 16px;border-bottom:1px solid var(--border);background:var(--gris-50);font-size:12px;font-weight:700;color:var(--bleu);text-transform:uppercase;display:flex;align-items:center;gap:8px}
+.rs-head::before{content:'';width:4px;height:14px;background:var(--or)}
+.rs-body{flex:1;overflow-y:auto;padding:12px;min-height:0}
+.panel{background:var(--panel);border:1px solid var(--border);border-radius:4px;margin-bottom:10px;overflow:hidden}
+.panel-head{padding:9px 12px;background:var(--gris-50);border-bottom:1px solid var(--border);font-size:11px;font-weight:700;color:var(--bleu);text-transform:uppercase}
+.panel-body{padding:10px}
+.row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--gris-100);font-size:12px}
+.row:last-child{border-bottom:none}
+.row .k{color:var(--gris-700)}
+.row .v{color:var(--text);font-weight:700;font-family:var(--mono);font-size:11px;text-align:right;max-width:170px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.row .v.bleu{color:var(--bleu)} .row .v.vert{color:var(--vert)} .row .v.rouge{color:var(--rouge)} .row .v.or{color:#8a5e00} .row .v.violet{color:var(--violet)} .row .v.cyan{color:var(--cyan)}
+
+.matrix{width:100%;border-collapse:collapse;font-size:11px;margin-top:8px}
+.matrix th,.matrix td{padding:6px 8px;border:1px solid var(--border);text-align:center}
+.matrix th{background:var(--bleu);color:#fff;font-weight:700}
+.matrix th.row-head{text-align:left;background:var(--bleu-soft);color:var(--bleu)}
+.matrix td.row-head{text-align:left;background:var(--gris-50);font-weight:600;color:var(--gris-700)}
+.matrix td.cell{cursor:pointer;font-family:var(--mono);font-weight:700}
+.matrix td.cell.zero{color:var(--gris-500);background:var(--gris-50)}
+.matrix td.num{text-align:right;font-family:var(--mono)}
+
+.export-group{display:flex;gap:8px;padding:12px 14px;border-top:1px solid var(--border);background:var(--panel);flex-wrap:wrap}
+.export-btn{flex:1;min-width:100px;background:var(--panel);color:var(--text);border:1px solid var(--border);font-size:12px;font-weight:600;padding:10px 14px;border-radius:4px;cursor:pointer;font-family:var(--sans)}
+.export-btn:hover:not(:disabled){border-color:var(--bleu);color:var(--bleu);background:var(--bleu-soft)}
+.export-btn:disabled{opacity:.4;cursor:not-allowed}
+
+.toast{position:fixed;bottom:24px;right:24px;background:var(--gris-900);color:#fff;padding:12px 20px;border-radius:6px;font-size:13px;font-weight:600;z-index:1000;box-shadow:0 8px 24px rgba(0,0,0,.2)}
+.toast.success{background:var(--vert)}
+.toast.error{background:var(--rouge)}
+.toast.info{background:var(--bleu)}
+
+.proc-step{display:flex;gap:10px;padding:8px 0;border-bottom:1px dashed var(--gris-100);font-size:12px;align-items:flex-start}
+.proc-step:last-child{border-bottom:none}
+.proc-num{background:var(--bleu);color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;flex-shrink:0;font-family:var(--mono)}
+.proc-num.rouge{background:var(--rouge)}
+.proc-num.vert{background:var(--vert)}
+.proc-txt{flex:1;color:var(--gris-700)}
+
+.forecast-badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;background:var(--violet-soft);color:var(--violet);margin-left:6px}
+.trend-up{color:var(--vert);font-weight:700}
+.trend-down{color:var(--rouge);font-weight:700}
+.trend-flat{color:var(--or);font-weight:700}
+.formula{font-family:var(--mono);font-size:11px;background:var(--bleu-soft);padding:6px 10px;border-radius:3px;display:inline-block;margin:4px 0;color:var(--bleu)}
+
+.micro-region{display:inline-block;padding:2px 6px;border-radius:3px;font-size:9px;font-weight:700;font-family:var(--mono)}
+.mr-nord{background:#dbeafe;color:#1e40af}
+.mr-sud{background:#fee2e2;color:#991b1b}
+.mr-est{background:#dcfce7;color:#166534}
+.mr-ouest{background:#fef3c7;color:#92400e}
+
+.mobile-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200}
+.mobile-overlay.visible{display:block}
+
+@media(max-width:900px){
+  .app{display:flex;flex-direction:column;height:auto}
+  .sidebar{position:fixed;top:0;left:0;bottom:0;width:290px;z-index:300;transform:translateX(-100%);transition:transform .3s}
+  .sidebar.open{transform:translateX(0)}
+  .right{width:100%;border-left:none;border-top:1px solid var(--border)}
+  .burger-menu{display:flex}
+}
+</style>
+</head>
+<body>
+
+<div class="tricolore"></div>
+
+<div class="header">
+  <button class="burger-menu" id="burgerMenu">☰</button>
+  <div class="marianne">RF</div>
+  <div class="header-txt">
+    <strong>MDPH · CAF · Département · Région</strong>
+    <span>Monitor Social Expert+ — Filtrage 974 · La Réunion</span>
+  </div>
+  <div class="header-devise"><em>Liberté</em><br><em>Égalité</em><br><em>Fraternité</em></div>
+</div>
+
+<div class="topbar">
+  <div class="brand"><span class="dot offline" id="statusDot"></span>MONITOR SOCIAL EXPERT+ <span class="sub" style="color:var(--muted);font-size:12px">/ 974</span></div>
+  <div class="topbar-right">
+    <button class="reload-btn" id="reloadBtn" title="Recharger">🔄 Recharger</button>
+    <button class="filter-974 active" id="filter974">🇷🇪 974 uniquement</button>
+    <div class="stat"><span>FICHIERS</span><span class="val vert" id="tbFiles">0</span></div>
+    <div class="stat"><span>DATASETS</span><span class="val" id="tbDatasets">0</span></div>
+    <div class="stat"><span>SÉRIES</span><span class="val violet" id="tbSeries">0</span></div>
+    <button class="theme-toggle" id="themeToggle">🌙</button>
+  </div>
+</div>
+
+<div class="mobile-overlay" id="mobileOverlay"></div>
+
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <div class="sb-head">
+      <div class="sb-title">🎯 Scénarios</div>
+      <div class="sb-count" id="sbCount">Chargement…</div>
+    </div>
+    <div class="sb-list" id="scenarioList"></div>
+    <div class="sb-head" style="border-top:1px solid var(--border)">
+      <div class="sb-title">📂 Fichiers chargés</div>
+      <div class="sb-count" id="filesLoadedCount">0 fichier</div>
+    </div>
+    <div class="sb-list compact" id="filesLoadedList">
+      <div style="text-align:center;color:var(--muted);font-size:11px;padding:10px">Chargement…</div>
+    </div>
+    <div class="drop-zone" id="dropZone">
+      <div class="icon">📁📁📁</div>
+      <div class="title">Glissez JSON (multiple)</div>
+      <div class="sub">ou cliquez pour ajouter</div>
+      <input type="file" id="fileInput" accept=".json" multiple style="display:none">
+    </div>
+  </aside>
+
+  <main class="center">
+    <div class="search-bar">
+      <input type="text" id="queryInput" placeholder="🔍 Rechercher…">
+      <select id="sortSelect">
+        <option value="default">Tri : défaut</option>
+        <option value="annee_desc">Année ↓</option>
+        <option value="qualite_desc">Qualité ↓</option>
+        <option value="theme_asc">Thème A→Z</option>
+      </select>
+      <button class="btn" id="btnAnalyze">▶ ANALYSER</button>
+      <button class="btn secondary" id="btnReset">↺ Reset</button>
+    </div>
+
+    <div class="mode-tabs">
+      <button class="mode-tab active" data-view="overview">📊 Vue d'ensemble</button>
+      <button class="mode-tab" data-view="datasets">🗂️ Datasets</button>
+      <button class="mode-tab" data-view="prestations">💶 Prestations</button>
+      <button class="mode-tab" data-view="evolution">📈 Évolution</button>
+      <button class="mode-tab" data-view="mensuel">📆 Mensuel</button>
+      <button class="mode-tab" data-view="forecast">🔮 Projections</button>
+      <button class="mode-tab" data-view="anomalies">🚨 Anomalies</button>
+      <button class="mode-tab" data-view="correlations">🔗 Corrélations</button>
+      <button class="mode-tab" data-view="timeline">📅 Timeline</button>
+      <button class="mode-tab" data-view="matrix">🔲 Matrice</button>
+      <button class="mode-tab" data-view="stats">📊 Statistiques</button>
+      <button class="mode-tab" data-view="indicators">📐 Indicateurs</button>
+      <button class="mode-tab" data-view="microregions">🏝️ Micro-régions</button>
+      <button class="mode-tab" data-view="geographie">🗺️ Géographie</button>
+      <button class="mode-tab" data-view="comparaison">⚖️ Comparaison</button>
+      <button class="mode-tab" data-view="benchmark">🏆 Benchmark DOM</button>
+      <button class="mode-tab" data-view="simulateur">🧪 Simulateur</button>
+      <button class="mode-tab" data-view="warnings">⚠️ Avertissements</button>
+      <button class="mode-tab" data-view="dce">🏛️ Rapport officiel</button>
+      <button class="mode-tab" data-view="audit">📋 Audit</button>
+    </div>
+
+    <div class="warning-banner" id="warningBanner" hidden>
+      ⚠️ <strong>Incertitudes :</strong> données déclaratives · Secret statistique · RSA recentralisé 2020
+    </div>
+
+    <div class="kpi-strip" id="kpiStrip"></div>
+
+    <div class="results" id="resultsArea">
+      <div style="text-align:center;padding:60px 20px;color:var(--muted)">
+        <div style="font-size:48px;margin-bottom:16px">🏛️</div>
+        <div style="font-weight:700;color:var(--text);margin-bottom:8px;font-size:16px">Chargement automatique…</div>
+        <div>Lecture du manifeste puis des fichiers JSON</div>
+        <div style="margin-top:10px;font-size:11px;font-family:var(--mono)" id="loadProgress">Initialisation…</div>
+      </div>
+    </div>
+
+    <div class="export-group">
+      <button class="export-btn" id="exportCsv" disabled>📥 CSV</button>
+      <button class="export-btn" id="exportJson" disabled>📥 JSON</button>
+      <button class="export-btn" id="exportHtml" disabled>📥 Rapport HTML</button>
+      <button class="export-btn" id="exportDce" disabled>🏛️ Rapport officiel</button>
+      <button class="export-btn" id="clearBtn">🗑️ Effacer</button>
+    </div>
+  </main>
+
+  <aside class="right">
+    <div class="rs-head">Intelligence Sociale+</div>
+    <div class="rs-body">
+      <div class="panel">
+        <div class="panel-head">💚 ENVIRONNEMENT</div>
+        <div class="panel-body">
+          <div class="row"><span class="k">Source</span><span class="v bleu" id="ivSource">—</span></div>
+          <div class="row"><span class="k">Statut</span><span class="v or" id="ivStatus">● CHARGEMENT…</span></div>
+          <div class="row"><span class="k">Chargé le</span><span class="v" id="ivDate">—</span></div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-head">📊 SYNTHÈSE</div>
+        <div class="panel-body">
+          <div class="row"><span class="k">Datasets</span><span class="v bleu" id="ivTotal">—</span></div>
+          <div class="row"><span class="k">Thème AAH</span><span class="v" id="ivAAH">—</span></div>
+          <div class="row"><span class="k">Bénéficiaires</span><span class="v" id="ivBenef">—</span></div>
+          <div class="row"><span class="k">Séries temporelles</span><span class="v violet" id="ivSeries">—</span></div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-head">🧮 MÉTRIQUES</div>
+        <div class="panel-body">
+          <div class="row"><span class="k">Score moyen</span><span class="v bleu" id="ivScore">—</span></div>
+          <div class="row"><span class="k">Tendance</span><span class="v" id="ivTrend">—</span></div>
+          <div class="row"><span class="k">Anomalies</span><span class="v rouge" id="ivAnomalies">—</span></div>
+          <div class="row"><span class="k">Projections</span><span class="v cyan" id="ivProj">—</span></div>
+          <div class="row"><span class="k">Corrélations</span><span class="v rose" id="ivCorr">—</span></div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-head">⚠️ VIGILANCE</div>
+        <div class="panel-body">
+          <div class="row"><span class="k">Secret statistique</span><span class="v or">floutage</span></div>
+          <div class="row"><span class="k">RSA recentralisé</span><span class="v rouge">2020</span></div>
+          <div class="row"><span class="k">Déclaratif</span><span class="v rouge">non vérifié</span></div>
+          <div class="row"><span class="k">Non-recours</span><span class="v or">~30 %</span></div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-head">🔬 RÈGLES MÉTIER</div>
+        <div class="panel-body" id="rulesEngine">
+          <div style="text-align:center;color:var(--muted);font-size:11px;padding:8px">En attente</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<script>
+/* =========================================================
+   MONITOR SOCIAL EXPERT+ — v6.1 (jsDelivr + LFS)
+   ========================================================= */
+"use strict";
+
+const $ = id => document.getElementById(id);
+const escapeHtml = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmt = n => new Intl.NumberFormat('fr-FR').format(Math.round(n || 0));
+const fmtDec = (n, d = 2) => new Intl.NumberFormat('fr-FR', {minimumFractionDigits:d, maximumFractionDigits:d}).format(n || 0);
+
+// CDN jsDelivr (supporte Git LFS)
+const CDN = 'https://cdn.jsdelivr.net/gh/gunout/monitor-social-expert@latest/';
+
+// ============================================================
+// STATISTIQUES
+// ============================================================
+const Stats = {
+  mean(arr){ return arr.length ? arr.reduce((s,v) => s+v, 0) / arr.length : 0; },
+  sum(arr){ return arr.reduce((s,v) => s+v, 0); },
+  variance(arr){ if (arr.length < 2) return 0; const m = this.mean(arr); return arr.reduce((s,v) => s + (v-m)**2, 0) / (arr.length-1); },
+  std(arr){ return Math.sqrt(this.variance(arr)); },
+  cv(arr){ const m = this.mean(arr); return m ? (this.std(arr) / m) * 100 : 0; },
+  median(arr){ if (!arr.length) return 0; const s = [...arr].sort((a,b) => a-b); const m = Math.floor(s.length/2); return s.length % 2 ? s[m] : (s[m-1] + s[m]) / 2; },
+  quantile(arr, q){ if (!arr.length) return 0; const s = [...arr].sort((a,b) => a-b); const pos = (s.length - 1) * q; const base = Math.floor(pos); const rest = pos - base; return s[base+1] !== undefined ? s[base] + rest * (s[base+1] - s[base]) : s[base]; },
+  min(arr){ return arr.length ? Math.min(...arr) : 0; },
+  max(arr){ return arr.length ? Math.max(...arr) : 0; },
+  pearson(x, y){ if (x.length !== y.length || x.length < 2) return 0; const mx = this.mean(x), my = this.mean(y); const num = x.reduce((s, v, i) => s + (v-mx)*(y[i]-my), 0); const dx = Math.sqrt(x.reduce((s,v) => s + (v-mx)**2, 0)); const dy = Math.sqrt(y.reduce((s,v) => s + (v-my)**2, 0)); return dx && dy ? num / (dx*dy) : 0; },
+  spearman(x, y){ if (x.length !== y.length || x.length < 2) return 0; const rank = arr => { const s = [...arr].map((v,i)=>({v,i})).sort((a,b)=>a.v-b.v); const r = new Array(arr.length); s.forEach((p, i) => r[p.i] = i+1); return r; }; return this.pearson(rank(x), rank(y)); },
+  linearRegression(x, y){
+    if (x.length !== y.length || x.length < 2) return {a:0, b:0, r2:0};
+    const n = x.length, mx = this.mean(x), my = this.mean(y);
+    let num = 0, den = 0;
+    for (let i = 0; i < n; i++){ num += (x[i]-mx)*(y[i]-my); den += (x[i]-mx)**2; }
+    const a = den ? num / den : 0;
+    const b = my - a * mx;
+    const yPred = x.map(v => a*v + b);
+    const ssRes = y.reduce((s, v, i) => s + (v - yPred[i])**2, 0);
+    const ssTot = y.reduce((s, v) => s + (v - my)**2, 0);
+    return {a, b, r2: ssTot ? 1 - ssRes/ssTot : 0};
+  },
+  forecastLinear(x, y, xFuture){
+    const {a, b, r2} = this.linearRegression(x, y);
+    const yPred = xFuture.map(v => a*v + b);
+    const residuals = y.map((v, i) => v - (a*x[i] + b));
+    const sigma = this.std(residuals);
+    return {yPred, yMin:yPred.map(v => v - 1.96*sigma), yMax:yPred.map(v => v + 1.96*sigma), r2, slope:a, intercept:b};
+  },
+  zScores(arr){ const m = this.mean(arr), s = this.std(arr); return arr.map(v => s ? (v - m) / s : 0); },
+  detectOutliers(arr, threshold = 2){ const z = this.zScores(arr); return z.map((v, i) => Math.abs(v) > threshold ? {index:i, value:arr[i], z:v} : null).filter(Boolean); }
+};
+
+// ============================================================
+// CONFIGURATION
+// ============================================================
+const SCENARIOS = [
+  {id:"s1",nom:"Bilan AAH",desc:"Évolution allocataires",theme:"AAH",badge:"ok",badgeTxt:"Recommandé",risque:"Faible",
+   procedure:["Extraction AAH","Filtrage 974","Agrégation par âge","Évolution temporelle"],
+   controles:["Dates cohérentes","Secret statistique"],
+   livrable:"Tableau par tranche d'âge"},
+  {id:"s2",nom:"Suivi RSA",desc:"Bénéficiaires",theme:"RSA",badge:"warn",badgeTxt:"Précautions",risque:"Moyen",
+   procedure:["Récupération RSA","⚠️ Recentralisé 2020"],
+   controles:["⚠️ Rupture 2020"],
+   livrable:"Série reconstituée"},
+  {id:"s3",nom:"Prestations familiales",desc:"PAJE, AF, ARS",theme:"Famille",badge:"ok",badgeTxt:"Officiel",risque:"Faible",
+   procedure:["Extraction","Agrégation"],
+   controles:["Unités"],
+   livrable:"Rapport prestations"},
+  {id:"s4",nom:"Multi-prestations",desc:"Croisement",theme:"Multi",badge:"violet",badgeTxt:"Expert",risque:"Moyen",
+   procedure:["Inter-prestations","Corrélation"],
+   controles:["Périodes"],
+   livrable:"Matrice co-occurrence"},
+  {id:"s5",nom:"Anomalies",desc:"Outliers",theme:"Anomalies",badge:"violet",badgeTxt:"Expert",risque:"Moyen",
+   procedure:["Z-scores","Outliers"],
+   controles:["Seuil Z"],
+   livrable:"Rapport anomalies"},
+  {id:"s6",nom:"Projections",desc:"Modèle linéaire",theme:"Projection",badge:"cyan",badgeTxt:"Modèle",risque:"Moyen",
+   procedure:["Régression","R² et IC"],
+   controles:["R² > 0.6"],
+   livrable:"Courbes projection"},
+  {id:"s7",nom:"⚠️ À ÉVITER",desc:"Brutes",theme:"Critique",badge:"danger",badgeTxt:"Proscrit",risque:"Élevé",
+   procedure:["❌ NE PAS UTILISER"],
+   controles:["Source"],
+   livrable:"Aucun"}
+];
+
+const INDICATEURS = [
+  {id:"aah",nom:"AAH",full:"Allocation Adultes Handicapés",formule:"effectif / population 20-64",unite:"%",seuils:[0,2,4,6,8,100],classes:["très faible","faible","moyen","élevé","très élevé"],note:"CAF / MDPH"},
+  {id:"rsa",nom:"RSA",full:"Revenu Solidarité Active",formule:"effectif / population 25-64",unite:"%",seuils:[0,3,6,9,12,100],classes:["très faible","faible","moyen","élevé","très élevé"],note:"⚠️ Recentralisé 2020"},
+  {id:"ppa",nom:"Prime d'activité",full:"PPA",formule:"effectif / population active",unite:"%",seuils:[0,5,10,15,20,100],classes:["très faible","faible","moyen","élevé","très élevé"],note:"Conditions ressources"},
+  {id:"af",nom:"Allocations familiales",full:"AF",formule:"effectif / ménages enfants",unite:"%",seuils:[0,20,40,60,80,100],classes:["très faible","faible","moyen","élevé","très élevé"],note:"Dès 2 enfants"},
+  {id:"couverture",nom:"Taux couverture",full:"Bénéficiaires / population",formule:"bénéficiaires / population",unite:"%",seuils:[0,5,10,20,30,100],classes:["très faible","faible","moyen","élevé","très élevé"],note:"Global"},
+  {id:"concentration",nom:"Gini",full:"Concentration",formule:"Σ|xi-xj| / (2n²μ)",unite:"0-1",seuils:[0,0.2,0.4,0.6,0.8,1],classes:["très égalitaire","égalitaire","moyen","inégalitaire","très inégalitaire"],note:"Inégalité"}
+];
+
+// ============================================================
+// ÉTAT GLOBAL
+// ============================================================
+const state = {
+  allDatasets: [],
+  allDatasetsBruts: [],
+  filteredDatasets: [],
+  filesHistory: [],
+  source: "Aucune",
+  loadedAt: null,
+  activeScenario: "s1",
+  activeView: "overview",
+  query: "",
+  sort: "default",
+  theme: localStorage.getItem('monitor-theme') || 'light',
+  filter974: true,
+  seriesByTheme: {},
+  anomalies: [],
+  forecasts: {},
+  correlations: null,
+  microRegions: {}
+};
+
+let COMMUNES_974 = [];
+
+// ============================================================
+// THÈME
+// ============================================================
+function applyTheme(){
+  document.documentElement.setAttribute('data-theme', state.theme);
+  const b = $('themeToggle'); if (b) b.textContent = state.theme === 'dark' ? '☀️' : '🌙';
+}
+
+function toggleTheme(){
+  state.theme = state.theme === 'dark' ? 'light' : 'dark';
+  localStorage.setItem('monitor-theme', state.theme);
+  applyTheme();
+  if (state.allDatasets.length) renderAll();
+}
+
+// ============================================================
+// DROP ZONE
+// ============================================================
+function setupDropZone(){
+  const dz = $('dropZone'), fi = $('fileInput');
+  if (!dz || !fi) return;
+  dz.addEventListener('click', () => fi.click());
+  dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('dragover'); });
+  dz.addEventListener('dragleave', () => dz.classList.remove('dragover'));
+  dz.addEventListener('drop', e => { e.preventDefault(); dz.classList.remove('dragover'); handleFiles(Array.from(e.dataTransfer.files)); });
+  fi.addEventListener('change', e => { handleFiles(Array.from(e.target.files)); e.target.value = ''; });
+}
+
+async function handleFiles(files){
+  if (!files || !files.length){ toast('❌ Aucun fichier', 'error'); return; }
+  const jsonFiles = files.filter(f => f.name.toLowerCase().endsWith('.json'));
+  if (!jsonFiles.length){ toast('❌ Aucun .json', 'error'); return; }
+
+  toast(`📂 Ajout de ${jsonFiles.length} fichier(s)…`, 'info', 1500);
+  const loadedBruts = [];
+  const fileReports = [];
+
+  for (const file of jsonFiles){
+    try {
+      const text = await file.text();
+      const data = JSON.parse(text);
+      const bruts = extractBruts(data, file.name);
+      loadedBruts.push(...bruts);
+      fileReports.push({name:file.name, nbBrut:bruts.length, date:Date.now(), ok:true});
+    } catch (err){
+      fileReports.push({name:file.name, nbBrut:0, date:Date.now(), ok:false, error:err.message});
+      toast(`❌ ${file.name} : ${err.message}`, 'error', 4000);
+    }
+  }
+
+  if (!loadedBruts.length){ renderFilesLoaded(); return; }
+
+  state.allDatasetsBruts.push(...loadedBruts);
+  state.allDatasets = aggregateAllCaf(state.allDatasetsBruts);
+  state.filteredDatasets = [...state.allDatasets];
+  state.filesHistory.push(...fileReports.filter(f => f.ok));
+  state.source = `${state.filesHistory.length} fichiers`;
+  state.loadedAt = new Date();
+
+  computeAll();
+  updateAllUI();
+  toast(`✅ ${state.allDatasets.length} datasets`, 'success', 4000);
+}
+
+function extractBruts(data, filename){
+  let arr = [];
+  if (Array.isArray(data)) arr = data;
+  else if (data.datasets && Array.isArray(data.datasets)) arr = data.datasets;
+  else if (data.records && Array.isArray(data.records)) arr = data.records.map(r => r.fields || r);
+  else if (data.results && Array.isArray(data.results)) arr = data.results.map(r => r.fields || r);
+  else arr = [data];
+  return arr.map(o => Object.assign({}, o, {_sourceFile: filename}));
+}
+
+// ============================================================
+// AGRÉGATION
+// ============================================================
+function aggregateAllCaf(bruts){
+  const cafRecords = bruts.filter(b => isCafFormat(b));
+  const autresRecords = bruts.filter(b => !isCafFormat(b));
+  const datasets = [];
+
+  if (cafRecords.length){
+    const parTheme = {};
+    for (const r of cafRecords){
+      const theme = detectTheme(r);
+      if (!parTheme[theme]) parTheme[theme] = [];
+      parTheme[theme].push(r);
+    }
+    for (const theme of Object.keys(parTheme)){
+      datasets.push(...aggregateCafTheme(parTheme[theme], theme));
+    }
+  }
+
+  for (const a of autresRecords) datasets.push(normalizeDataset(a));
+  return datasets;
+}
+
+function isCafFormat(obj){
+  if (!obj || typeof obj !== 'object') return false;
+  const keys = Object.keys(obj);
+  const hasDtreffre = keys.some(k => k === 'dtreffre' || k === 'date');
+  const hasIndic = keys.some(k => /^ind(foy|nbp|mtt|ben)_/.test(k));
+  const hasGeo = keys.some(k => ['numdep','dep','departement','numregi','nomregi','nomdep'].indexOf(k) >= 0);
+  const hasCafField = keys.some(k => /^(aah_|rsa_|pa_|af_|paje_|asf_|aeeh_|aspa_)/.test(k) || k === 'lieures');
+  return (hasDtreffre && hasIndic && (hasGeo || hasCafField));
+}
+
+function detectTheme(obj){
+  const keys = Object.keys(obj);
+  const isWide = keys.some(k => k === 'indfoy_aah' || k === 'indfoy_rsa' || k === 'indfoy_ppa');
+  if (isWide) return 'Bénéficiaires';
+  if (keys.some(k => k === 'aah_tx_inca')) return 'AAH';
+  if (keys.some(k => k === 'aah_complaah')) return 'AAH';
+  if (keys.some(k => k.startsWith('aah_'))) return 'AAH';
+  if (keys.some(k => k === 'aah_age_5')) return 'AAH';
+  if (keys.some(k => k === 'aah_age_1')) return 'AAH';
+  if (keys.some(k => k.startsWith('rsa_'))) return 'RSA';
+  if (keys.some(k => k.startsWith('pa_'))) return 'Prime d\'activité';
+  if (keys.some(k => k.startsWith('af_'))) return 'Famille';
+  if (keys.some(k => k.startsWith('paje_'))) return 'Famille';
+  if (keys.some(k => k.startsWith('asf_'))) return 'Famille';
+  if (keys.some(k => k.startsWith('aeeh_'))) return 'AEEH';
+  if (keys.some(k => k.startsWith('aspa_'))) return 'ASPA';
+  return 'Autre';
+}
+
+function aggregateCafTheme(lignes, theme){
+  let lignesFiltrees = lignes;
+  if (state.filter974){
+    const reu = lignes.filter(l => String(l.numdep) === '974');
+    if (reu.length > 0) lignesFiltrees = reu;
+  }
+  if (!lignesFiltrees.length) return [];
+
+  const sample = lignesFiltrees[0];
+  const keys = Object.keys(sample);
+  const isWideFormat = keys.some(k => k === 'indfoy_aah' || k === 'indfoy_rsa' || k === 'indfoy_ppa');
+  if (isWideFormat) return aggregateWideFormat(lignesFiltrees, theme);
+  return aggregateClassicFormat(lignesFiltrees, theme);
+}
+
+function aggregateWideFormat(lignes, theme){
+  const dates = [...new Set(lignes.map(l => l.dtreffre))].sort();
+  const datasets = [];
+  const filterSlug = state.filter974 ? '974' : 'france';
+
+  const PRESTATIONS = [
+    {code:'aah', nom:'AAH'},{code:'rsa', nom:'RSA'},{code:'ppa', nom:'PPA'},
+    {code:'af', nom:'AF'},{code:'cf', nom:'CF'},{code:'ars', nom:'ARS'},
+    {code:'asf', nom:'ASF'},{code:'aeeh', nom:'AEEH'},{code:'paje', nom:'PAJE'},
+    {code:'cmg', nom:'CMG'},{code:'prepare', nom:'PreParE'},{code:'pn', nom:'PN'},
+    {code:'ab', nom:'AB'},{code:'apl', nom:'APL'},{code:'als', nom:'ALS'},
+    {code:'alf', nom:'ALF'},{code:'ndural', nom:'Aides logement'},
+    {code:'ajpp', nom:'AJPP'},{code:'ajpa', nom:'AJPA'},{code:'rso', nom:'RSO'},
+    {code:'ndur', nom:'Total'},{code:'ndurej', nom:'Enfance Jeunesse'},{code:'ndurhd', nom:'Handicap Dépendance'}
+  ];
+
+  for (const p of PRESTATIONS){
+    for (const type of ['foy', 'nbp', 'mtt']){
+      const champ = 'ind' + type + '_' + p.code;
+      if (!Object.prototype.hasOwnProperty.call(lignes[0], champ)) continue;
+      const serie = dates.map(d => {
+        const l = lignes.find(x => x.dtreffre === d);
+        return {date: d, valeur: l ? Number(l[champ] || 0) : 0};
+      }).filter(pt => pt.valeur > 0);
+      if (serie.length < 3) continue;
+      const vals = serie.map(pt => pt.valeur);
+      const typeLabel = {foy: 'Foyers', nbp: 'Personnes', mtt: 'Montants'}[type];
+      datasets.push({
+        id: 'caf_' + filterSlug + '_' + p.code + '_' + type,
+        titre: p.nom + ' — ' + typeLabel,
+        description: typeLabel + ' ' + p.nom + ' (' + serie.length + ' mois)',
+        annee: dates[dates.length-1] ? dates[dates.length-1].slice(0, 4) : '—',
+        anneeFull: dates[0] + ' → ' + dates[dates.length-1],
+        type: type === 'mtt' ? 'Dépenses' : 'Effectifs',
+        theme: theme, prestation: p.nom,
+        organisation: 'CNAF', portail: 'data.caf.fr',
+        license: 'Licence Ouverte v2.0 (Etalab)',
+        tags: ['caf', p.code, type, '974', 'mensuel'],
+        statistiques: {
+          nb_periodes: serie.length, periode_debut: dates[0], periode_fin: dates[dates.length-1],
+          effectif_min: Stats.min(vals), effectif_max: Stats.max(vals),
+          effectif_moyen: Stats.mean(vals), effectif_total: Stats.sum(vals),
+          unite: type === 'mtt' ? '€' : 'individus', serie: serie
+        },
+        qualite: 4, comparabilite: 4, ecologie: 4, reproductibilite: 4
+      });
+    }
+  }
+
+  const datesSerie = dates.map(d => {
+    const l = lignes.find(x => x.dtreffre === d);
+    return {date:d, valeur: l ? Number(l.indfoy_ndur || 0) : 0};
+  });
+  datasets.unshift({
+    id: 'caf_' + filterSlug + '_synthese',
+    titre: 'Toutes prestations CAF — Synthèse 974',
+    description: 'Foyers allocataires toutes prestations · ' + dates.length + ' mois',
+    annee: dates[dates.length-1] ? dates[dates.length-1].slice(0, 4) : '—',
+    anneeFull: dates[0] + ' → ' + dates[dates.length-1],
+    type: 'Effectifs', theme: theme,
+    organisation: 'CNAF', portail: 'data.caf.fr',
+    license: 'Licence Ouverte v2.0 (Etalab)',
+    tags: ['caf', 'synthese', '974', 'mensuel'],
+    statistiques: {
+      nb_periodes: dates.length, periode_debut: dates[0], periode_fin: dates[dates.length-1],
+      effectif_min: Stats.min(datesSerie.map(p => p.valeur)),
+      effectif_max: Stats.max(datesSerie.map(p => p.valeur)),
+      effectif_moyen: Stats.mean(datesSerie.map(p => p.valeur)),
+      serie: datesSerie
+    },
+    qualite: 4, comparabilite: 4, ecologie: 4, reproductibilite: 4
+  });
+
+  return datasets;
+}
+
+function aggregateClassicFormat(lignes, theme){
+  const dates = [...new Set(lignes.map(l => l.dtreffre))].sort();
+  const filterSlug = state.filter974 ? '974' : 'france';
+  const themeSlug = theme.toLowerCase().replace(/\s/g,'_').replace(/[^\w]/g,'');
+
+  const effectifKey = Object.keys(lignes[0] || {}).find(k => /^ind(ben|nbp|foy)_/.test(k));
+  if (!effectifKey) return [];
+
+  const serie = dates.map(d => {
+    let total = 0;
+    for (const l of lignes) if (l.dtreffre === d) total += Number(l[effectifKey] || 0);
+    return {date: d, valeur: total};
+  }).filter(p => p.valeur > 0);
+  if (serie.length < 2) return [];
+  const vals = serie.map(p => p.valeur);
+
+  const datasets = [{
+    id: 'caf_' + filterSlug + '_' + themeSlug + '_synthese',
+    titre: theme + ' — Synthèse ' + (state.filter974 ? '974' : 'France'),
+    description: 'Total ' + theme + ' · ' + serie.length + ' périodes · ' + lignes.length + ' lignes',
+    annee: dates[dates.length-1] ? dates[dates.length-1].slice(0, 4) : '—',
+    anneeFull: dates[0] + ' → ' + dates[dates.length-1],
+    type: 'Effectifs', theme: theme,
+    organisation: 'CNAF', portail: 'data.caf.fr',
+    license: 'Licence Ouverte v2.0 (Etalab)',
+    tags: ['caf', themeSlug, state.filter974 ? '974' : 'france', 'synthese'],
+    statistiques: {
+      nb_lignes: lignes.length, nb_periodes: serie.length,
+      periode_debut: dates[0], periode_fin: dates[dates.length-1],
+      effectif_min: Stats.min(vals), effectif_max: Stats.max(vals),
+      effectif_moyen: Stats.mean(vals), effectif_total: Stats.sum(vals),
+      serie: serie
+    },
+    qualite: 4, comparabilite: 4, ecologie: 4, reproductibilite: 4
+  }];
+
+  const dimKeys = Object.keys(lignes[0]).filter(k =>
+    k === 'aah_complaah' || k === 'complement' ||
+    k === 'aah_age_5' || k === 'aah_age_1' ||
+    k === 'aah_tx_inca' || k === 'taux_incapacite' ||
+    k === 'type_presta' || k === 'taux'
+  );
+
+  for (const dimKey of dimKeys){
+    const dims = [...new Set(lignes.map(l => l[dimKey]).filter(Boolean))];
+    for (const dim of dims){
+      const lignesDim = lignes.filter(l => l[dimKey] === dim);
+      const serieDim = dates.map(d => {
+        let t = 0;
+        for (const l of lignesDim) if (l.dtreffre === d) t += Number(l[effectifKey] || 0);
+        return {date: d, valeur: t};
+      }).filter(p => p.valeur > 0);
+      if (serieDim.length < 2) continue;
+      const vd = serieDim.map(p => p.valeur);
+      const dimSlug = String(dim).toLowerCase().replace(/\s/g,'_').replace(/[^\w]/g,'').slice(0, 40);
+      const dimPrefix = dimKey.replace('aah_', '').replace(/_/g, '').slice(0, 8);
+      datasets.push({
+        id: 'caf_' + filterSlug + '_' + themeSlug + '_' + dimPrefix + '_' + dimSlug,
+        titre: theme + ' — ' + dim,
+        description: dim + ' · ' + serieDim.length + ' périodes · ' + lignesDim.length + ' lignes',
+        annee: dates[dates.length-1] ? dates[dates.length-1].slice(0, 4) : '—',
+        anneeFull: dates[0] + ' → ' + dates[dates.length-1],
+        type: 'Effectifs', theme: theme, dimension: dimKey,
+        organisation: 'CNAF', portail: 'data.caf.fr',
+        license: 'Licence Ouverte v2.0 (Etalab)',
+        tags: ['caf', themeSlug, dimPrefix, dimSlug, state.filter974 ? '974' : 'france'],
+        statistiques: {
+          nb_lignes: lignesDim.length, nb_periodes: serieDim.length,
+          periode_debut: dates[0], periode_fin: dates[dates.length-1],
+          effectif_min: Stats.min(vd), effectif_max: Stats.max(vd),
+          effectif_moyen: Stats.mean(vd), effectif_total: Stats.sum(vd),
+          serie: serieDim
+        },
+        qualite: 4, comparabilite: 4, ecologie: 4, reproductibilite: 4
+      });
+    }
+  }
+  return datasets;
+}
+
+function normalizeDataset(d){
+  if (d.id && d.theme && d.qualite !== undefined && d.titre && d.statistiques) return d;
+  let id = d.id || 'auto_' + hashString(JSON.stringify(d).slice(0, 200));
+  const titre = d.titre || d.title || d.descriptif || 'Dataset';
+  return {
+    id: id, titre: titre,
+    description: d.description || d.descriptif || '',
+    annee: d.annee || '—', anneeFull: d.annee || '—',
+    type: d.type || 'Indicateur', theme: d.theme || 'Autre',
+    organisation: d.organisation || 'CNAF', portail: d.portail || 'data.caf.fr',
+    license: d.license || 'Licence Ouverte v2.0 (Etalab)', tags: d.tags || [],
+    qualite: d.qualite || 2, comparabilite: d.comparabilite || 2,
+    ecologie: d.ecologie || 2, reproductibilite: d.reproductibilite || 2,
+    statistiques: d.statistiques || null, valeur: d.valeur || null
+  };
+}
+
+function hashString(s){
+  let h = 0;
+  for (let i = 0; i < s.length; i++){ h = ((h << 5) - h) + s.charCodeAt(i); h |= 0; }
+  return Math.abs(h).toString(36);
+}
+
+// ============================================================
+// CALCULS
+// ============================================================
+function computeAll(){
+  computeSeriesByTheme();
+  computeAnomalies();
+  computeForecasts();
+  computeCorrelations();
+}
+
+function computeSeriesByTheme(){
+  state.seriesByTheme = {};
+  for (const d of state.allDatasets){
+    if (!d.statistiques || !d.statistiques.serie) continue;
+    const key = d.titre;
+    if (!state.seriesByTheme[key]) state.seriesByTheme[key] = [];
+    for (const p of d.statistiques.serie) state.seriesByTheme[key].push({date:p.date, valeur:p.valeur});
+  }
+  for (const key of Object.keys(state.seriesByTheme)){
+    const map = {};
+    for (const p of state.seriesByTheme[key]) map[p.date] = p.valeur;
+    state.seriesByTheme[key] = Object.keys(map).map(date => ({date: date, valeur: map[date]})).sort((a,b) => a.date.localeCompare(b.date));
+  }
+}
+
+function computeAnomalies(){
+  state.anomalies = [];
+  for (const theme of Object.keys(state.seriesByTheme)){
+    const series = state.seriesByTheme[theme];
+    if (series.length < 12) continue;
+    const vals = series.map(p => p.valeur);
+    const outliers = Stats.detectOutliers(vals, 2.5);
+    for (const o of outliers){
+      state.anomalies.push({
+        theme: theme, date: series[o.index].date, valeur: o.value, z: o.z,
+        type: o.z > 0 ? 'pic' : 'creux',
+        severite: Math.abs(o.z) > 3.5 ? 'critique' : Math.abs(o.z) > 3 ? 'élevée' : 'modérée'
+      });
+    }
+  }
+  state.anomalies.sort((a,b) => Math.abs(b.z) - Math.abs(a.z));
+  state.anomalies = state.anomalies.slice(0, 100);
+}
+
+function computeForecasts(){
+  state.forecasts = {};
+  for (const theme of Object.keys(state.seriesByTheme)){
+    const series = state.seriesByTheme[theme];
+    if (series.length < 24) continue;
+    const x = series.map((p, i) => i);
+    const y = series.map(p => p.valeur);
+    const xF = [y.length, y.length+1, y.length+2, y.length+3, y.length+4, y.length+5];
+    const res = Stats.forecastLinear(x, y, xF);
+    const lastDate = series[series.length-1].date;
+    const parts = lastDate.split('-');
+    const yr = Number(parts[0]);
+    const mo = Number(parts[1]);
+    const futDates = xF.map((_, i) => {
+      const m = mo + i + 1;
+      const addY = Math.floor((m - 1) / 12);
+      const newM = ((m - 1) % 12) + 1;
+      return (yr + addY) + '-' + String(newM).padStart(2,'0');
+    });
+    state.forecasts[theme] = {
+      historique: series,
+      futur: futDates.map((d, i) => ({date:d, valeur:res.yPred[i], min:res.yMin[i], max:res.yMax[i]})),
+      r2: res.r2, slope: res.slope, fiable: res.r2 > 0.6
+    };
+  }
+}
+
+function computeCorrelations(){
+  const keys = Object.keys(state.seriesByTheme).filter(t => state.seriesByTheme[t].length >= 12);
+  const matrices = {};
+  for (let i = 0; i < keys.length; i++){
+    for (let j = i; j < keys.length; j++){
+      const t1 = keys[i], t2 = keys[j];
+      const m1 = {}, m2 = {};
+      for (const p of state.seriesByTheme[t1]) m1[p.date] = p.valeur;
+      for (const p of state.seriesByTheme[t2]) m2[p.date] = p.valeur;
+      const common = Object.keys(m1).filter(d => d in m2);
+      if (common.length < 6) continue;
+      const x = common.map(d => m1[d]), y = common.map(d => m2[d]);
+      matrices[t1 + '||' + t2] = {t1: t1, t2: t2, pearson: Stats.pearson(x, y), spearman: Stats.spearman(x, y), n: common.length};
+    }
+  }
+  state.correlations = {themes: keys, matrices: matrices};
+}
+
+async function computeMicroRegions(){
+  try {
+    const resp = await fetch(CDN + 'communes_974.json');
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    COMMUNES_974 = await resp.json();
+    state.microRegions = {Nord:[], Sud:[], Est:[], Ouest:[]};
+    for (const c of COMMUNES_974){
+      if (c.mr && state.microRegions[c.mr]) state.microRegions[c.mr].push(c);
+    }
+    console.log('✅ ' + COMMUNES_974.length + ' communes chargées');
+  } catch (err){
+    console.warn('⚠️ communes_974.json non chargé :', err.message);
+    COMMUNES_974 = [];
+    state.microRegions = {};
+  }
+}
+
+function evaluateRules(){
+  const rules = [];
+  const r = (id, nom, cond, msg, niv) => { if (cond) rules.push({id:id, nom:nom, message:msg, niveau:niv}); };
+  r('R1', 'Filtre 974', state.filter974, 'Filtrage La Réunion actif', 'vert');
+  r('R2', 'Rupture RSA 2020', true, 'RSA recentralisé depuis 2020', 'rouge');
+  r('R3', 'Secret statistique', true, 'Floutage petits effectifs', 'or');
+  r('R4', 'Non-recours', true, 'Taux ~30 %', 'or');
+  if (state.anomalies.length > 10) r('R5', 'Anomalies', true, state.anomalies.length + ' anomalies', 'or');
+  r('R6', 'Licence', true, 'Licence Ouverte v2.0', 'vert');
+  if (Object.keys(state.forecasts).some(k => state.forecasts[k].fiable)) r('R7', 'Projections fiables', true, 'R² > 0.6', 'vert');
+  return rules;
+}
+
+// ============================================================
+// UI
+// ============================================================
+function updateStats(){
+  const all = state.allDatasets;
+  safeSet('tbDatasets', fmt(all.length));
+  safeSet('tbSeries', Object.keys(state.seriesByTheme).length);
+  const themes = {};
+  for (const d of all) themes[d.theme] = (themes[d.theme] || 0) + 1;
+  safeSet('ivTotal', fmt(all.length));
+  safeSet('ivAAH', fmt(themes['AAH'] || 0));
+  safeSet('ivBenef', fmt(themes['Bénéficiaires'] || 0));
+  safeSet('ivSeries', Object.keys(state.seriesByTheme).length);
+}
+
+function updateRightPanel(){
+  const all = state.allDatasets;
+  if (!all.length) return;
+  const scores = all.map(d => (d.qualite + d.comparabilite + d.ecologie + d.reproductibilite) / 16 * 100);
+  safeSet('ivScore', fmtDec(Stats.mean(scores), 1) + '%', 'v bleu');
+  const themes = Object.keys(state.seriesByTheme).filter(k => state.seriesByTheme[k].length >= 12);
+  let trend = 'stable';
+  if (themes.length){
+    const slopes = themes.map(k => Stats.linearRegression(state.seriesByTheme[k].map((_,i)=>i), state.seriesByTheme[k].map(p => p.valeur)).a);
+    const meanSlope = Stats.mean(slopes);
+    trend = meanSlope > 0 ? 'croissance' : meanSlope < 0 ? 'décroissance' : 'stable';
+  }
+  safeSet('ivTrend', trend, trend === 'croissance' ? 'v vert' : trend === 'décroissance' ? 'v rouge' : 'v or');
+  safeSet('ivAnomalies', fmt(state.anomalies.length), state.anomalies.length > 10 ? 'v rouge' : 'v or');
+  safeSet('ivProj', Object.keys(state.forecasts).length, 'v cyan');
+  safeSet('ivCorr', state.correlations ? Object.keys(state.correlations.matrices).length : 0, 'v rose');
+}
+
+function updateAllUI(){
+  safeSet('tbSource', state.source.length > 18 ? state.source.slice(0, 16) + '…' : state.source, 'val vert');
+  safeSet('ivSource', state.source, 'v bleu');
+  safeSet('ivStatus', '● CHARGÉ', 'v vert');
+  safeSet('ivDate', state.loadedAt ? state.loadedAt.toLocaleString('fr-FR') : '—');
+  const dot = $('statusDot'); if (dot) dot.classList.remove('offline');
+  $('warningBanner').hidden = false;
+  ['exportCsv','exportJson','exportHtml','exportDce'].forEach(id => { const el = $(id); if (el) el.disabled = false; });
+  updateStats(); updateRightPanel(); renderRulesEngine();
+  applyFilters(); renderScenarios(); renderFilesLoaded(); renderAll();
+}
+
+function renderRulesEngine(){
+  const el = $('rulesEngine');
+  if (!el) return;
+  if (!state.allDatasets.length){
+    el.innerHTML = '<div style="text-align:center;color:var(--muted);font-size:11px;padding:8px">En attente</div>';
+    return;
+  }
+  const rules = evaluateRules();
+  el.innerHTML = rules.map(r => '<div style="padding:6px 0;border-bottom:1px dashed var(--gris-100);font-size:11px">' +
+    '<div style="display:flex;justify-content:space-between;margin-bottom:2px">' +
+    '<strong style="color:var(--' + (r.niveau === 'rouge' ? 'rouge' : r.niveau === 'or' ? 'or' : 'vert') + ')">' + r.id + ' · ' + escapeHtml(r.nom) + '</strong>' +
+    '</div>' +
+    '<div style="color:var(--gris-700);font-size:10px">' + escapeHtml(r.message) + '</div>' +
+    '</div>').join('');
+}
+
+function renderScenarios(){
+  const el = $('scenarioList');
+  if (!el) return;
+  if (!state.allDatasets.length){
+    el.innerHTML = '<div style="text-align:center;padding:20px;color:var(--muted);font-size:11px">Chargement…</div>';
+    safeSet('sbCount', 'Chargement…');
+    return;
+  }
+  safeSet('sbCount', state.allDatasets.length + ' datasets');
+  el.innerHTML = SCENARIOS.map(s => {
+    const n = state.allDatasets.filter(d => s.theme === 'Critique' || s.theme === 'Multi' || s.theme === 'Anomalies' || s.theme === 'Projection' || d.theme === s.theme).length;
+    const cls = s.badge === 'danger' ? 'forbidden' : s.badge === 'violet' ? 'violet' : s.badge === 'cyan' ? 'cyan' : '';
+    const bcls = s.badge === 'danger' ? 'danger' : s.badge === 'violet' ? 'violet' : s.badge === 'cyan' ? 'cyan' : s.badge === 'warn' ? 'warn' : 'ok';
+    return '<div class="scenario-item ' + (state.activeScenario === s.id ? 'active' : '') + ' ' + cls + '" data-id="' + s.id + '">' +
+      '<div class="scenario-name">' + escapeHtml(s.nom) + '</div>' +
+      '<div class="scenario-desc">' + escapeHtml(s.desc) + '</div>' +
+      '<span class="scenario-badge badge-' + bcls + '">' + escapeHtml(s.badgeTxt) + ' · ' + n + '</span>' +
+      '</div>';
+  }).join('');
+  el.querySelectorAll('.scenario-item').forEach(item => item.addEventListener('click', () => {
+    state.activeScenario = item.dataset.id;
+    renderScenarios(); renderAll();
+  }));
+}
+
+function renderKPIs(){
+  if (!state.allDatasets.length){
+    $('kpiStrip').innerHTML = '<div class="kpi or"><div class="label">Statut</div><div class="value">CHARGEMENT</div></div>' +
+      '<div class="kpi cyan"><div class="label">Vues</div><div class="value">20</div></div>';
+    return;
+  }
+  const kpis = [
+    {label:'Fichiers', value:state.filesHistory.length, cls:'vert'},
+    {label:'Datasets', value:fmt(state.allDatasets.length), cls:''},
+    {label:'Séries', value:Object.keys(state.seriesByTheme).length, cls:'violet'},
+    {label:'Anomalies', value:state.anomalies.length, cls:'or'},
+    {label:'Projections', value:Object.keys(state.forecasts).length, cls:'cyan'},
+    {label:'Corrélations', value:state.correlations ? Object.keys(state.correlations.matrices).length : 0, cls:'rose'}
+  ];
+  $('kpiStrip').innerHTML = kpis.map(k => '<div class="kpi ' + k.cls + '"><div class="label">' + k.label + '</div><div class="value">' + k.value + '</div></div>').join('');
+}
+
+function applyFilters(){
+  const q = state.query.toLowerCase().trim();
+  state.filteredDatasets = state.allDatasets.filter(d => {
+    if (!q) return true;
+    const hay = [d.titre, d.description, d.annee, d.type, d.theme, d.organisation, d.tags.join(' ')].join(' ').toLowerCase();
+    return hay.indexOf(q) >= 0;
+  });
+  state.filteredDatasets.sort((a, b) => {
+    switch(state.sort){
+      case 'annee_desc': return String(b.annee).localeCompare(String(a.annee));
+      case 'qualite_desc': return b.qualite - a.qualite;
+      case 'theme_asc': return String(a.theme).localeCompare(String(b.theme));
+      default: return 0;
+    }
+  });
+}
+
+function renderAll(){ renderKPIs(); renderView(); }
+
+function renderView(){
+  const area = $('resultsArea');
+  if (!area) return;
+  if (!state.allDatasets.length){
+    area.innerHTML = '<div style="text-align:center;padding:60px 20px;color:var(--muted)">' +
+      '<div style="font-size:48px;margin-bottom:16px">🏛️</div>' +
+      '<div style="font-weight:700;font-size:16px">Chargement…</div>' +
+      '<div style="margin-top:10px;font-size:11px;font-family:var(--mono)" id="loadProgress">Lecture du manifeste…</div></div>';
+    return;
+  }
+  const views = {
+    overview: renderOverview, datasets: renderDatasets, prestations: renderPrestations,
+    evolution: renderEvolution, mensuel: renderMensuel, forecast: renderForecast,
+    anomalies: renderAnomalies, correlations: renderCorrelations, timeline: renderTimeline,
+    matrix: renderMatrix, stats: renderStats, indicators: renderIndicators,
+    microregions: renderMicroRegions, geographie: renderGeographie,
+    comparaison: renderComparaison, benchmark: renderBenchmark,
+    simulateur: renderSimulateur, warnings: renderWarnings,
+    dce: renderDCE, audit: renderAudit
+  };
+  (views[state.activeView] || renderOverview)(area);
+}
+
+function renderOverview(area){
+  const all = state.allDatasets;
+  const themes = {};
+  for (const d of all) themes[d.theme] = (themes[d.theme] || 0) + 1;
+  const max = Math.max.apply(null, Object.keys(themes).map(k => themes[k]).concat([1]));
+  area.innerHTML = '<div class="card" style="border-left-color:var(--vert)">' +
+    '<h3>🇷🇪 Filtrage La Réunion (974) actif</h3>' +
+    '<p>Chargement auto via jsDelivr · ' + state.filesHistory.length + ' fichier(s)</p></div>' +
+    '<div class="card"><h3>📊 Synthèse globale</h3>' +
+    '<table class="matrix"><thead><tr><th>Indicateur</th><th>Valeur</th></tr></thead><tbody>' +
+    '<tr><td>Fichiers</td><td class="num">' + state.filesHistory.length + '</td></tr>' +
+    '<tr><td>Lignes brutes</td><td class="num">' + fmt(state.allDatasetsBruts.length) + '</td></tr>' +
+    '<tr><td>Datasets analytiques</td><td class="num">' + fmt(all.length) + '</td></tr>' +
+    '<tr><td>Séries temporelles</td><td class="num">' + Object.keys(state.seriesByTheme).length + '</td></tr>' +
+    '<tr><td>Anomalies</td><td class="num">' + state.anomalies.length + '</td></tr>' +
+    '<tr><td>Projections</td><td class="num">' + Object.keys(state.forecasts).length + '</td></tr>' +
+    '<tr><td>Corrélations</td><td class="num">' + (state.correlations ? Object.keys(state.correlations.matrices).length : 0) + '</td></tr>' +
+    '</tbody></table></div>' +
+    '<div class="card"><h3>🗂️ Répartition par thème</h3>' +
+    Object.keys(themes).sort((a,b) => themes[b]-themes[a]).map(t =>
+      '<div class="bar-row"><div class="name">' + escapeHtml(t) + '</div><div class="bar-track"><div class="bar-fill" style="width:' + (themes[t]/max*100) + '%"></div></div><div class="val">' + themes[t] + '</div></div>'
+    ).join('') + '</div>';
+}
+
+function renderDatasets(area){
+  const filtered = state.filteredDatasets;
+  if (!filtered.length){ area.innerHTML = '<div class="card"><p>Aucun dataset.</p></div>'; return; }
+  area.innerHTML = '<div class="card" style="border-left-color:var(--or)"><h3>🗂️ ' + filtered.length + ' dataset(s) / ' + state.allDatasets.length + '</h3></div>' +
+    filtered.slice(0, 100).map(d =>
+      '<div class="card"><h3>' + escapeHtml(d.titre) + '</h3>' +
+      '<p>' + escapeHtml(d.description.slice(0, 200)) + '</p>' +
+      '<div class="meta">' +
+      '<span class="tag bleu">' + escapeHtml(d.annee) + '</span>' +
+      '<span class="tag">' + escapeHtml(d.type) + '</span>' +
+      '<span class="tag">' + escapeHtml(d.theme) + '</span>' +
+      (d.statistiques && d.statistiques.nb_periodes ? '<span class="tag cyan">' + d.statistiques.nb_periodes + ' périodes</span>' : '') +
+      (d.statistiques && d.statistiques.effectif_total ? '<span class="tag or">Total: ' + fmt(d.statistiques.effectif_total) + '</span>' : '') +
+      '</div></div>'
+    ).join('');
+}
+
+function renderPrestations(area){
+  const byPresta = {};
+  for (const d of state.allDatasets){
+    const m = d.titre.match(/^(AAH|RSA|PPA|AF|CF|ARS|ASF|AEEH|PAJE|APL|ALS|ALF|PreParE|CMG|PN|AB|AJPP|AJPA|RSO|Aides logement|Total|Enfance Jeunesse|Handicap Dépendance)/);
+    if (m){
+      const p = m[1];
+      if (!byPresta[p]) byPresta[p] = {foy:null, nbp:null, mtt:null};
+      if (d.titre.indexOf('Foyers') >= 0) byPresta[p].foy = d;
+      if (d.titre.indexOf('Personnes') >= 0) byPresta[p].nbp = d;
+      if (d.titre.indexOf('Montants') >= 0) byPresta[p].mtt = d;
+    }
+  }
+  area.innerHTML = '<div class="card" style="border-left-color:var(--violet)"><h3>💶 Prestations CAF — ' + Object.keys(byPresta).length + ' prestations</h3></div>' +
+    '<div class="card"><table class="matrix"><thead><tr><th>Prestation</th><th>Foyers</th><th>Personnes</th><th>Montant</th><th>Évolution</th></tr></thead><tbody>' +
+    Object.keys(byPresta).map(p => {
+      const data = byPresta[p];
+      const foy = data.foy && data.foy.statistiques ? data.foy.statistiques.serie : null;
+      const nbp = data.nbp && data.nbp.statistiques ? data.nbp.statistiques.serie : null;
+      const mtt = data.mtt && data.mtt.statistiques ? data.mtt.statistiques.serie : null;
+      const lastFoy = foy ? foy[foy.length-1].valeur : 0;
+      const lastNbp = nbp ? nbp[nbp.length-1].valeur : 0;
+      const lastMtt = mtt ? mtt[mtt.length-1].valeur : 0;
+      const firstFoy = foy ? foy[0].valeur : 0;
+      const evo = firstFoy ? ((lastFoy - firstFoy) / firstFoy * 100) : 0;
+      return '<tr><td><strong>' + escapeHtml(p) + '</strong></td>' +
+        '<td class="num">' + fmt(lastFoy) + '</td>' +
+        '<td class="num">' + fmt(lastNbp) + '</td>' +
+        '<td class="num">' + fmt(lastMtt) + ' €</td>' +
+        '<td class="num trend-' + (evo > 0 ? 'up' : evo < 0 ? 'down' : 'flat') + '">' + (evo > 0 ? '▲' : evo < 0 ? '▼' : '=') + ' ' + evo.toFixed(1) + ' %</td></tr>';
+    }).join('') + '</tbody></table></div>';
+}
+
+function renderEvolution(area){
+  const series = Object.keys(state.seriesByTheme).filter(k => state.seriesByTheme[k].length >= 12)
+    .sort((a, b) => state.seriesByTheme[b].length - state.seriesByTheme[a].length);
+  if (!series.length){ area.innerHTML = '<div class="card"><p>Aucune série.</p></div>'; return; }
+  area.innerHTML = '<div class="card"><h3>📈 ' + series.length + ' séries temporelles</h3></div>' +
+    series.slice(0, 30).map(titre => {
+      const s = state.seriesByTheme[titre];
+      const W = 700, H = 120, PAD = 20;
+      const innerW = W - 2*PAD, innerH = H - 2*PAD;
+      const vals = s.map(p => p.valeur);
+      const minV = Stats.min(vals), maxV = Stats.max(vals);
+      const range = maxV - minV || 1;
+      const points = s.map((p, i) => ({x: PAD + (i / Math.max(1, s.length-1)) * innerW, y: PAD + innerH - ((p.valeur - minV) / range) * innerH}));
+      const linePath = points.map((p, i) => (i === 0 ? 'M' : 'L') + ' ' + p.x + ' ' + p.y).join(' ');
+      const slope = Stats.linearRegression(s.map((_,i)=>i), vals).a;
+      const evo = ((vals[vals.length-1] - vals[0]) / vals[0] * 100);
+      return '<div class="card"><h3>📈 ' + escapeHtml(titre) + ' <span class="trend-' + (slope > 0 ? 'up' : slope < 0 ? 'down' : 'flat') + '">' + (slope > 0 ? '▲' : slope < 0 ? '▼' : '=') + ' ' + evo.toFixed(1) + ' %</span></h3>' +
+        '<div class="meta"><span class="tag bleu">' + s.length + ' pts</span>' +
+        '<span class="tag">' + s[0].date + ' → ' + s[s.length-1].date + '</span>' +
+        '<span class="tag">Moy: ' + fmtDec(Stats.mean(vals), 0) + '</span></div>' +
+        '<svg viewBox="0 0 ' + W + ' ' + H + '" style="width:100%;height:auto;margin-top:8px"><path d="' + linePath + '" fill="none" stroke="var(--bleu)" stroke-width="1.5"/></svg></div>';
+    }).join('');
+}
+
+function renderMensuel(area){
+  const moisData = {};
+  for (const titre of Object.keys(state.seriesByTheme)){
+    for (const p of state.seriesByTheme[titre]){
+      if (!/^\d{4}-\d{2}$/.test(p.date)) continue;
+      const mois = p.date.slice(5, 7);
+      if (!moisData[mois]) moisData[mois] = {total:0, count:0};
+      moisData[mois].total += p.valeur;
+      moisData[mois].count++;
+    }
+  }
+  const moisNoms = ['Jan','Fév','Mar','Avr','Mai','Juin','Juil','Août','Sep','Oct','Nov','Déc'];
+  const moyennes = moisNoms.map((_, i) => {
+    const m = String(i+1).padStart(2, '0');
+    return moisData[m] ? moisData[m].total / moisData[m].count : 0;
+  });
+  const moyGen = Stats.mean(moyennes);
+  area.innerHTML = '<div class="card" style="border-left-color:var(--cyan)"><h3>📆 Moyennes mensuelles</h3></div>' +
+    '<div class="card"><table class="matrix"><thead><tr><th>Mois</th><th>Moyenne</th><th>Indice</th></tr></thead><tbody>' +
+    moisNoms.map((m, i) => {
+      const v = moyennes[i];
+      const indice = moyGen ? (v/moyGen*100) : 0;
+      return '<tr><td>' + m + '</td><td class="num">' + fmt(v) + '</td><td class="num">' + indice.toFixed(0) + '</td></tr>';
+    }).join('') + '</tbody></table></div>';
+}
+
+function renderForecast(area){
+  const forecasts = Object.keys(state.forecasts).sort((a,b) => state.forecasts[b].r2 - state.forecasts[a].r2).slice(0, 20);
+  if (!forecasts.length){ area.innerHTML = '<div class="card"><p>Données insuffisantes.</p></div>'; return; }
+  area.innerHTML = '<div class="card"><h3>🔮 ' + forecasts.length + ' projections</h3></div>' +
+    forecasts.map(theme => {
+      const f = state.forecasts[theme];
+      return '<div class="card"><h3>🔮 ' + escapeHtml(theme) + ' <span class="forecast-badge">R² = ' + f.r2.toFixed(3) + '</span></h3>' +
+        '<div class="meta"><span class="tag ' + (f.fiable ? 'vert' : 'or') + '">' + (f.fiable ? 'Fiable' : 'Prudence') + '</span>' +
+        '<span class="tag">Pente: ' + f.slope.toFixed(2) + '</span></div>' +
+        '<table class="matrix" style="margin-top:8px"><thead><tr><th>Mois</th><th>Prédiction</th><th>IC 95 %</th></tr></thead><tbody>' +
+        f.futur.map(p => '<tr><td>' + p.date + '</td><td class="num">' + fmt(p.valeur) + '</td><td class="num">[' + fmt(p.min) + ' ; ' + fmt(p.max) + ']</td></tr>').join('') +
+        '</tbody></table></div>';
+    }).join('');
+}
+
+function renderAnomalies(area){
+  if (!state.anomalies.length){ area.innerHTML = '<div class="card" style="border-left-color:var(--vert)"><h3>✅ Aucune anomalie</h3></div>'; return; }
+  area.innerHTML = '<div class="card" style="border-left-color:var(--rouge)"><h3>🚨 ' + state.anomalies.length + ' anomalies (|Z|>2.5)</h3></div>' +
+    '<div class="card"><table class="matrix"><thead><tr><th>Série</th><th>Date</th><th>Valeur</th><th>Z</th><th>Sévérité</th></tr></thead><tbody>' +
+    state.anomalies.slice(0, 60).map(a =>
+      '<tr><td style="text-align:left;font-size:10px">' + escapeHtml(a.theme.slice(0, 40)) + '</td>' +
+      '<td>' + a.date + '</td>' +
+      '<td class="num">' + fmt(a.valeur) + '</td>' +
+      '<td class="num" style="color:var(--' + (a.z > 0 ? 'vert' : 'rouge') + ')">' + (a.z > 0 ? '+' : '') + a.z.toFixed(2) + '</td>' +
+      '<td><span class="tag ' + (a.severite === 'critique' ? 'rouge' : a.severite === 'élevée' ? 'or' : 'mono') + '">' + a.severite + '</span></td></tr>'
+    ).join('') + '</tbody></table></div>';
+}
+
+function renderCorrelations(area){
+  if (!state.correlations || !Object.keys(state.correlations.matrices).length){
+    area.innerHTML = '<div class="card"><p>Données insuffisantes.</p></div>'; return;
+  }
+  const matrices = Object.keys(state.correlations.matrices)
+    .map(k => state.correlations.matrices[k])
+    .filter(m => Math.abs(m.pearson) > 0.7)
+    .sort((a,b) => Math.abs(b.pearson) - Math.abs(a.pearson)).slice(0, 30);
+  area.innerHTML = '<div class="card" style="border-left-color:var(--rose)"><h3>🔗 Corrélations fortes (|r| > 0.7)</h3></div>' +
+    '<div class="card"><table class="matrix"><thead><tr><th>Série 1</th><th>Série 2</th><th>r</th><th>n</th></tr></thead><tbody>' +
+    matrices.map(m =>
+      '<tr><td style="text-align:left;font-size:10px">' + escapeHtml(m.t1.slice(0, 35)) + '</td>' +
+      '<td style="text-align:left;font-size:10px">' + escapeHtml(m.t2.slice(0, 35)) + '</td>' +
+      '<td class="num" style="color:var(--' + (m.pearson > 0 ? 'vert' : 'rouge') + ')"><strong>' + m.pearson.toFixed(3) + '</strong></td>' +
+      '<td class="num">' + m.n + '</td></tr>'
+    ).join('') + '</tbody></table></div>';
+}
+
+function renderTimeline(area){
+  const timeline = {};
+  for (const d of state.allDatasets){
+    const annees = (d.annee.match(/\d{4}/g) || []);
+    for (const a of annees){
+      if (!timeline[a]) timeline[a] = {n:0, themes:{}};
+      timeline[a].n++;
+      timeline[a].themes[d.theme] = (timeline[a].themes[d.theme]||0)+1;
+    }
+  }
+  const annees = Object.keys(timeline).sort();
+  if (!annees.length){ area.innerHTML = '<div class="card"><p>Aucune année.</p></div>'; return; }
+  const maxN = Math.max.apply(null, annees.map(a => timeline[a].n).concat([1]));
+  area.innerHTML = '<div class="card"><h3>📅 Timeline ' + annees[0] + ' → ' + annees[annees.length-1] + '</h3></div>' +
+    '<div class="card">' + annees.map(a => {
+      const t = timeline[a];
+      const pct = (t.n / maxN) * 100;
+      const themes = Object.keys(t.themes).map(th => '<span class="tag bleu" style="margin:2px">' + th + ' ×' + t.themes[th] + '</span>').join('');
+      return '<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--gris-100)">' +
+        '<div style="background:var(--bleu);color:#fff;padding:4px 10px;border-radius:4px;font-family:var(--mono);font-weight:800;font-size:12px;min-width:60px;text-align:center">' + a + '</div>' +
+        '<div style="flex:1"><div style="font-weight:700;margin-bottom:4px">' + t.n + '</div>' +
+        '<div style="background:var(--gris-100);height:6px;border-radius:3px;overflow:hidden"><div style="width:' + pct + '%;height:100%;background:var(--bleu)"></div></div>' +
+        '<div style="margin-top:4px">' + themes + '</div></div></div>';
+    }).join('') + '</div>';
+}
+
+function renderMatrix(area){
+  const themes = [...new Set(state.allDatasets.map(d => d.theme))];
+  const annees = [...new Set(state.allDatasets.map(d => d.annee))].sort();
+  const m = {};
+  let max = 0;
+  for (const d of state.allDatasets){
+    const k = d.annee + '||' + d.theme;
+    m[k] = (m[k] || 0) + 1;
+    if (m[k] > max) max = m[k];
+  }
+  area.innerHTML = '<div class="card"><h3>🔲 Matrice Années × Thèmes</h3>' +
+    '<table class="matrix"><thead><tr><th class="row-head">Année \\ Thème</th>' + themes.map(t => '<th>' + escapeHtml(t) + '</th>').join('') + '</tr></thead>' +
+    '<tbody>' + annees.map(a => '<tr><td class="row-head">' + escapeHtml(a) + '</td>' +
+      themes.map(t => {
+        const v = m[a + '||' + t] || 0;
+        if (!v) return '<td class="cell zero">·</td>';
+        const i = 0.15 + 0.85 * (v/max);
+        return '<td class="cell" style="background:rgba(0,0,145,' + i + ');color:' + (i > 0.5 ? '#fff' : 'var(--bleu)') + '">' + v + '</td>';
+      }).join('') + '</tr>').join('') + '</tbody></table></div>';
+}
+
+function renderStats(area){
+  const all = state.allDatasets;
+  const scores = all.map(d => (d.qualite + d.comparabilite + d.ecologie + d.reproductibilite) / 16 * 100);
+  const nbSeries = Object.keys(state.seriesByTheme).length;
+  let nbPeriodes = 0;
+  for (const k of Object.keys(state.seriesByTheme)) nbPeriodes += state.seriesByTheme[k].length;
+  area.innerHTML = '<div class="card"><h3>📊 Statistiques globales</h3>' +
+    '<table class="matrix"><thead><tr><th>Métrique</th><th>Valeur</th></tr></thead><tbody>' +
+    '<tr><td>Datasets</td><td class="num">' + fmt(all.length) + '</td></tr>' +
+    '<tr><td>Lignes brutes</td><td class="num">' + fmt(state.allDatasetsBruts.length) + '</td></tr>' +
+    '<tr><td>Séries temporelles</td><td class="num">' + nbSeries + '</td></tr>' +
+    '<tr><td>Total points de données</td><td class="num">' + fmt(nbPeriodes) + '</td></tr>' +
+    '<tr><td>Score qualité moyen</td><td class="num">' + fmtDec(Stats.mean(scores), 1) + ' %</td></tr>' +
+    '<tr><td>Médiane</td><td class="num">' + fmtDec(Stats.median(scores), 1) + ' %</td></tr>' +
+    '<tr><td>Écart-type</td><td class="num">' + fmtDec(Stats.std(scores), 2) + '</td></tr>' +
+    '<tr><td>Anomalies</td><td class="num">' + state.anomalies.length + '</td></tr>' +
+    '<tr><td>Projections</td><td class="num">' + Object.keys(state.forecasts).length + '</td></tr>' +
+    '<tr><td>Corrélations</td><td class="num">' + (state.correlations ? Object.keys(state.correlations.matrices).length : 0) + '</td></tr>' +
+    '</tbody></table></div>';
+}
+
+function renderIndicators(area){
+  area.innerHTML = INDICATEURS.map(ind =>
+    '<div class="card"><h3>📐 ' + escapeHtml(ind.nom) + ' — ' + escapeHtml(ind.full) + '</h3>' +
+    '<div class="formula">' + escapeHtml(ind.nom) + ' = ' + escapeHtml(ind.formule) + '</div>' +
+    '<table class="matrix"><thead><tr><th>Classe</th><th>Seuil</th><th>Qualification</th></tr></thead><tbody>' +
+    ind.classes.map((c, i) => '<tr><td>' + (i+1) + '</td><td>' + ind.seuils[i] + ' - ' + ind.seuils[i+1] + '</td><td><strong>' + escapeHtml(c) + '</strong></td></tr>').join('') +
+    '</tbody></table><p style="margin-top:10px;font-size:11px;color:var(--or)">⚠️ ' + escapeHtml(ind.note) + '</p></div>'
+  ).join('');
+}
+
+function renderMicroRegions(area){
+  if (!COMMUNES_974.length){
+    area.innerHTML = '<div class="card" style="border-left-color:var(--or)"><h3>🏝️ Micro-régions — Données non disponibles</h3>' +
+      '<p>Ajoutez <code>communes_974.json</code> à la racine du dépôt.</p></div>';
+    return;
+  }
+  const mrColors = {Nord:'mr-nord', Sud:'mr-sud', Est:'mr-est', Ouest:'mr-ouest'};
+  const totalPop = Stats.sum(COMMUNES_974.map(c => c.population));
+  area.innerHTML = '<div class="card" style="border-left-color:var(--cyan)">' +
+    '<h3>🏝️ Micro-régions de La Réunion</h3>' +
+    '<p>' + COMMUNES_974.length + ' communes · ' + fmt(totalPop) + ' hab. (INSEE)</p></div>' +
+    Object.keys(state.microRegions).map(mr => {
+      const communes = state.microRegions[mr];
+      if (!communes.length) return '';
+      const pop = Stats.sum(communes.map(c => c.population));
+      return '<div class="card"><h3><span class="micro-region ' + mrColors[mr] + '">' + mr + '</span> — ' + communes.length + ' communes</h3>' +
+        '<div class="meta"><span class="tag bleu">' + fmt(pop) + ' hab.</span>' +
+        '<span class="tag">' + (pop/totalPop*100).toFixed(1) + ' % de la population</span></div>' +
+        '<table class="matrix" style="margin-top:10px"><thead><tr><th>Commune</th><th>Code</th><th>Population</th></tr></thead><tbody>' +
+        communes.sort((a,b) => b.population - a.population).map(c =>
+          '<tr><td>' + escapeHtml(c.nom) + '</td><td class="num">' + c.code + '</td><td class="num">' + fmt(c.population) + '</td></tr>'
+        ).join('') + '</tbody></table></div>';
+    }).join('');
+}
+
+function renderGeographie(area){
+  if (!COMMUNES_974.length){
+    area.innerHTML = '<div class="card" style="border-left-color:var(--or)"><h3>🗺️ Géographie — Données non disponibles</h3>' +
+      '<p>Ajoutez <code>communes_974.json</code> à la racine du dépôt.</p></div>';
+    return;
+  }
+  const communes = [...COMMUNES_974].sort((a,b) => b.population - a.population);
+  const totalPop = Stats.sum(communes.map(c => c.population));
+  const mrColors = {Nord:'mr-nord', Sud:'mr-sud', Est:'mr-est', Ouest:'mr-ouest'};
+  area.innerHTML = '<div class="card" style="border-left-color:var(--cyan)"><h3>🗺️ ' + communes.length + ' communes · ' + fmt(totalPop) + ' hab. (INSEE)</h3></div>' +
+    '<div class="card"><table class="matrix"><thead><tr><th>Commune</th><th>Code INSEE</th><th>Codes postaux</th><th>Micro-région</th><th>Population</th><th>% pop.</th></tr></thead><tbody>' +
+    communes.map(c =>
+      '<tr><td><strong>' + escapeHtml(c.nom) + '</strong></td>' +
+      '<td class="num">' + c.code + '</td>' +
+      '<td class="num">' + ((c.codesPostaux || []).join(', ')) + '</td>' +
+      '<td>' + (c.mr ? '<span class="micro-region ' + mrColors[c.mr] + '">' + c.mr + '</span>' : '—') + '</td>' +
+      '<td class="num">' + fmt(c.population) + '</td>' +
+      '<td class="num">' + (c.population / totalPop * 100).toFixed(2) + ' %</td></tr>'
+    ).join('') + '</tbody></table></div>';
+}
+
+function renderComparaison(area){
+  const series = Object.keys(state.seriesByTheme).filter(t => state.seriesByTheme[t].length >= 12).slice(0, 20);
+  area.innerHTML = '<div class="card" style="border-left-color:var(--violet)"><h3>⚖️ Comparaison multi-séries</h3></div>' +
+    '<div class="card"><table class="matrix"><thead><tr><th>Série</th><th>Points</th><th>Min</th><th>Max</th><th>Moyenne</th><th>CV %</th></tr></thead><tbody>' +
+    series.map(t => {
+      const v = state.seriesByTheme[t].map(p => p.valeur);
+      return '<tr><td style="text-align:left;font-size:10px">' + escapeHtml(t.slice(0, 40)) + '</td>' +
+        '<td class="num">' + v.length + '</td>' +
+        '<td class="num">' + fmt(Stats.min(v)) + '</td>' +
+        '<td class="num">' + fmt(Stats.max(v)) + '</td>' +
+        '<td class="num">' + fmtDec(Stats.mean(v)) + '</td>' +
+        '<td class="num">' + fmtDec(Stats.cv(v), 1) + '</td></tr>';
+    }).join('') + '</tbody></table></div>';
+}
+
+function renderBenchmark(area){
+  const domData = {};
+  for (const d of state.allDatasets){
+    if (!d.statistiques || !d.statistiques.serie) continue;
+    const matchDep = d.titre.match(/(\d{3})/);
+    const matchPresta = d.titre.match(/^(AAH|RSA|PPA|AF)/);
+    if (matchDep && matchPresta && d.titre.indexOf('Foyers') >= 0){
+      const dep = matchDep[1];
+      const presta = matchPresta[1];
+      if (!domData[dep]) domData[dep] = {};
+      const serie = d.statistiques.serie;
+      domData[dep][presta] = serie[serie.length-1] ? serie[serie.length-1].valeur : 0;
+    }
+  }
+  const deps = Object.keys(domData).sort();
+  if (!deps.length){
+    area.innerHTML = '<div class="card" style="border-left-color:var(--or)"><h3>🏆 Benchmark DOM — Données non disponibles</h3>' +
+      '<p>Chargez les fichiers des DOM (971, 972, 973, 976) pour activer cette vue.</p></div>';
+    return;
+  }
+  const nomsDep = {'971':'Guadeloupe','972':'Martinique','973':'Guyane','974':'La Réunion','976':'Mayotte'};
+  area.innerHTML = '<div class="card" style="border-left-color:var(--violet)"><h3>🏆 Benchmark DOM — ' + deps.length + ' territoires</h3></div>' +
+    '<div class="card"><table class="matrix"><thead><tr><th>Territoire</th><th>AAH</th><th>RSA</th><th>PPA</th><th>AF</th></tr></thead><tbody>' +
+    deps.map(dep =>
+      '<tr><td><strong>' + (nomsDep[dep] || dep) + '</strong></td>' +
+      '<td class="num">' + fmt(domData[dep].AAH || 0) + '</td>' +
+      '<td class="num">' + fmt(domData[dep].RSA || 0) + '</td>' +
+      '<td class="num">' + fmt(domData[dep].PPA || 0) + '</td>' +
+      '<td class="num">' + fmt(domData[dep].AF || 0) + '</td></tr>'
+    ).join('') + '</tbody></table></div>';
+}
+
+function renderSimulateur(area){
+  const aahDataset = state.allDatasets.find(d => d.theme === 'AAH' && d.titre.indexOf('Foyers') >= 0) ||
+                     state.allDatasets.find(d => d.titre.indexOf('AAH — Synthèse') >= 0);
+  const rsaDataset = state.allDatasets.find(d => d.theme === 'RSA' && d.titre.indexOf('Foyers') >= 0);
+  const bA = aahDataset && aahDataset.statistiques && aahDataset.statistiques.serie ?
+    aahDataset.statistiques.serie[aahDataset.statistiques.serie.length-1].valeur : 0;
+  const bR = rsaDataset && rsaDataset.statistiques && rsaDataset.statistiques.serie ?
+    rsaDataset.statistiques.serie[rsaDataset.statistiques.serie.length-1].valeur : 0;
+
+  if (!bA && !bR){
+    area.innerHTML = '<div class="card" style="border-left-color:var(--or)"><h3>🧪 Simulateur — Données non disponibles</h3>' +
+      '<p>Chargez les fichiers AAH et RSA.</p></div>';
+    return;
+  }
+
+  area.innerHTML = '<div class="card" style="border-left-color:var(--violet)"><h3>🧪 Simulateur</h3>' +
+    '<p>Basé sur les valeurs réelles : <strong>AAH = ' + fmt(bA) + '</strong> · <strong>RSA = ' + fmt(bR) + '</strong></p></div>' +
+    '<div class="card"><div style="display:grid;gap:12px">' +
+    '<label><span style="font-size:11px;color:var(--gris-500)">Augmentation AAH (%)</span>' +
+    '<input type="range" id="simAAH" min="-20" max="50" value="0" oninput="runSimulation(' + bA + ',' + bR + ')">' +
+    '<span id="simAAHVal" style="font-family:var(--mono);font-weight:700">0 %</span></label>' +
+    '<label><span style="font-size:11px;color:var(--gris-500)">Réduction non-recours (%)</span>' +
+    '<input type="range" id="simRecours" min="0" max="50" value="0" oninput="runSimulation(' + bA + ',' + bR + ')">' +
+    '<span id="simRecoursVal" style="font-family:var(--mono);font-weight:700">0 %</span></label>' +
+    '</div></div><div class="card"><h4>Résultats</h4><div id="simResults"><p style="color:var(--muted)">Ajustez.</p></div></div>';
+}
+
+function runSimulation(bA, bR){
+  bA = bA || 0;
+  bR = bR || 0;
+  const aah = parseFloat(($('simAAH') && $('simAAH').value) || 0);
+  const rec = parseFloat(($('simRecours') && $('simRecours').value) || 0);
+  if ($('simAAHVal')) $('simAAHVal').textContent = aah + ' %';
+  if ($('simRecoursVal')) $('simRecoursVal').textContent = rec + ' %';
+  const nA = bA * (1 + aah/100 * 0.5) * (1 + rec/100 * 0.3);
+  const nR = bR * (1 + rec/100 * 0.3);
+  const d = (nA + nR) - (bA + bR);
+  if ($('simResults')) $('simResults').innerHTML =
+    '<div class="row"><span class="k">AAH simulés</span><span class="v bleu">' + fmt(nA) + '</span></div>' +
+    '<div class="row"><span class="k">RSA simulés</span><span class="v bleu">' + fmt(nR) + '</span></div>' +
+    '<div class="row"><span class="k">Δ bénéficiaires</span><span class="v ' + (d > 0 ? 'vert' : 'rouge') + '">' + (d > 0 ? '+' : '') + fmt(d) + '</span></div>';
+}
+
+function renderWarnings(area){
+  const w = [
+    {n:'rouge',t:'RSA recentralisé 2020',d:'Séries non comparables avant/après.'},
+    {n:'rouge',t:'Secret statistique',d:'Floutage petits effectifs.'},
+    {n:'or',t:'Données déclaratives',d:'Non-recours ~30 %.'},
+    {n:'or',t:'Périodicité variable',d:'Mensuelle, trimestrielle ou annuelle.'},
+    {n:'or',t:'Hétérogénéité MDPH/CAF',d:'Décisions ≠ paiements.'}
+  ];
+  area.innerHTML = w.map(x =>
+    '<div class="card" style="border-left-color:var(--' + (x.n === 'rouge' ? 'rouge' : 'or') + ')">' +
+    '<h3>' + (x.n === 'rouge' ? '🚫' : '⚠️') + ' ' + escapeHtml(x.t) + '</h3>' +
+    '<p>' + escapeHtml(x.d) + '</p></div>'
+  ).join('');
+}
+
+function renderDCE(area){
+  area.innerHTML = '<div class="card" style="border-left-color:var(--or)">' +
+    '<h3>🏛️ Rapport Officiel</h3>' +
+    '<p>' + state.filesHistory.length + ' source(s) · ' + fmt(state.allDatasets.length) + ' datasets · ' + Object.keys(state.seriesByTheme).length + ' séries</p></div>' +
+    '<div class="card"><h3>Territoires et compétences</h3>' +
+    '<table class="matrix"><thead><tr><th>Échelon</th><th>Compétence</th><th>Dispositif</th></tr></thead><tbody>' +
+    '<tr><td>MDPH</td><td>Handicap</td><td>AAH · AEEH · PCH</td></tr>' +
+    '<tr><td>CAF</td><td>Prestations</td><td>AAH · RSA · PPA · AF</td></tr>' +
+    '<tr><td>Département</td><td>Action sociale</td><td>Pass Loisirs · Cart\'Monétik</td></tr>' +
+    '<tr><td>Région</td><td>Transport</td><td>Pass transport</td></tr>' +
+    '</tbody></table></div>' +
+    '<div class="card"><h3>Incertitudes</h3>' +
+    '<table class="matrix"><thead><tr><th>Source</th><th>Amplitude</th></tr></thead><tbody>' +
+    '<tr><td>Secret statistique</td><td>Floutage &lt; 5</td></tr>' +
+    '<tr><td>RSA recentralisé</td><td>Rupture 2020</td></tr>' +
+    '<tr><td>Pass → Cart\'Monétik</td><td>2025</td></tr>' +
+    '</tbody></table></div>';
+}
+
+function renderAudit(area){
+  const rules = evaluateRules();
+  area.innerHTML = '<div class="card" style="border-left-color:var(--or)"><h3>📋 Audit — ' + new Date().toLocaleString('fr-FR') + '</h3></div>' +
+    '<div class="card"><h3>Inventaire</h3>' +
+    '<table class="matrix"><thead><tr><th>Élément</th><th>Valeur</th></tr></thead><tbody>' +
+    '<tr><td>Fichiers chargés</td><td class="num">' + state.filesHistory.length + '</td></tr>' +
+    '<tr><td>Lignes brutes</td><td class="num">' + fmt(state.allDatasetsBruts.length) + '</td></tr>' +
+    '<tr><td>Datasets générés</td><td class="num">' + fmt(state.allDatasets.length) + '</td></tr>' +
+    '<tr><td>Séries temporelles</td><td class="num">' + Object.keys(state.seriesByTheme).length + '</td></tr>' +
+    '<tr><td>Anomalies</td><td class="num">' + state.anomalies.length + '</td></tr>' +
+    '<tr><td>Projections fiables</td><td class="num">' + Object.keys(state.forecasts).filter(k => state.forecasts[k].fiable).length + '</td></tr>' +
+    '</tbody></table></div>' +
+    '<div class="card"><h3>Règles métier</h3>' +
+    rules.map(r =>
+      '<div class="proc-step"><div class="proc-num ' + (r.niveau === 'rouge' ? 'rouge' : r.niveau === 'or' ? '' : 'vert') + '">' + (r.niveau === 'rouge' ? '!' : r.niveau === 'or' ? '?' : '✓') + '</div>' +
+      '<div class="proc-txt"><strong>' + escapeHtml(r.nom) + '</strong><br>' + escapeHtml(r.message) + '</div></div>'
+    ).join('') + '</div>';
+}
+
+function renderFilesLoaded(){
+  const el = $('filesLoadedList');
+  const cnt = $('filesLoadedCount');
+  if (!el || !cnt) return;
+  const nb = state.filesHistory.length;
+  safeSet('tbFiles', nb);
+  cnt.textContent = nb + ' fichier(s) · ' + state.allDatasets.length + ' datasets';
+  if (!nb){
+    el.innerHTML = '<div style="text-align:center;color:var(--muted);font-size:11px;padding:10px">Chargement…</div>';
+    return;
+  }
+  el.innerHTML = state.filesHistory.map((f, idx) =>
+    '<div class="file-item ' + (f.ok === false ? 'error' : '') + '">' +
+    '<button class="file-remove" data-remove="' + idx + '">×</button>' +
+    '<div class="file-name">' + (f.ok === false ? '⚠ ' : '') + escapeHtml(f.name) + '</div>' +
+    '<div class="file-meta">' + (f.ok === false ? 'Erreur' : fmt(f.nbBrut) + ' lignes') + '</div></div>'
+  ).join('');
+  el.querySelectorAll('[data-remove]').forEach(btn => btn.addEventListener('click', e => {
+    e.stopPropagation();
+    removeFile(parseInt(btn.dataset.remove));
+  }));
+}
+
+function removeFile(idx){
+  const f = state.filesHistory[idx];
+  if (!f) return;
+  if (!confirm('Retirer "' + f.name + '" ?')) return;
+  state.filesHistory.splice(idx, 1);
+  state.allDatasetsBruts = state.allDatasetsBruts.filter(b => b._sourceFile !== f.name);
+  state.allDatasets = aggregateAllCaf(state.allDatasetsBruts);
+  state.filteredDatasets = [...state.allDatasets];
+  if (!state.allDatasets.length){ resetEmpty(); return; }
+  computeAll();
+  updateAllUI();
+  toast('🗑️ Fichier retiré · ' + state.allDatasets.length + ' datasets', 'info');
+}
+
+function resetEmpty(){
+  state.allDatasets = []; state.allDatasetsBruts = []; state.filteredDatasets = [];
+  state.filesHistory = []; state.source = 'Aucune'; state.loadedAt = null;
+  state.seriesByTheme = {}; state.anomalies = []; state.forecasts = {}; state.correlations = null;
+  $('warningBanner').hidden = true;
+  ['tbSource','tbDatasets','tbSeries','tbFiles'].forEach(id => safeSet(id, '0'));
+  safeSet('ivSource', '—', 'v bleu'); safeSet('ivStatus', '● EN ATTENTE', 'v or'); safeSet('ivDate', '—');
+  safeSet('ivTotal', '—'); safeSet('ivAAH', '—'); safeSet('ivBenef', '—'); safeSet('ivSeries', '—');
+  safeSet('ivScore', '—'); safeSet('ivTrend', '—'); safeSet('ivAnomalies', '—'); safeSet('ivProj', '—'); safeSet('ivCorr', '—');
+  const dot = $('statusDot'); if (dot) dot.classList.add('offline');
+  ['exportCsv','exportJson','exportHtml','exportDce'].forEach(id => { const el = $(id); if (el) el.disabled = true; });
+  $('rulesEngine').innerHTML = '<div style="text-align:center;color:var(--muted);font-size:11px;padding:8px">En attente</div>';
+  renderScenarios(); renderFilesLoaded(); renderAll();
+}
+
+// ============================================================
+// EXPORTS
+// ============================================================
+function exportCSV(){
+  const cols = ['titre','annee','type','theme','nb_periodes','effectif_total'];
+  const esc = v => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"';
+  const rows = [cols.join(',')];
+  for (const d of state.filteredDatasets){
+    rows.push([
+      d.titre, d.annee, d.type, d.theme,
+      (d.statistiques && d.statistiques.nb_periodes) || 0,
+      (d.statistiques && d.statistiques.effectif_total) || 0
+    ].map(esc).join(','));
+  }
+  const blob = new Blob(['\ufeff' + rows.join('\n')], {type:'text/csv;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'monitor-social-' + Date.now() + '.csv';
+  a.click();
+  toast('📥 CSV exporté', 'success');
+}
+
+function exportJSON(){
+  const data = {
+    source: state.source, filter974: state.filter974,
+    files: state.filesHistory.map(f => ({name:f.name, nbBrut:f.nbBrut})),
+    date: new Date().toISOString(),
+    datasets: state.allDatasets, seriesByTheme: state.seriesByTheme,
+    anomalies: state.anomalies, forecasts: state.forecasts, correlations: state.correlations,
+    rules: evaluateRules()
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'monitor-social-' + Date.now() + '.json';
+  a.click();
+  toast('📥 JSON exporté', 'success');
+}
+
+function exportHTML(){
+  let html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Rapport Monitor Social</title>';
+  html += '<style>body{font-family:system-ui;max-width:1100px;margin:2em auto;padding:0 1em;line-height:1.6}';
+  html += 'h1{color:#000091;border-bottom:3px solid #E1000F;padding-bottom:.5em}';
+  html += 'h2{color:#000091;margin-top:2em;border-left:4px solid #fbbf24;padding-left:.5em}';
+  html += 'table{border-collapse:collapse;width:100%;margin:1em 0}';
+  html += 'th,td{border:1px solid #ddd;padding:.5em;text-align:left}';
+  html += 'th{background:#000091;color:#fff}</style></head><body>';
+  html += '<h1>🏛️ Monitor Social Expert+ — Rapport</h1>';
+  html += '<p>Date : ' + new Date().toLocaleString('fr-FR') + '</p>';
+  html += '<p>Filtrage : ' + (state.filter974 ? '🇷🇪 974' : '🌍 France') + '</p>';
+  html += '<h2>Synthèse</h2>';
+  html += '<table><tr><th>Indicateur</th><th>Valeur</th></tr>';
+  html += '<tr><td>Fichiers</td><td>' + state.filesHistory.length + '</td></tr>';
+  html += '<tr><td>Lignes brutes</td><td>' + fmt(state.allDatasetsBruts.length) + '</td></tr>';
+  html += '<tr><td>Datasets</td><td>' + fmt(state.allDatasets.length) + '</td></tr>';
+  html += '<tr><td>Séries temporelles</td><td>' + Object.keys(state.seriesByTheme).length + '</td></tr>';
+  html += '<tr><td>Anomalies</td><td>' + state.anomalies.length + '</td></tr>';
+  html += '<tr><td>Projections</td><td>' + Object.keys(state.forecasts).length + '</td></tr>';
+  html += '</table></body></html>';
+  const blob = new Blob([html], {type:'text/html;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'rapport-' + Date.now() + '.html';
+  a.click();
+  toast('📥 Rapport HTML exporté', 'success');
+}
+
+function exportDCE(){
+  let html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Rapport officiel</title>';
+  html += '<style>body{font-family:system-ui;max-width:1100px;margin:2em auto;padding:0 1em}';
+  html += 'h1{text-align:center;color:#000091;border-bottom:3px solid #E1000F;padding-bottom:.5em}';
+  html += 'h2{color:#000091;background:#e3e3fd;padding:.5em}';
+  html += 'table{border-collapse:collapse;width:100%}';
+  html += 'th,td{border:1px solid #ddd;padding:.5em}';
+  html += 'th{background:#000091;color:#fff}</style></head><body>';
+  html += '<h1>RAPPORT OFFICIEL<br>Suivi des politiques sociales<br>La Réunion — 974</h1>';
+  html += '<p>Date : ' + new Date().toLocaleDateString('fr-FR') + '</p>';
+  html += '<p>Datasets : ' + fmt(state.allDatasets.length) + '</p>';
+  html += '<p>Séries : ' + Object.keys(state.seriesByTheme).length + '</p>';
+  html += '<p>Signature : ____________</p>';
+  html += '</body></html>';
+  const blob = new Blob([html], {type:'text/html;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'rapport-officiel-' + Date.now() + '.html';
+  a.click();
+  toast('🏛️ Rapport officiel exporté', 'success');
+}
+
+// ============================================================
+// UTILITAIRES
+// ============================================================
+function toast(msg, type, duration){
+  type = type || 'info';
+  duration = duration || 3000;
+  const el = document.createElement('div');
+  el.className = 'toast ' + type;
+  el.textContent = msg;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), duration);
+}
+
+function safeSet(id, v, cls){
+  const e = $(id);
+  if (!e) return;
+  if (v !== undefined) e.textContent = v;
+  if (cls !== undefined) e.className = cls;
+}
+
+// ============================================================
+// ÉVÉNEMENTS
+// ============================================================
+$('themeToggle') && $('themeToggle').addEventListener('click', toggleTheme);
+$('reloadBtn') && $('reloadBtn').addEventListener('click', () => {
+  resetEmpty();
+  setTimeout(chargerFichiersAuto, 300);
+  toast('🔄 Rechargement…', 'info');
+});
+$('filter974') && $('filter974').addEventListener('click', () => {
+  state.filter974 = !state.filter974;
+  const btn = $('filter974');
+  btn.classList.toggle('active', state.filter974);
+  btn.textContent = state.filter974 ? '🇷🇪 974 uniquement' : '🌍 France entière';
+  if (state.allDatasetsBruts.length){
+    state.allDatasets = aggregateAllCaf(state.allDatasetsBruts);
+    state.filteredDatasets = [...state.allDatasets];
+    computeAll();
+    updateAllUI();
+  }
+});
+$('burgerMenu') && $('burgerMenu').addEventListener('click', () => {
+  const sb = $('sidebar'); if (sb) sb.classList.toggle('open');
+  const mo = $('mobileOverlay'); if (mo) mo.classList.toggle('visible');
+});
+$('mobileOverlay') && $('mobileOverlay').addEventListener('click', () => {
+  const sb = $('sidebar'); if (sb) sb.classList.remove('open');
+  const mo = $('mobileOverlay'); if (mo) mo.classList.remove('visible');
+});
+$('queryInput') && $('queryInput').addEventListener('input', e => {
+  state.query = e.target.value;
+  clearTimeout(window._deb);
+  window._deb = setTimeout(() => {
+    if (state.allDatasets.length){
+      applyFilters();
+      if (['datasets','prestations','stats'].indexOf(state.activeView) >= 0) renderView();
+    }
+  }, 200);
+});
+$('sortSelect') && $('sortSelect').addEventListener('change', e => {
+  state.sort = e.target.value;
+  if (state.allDatasets.length){ applyFilters(); renderView(); }
+});
+$('btnAnalyze') && $('btnAnalyze').addEventListener('click', () => {
+  if (!state.allDatasets.length){ toast('❌ Chargez un fichier', 'error'); return; }
+  computeAll();
+  updateAllUI();
+  toast('✅ ' + state.anomalies.length + ' anomalies · ' + Object.keys(state.forecasts).length + ' projections', 'success');
+});
+$('btnReset') && $('btnReset').addEventListener('click', () => {
+  state.query = ''; state.sort = 'default'; state.activeScenario = 's1'; state.activeView = 'overview';
+  $('queryInput').value = ''; $('sortSelect').value = 'default';
+  document.querySelectorAll('.mode-tab').forEach(t => t.classList.toggle('active', t.dataset.view === 'overview'));
+  if (state.allDatasets.length) applyFilters();
+  renderScenarios(); renderAll();
+});
+$('clearBtn') && $('clearBtn').addEventListener('click', () => {
+  if (state.allDatasets.length && !confirm('Effacer toutes les données ?')) return;
+  resetEmpty();
+  toast('🗑️ Effacé', 'info');
+});
+document.querySelectorAll('.mode-tab').forEach(t => t.addEventListener('click', () => {
+  document.querySelectorAll('.mode-tab').forEach(x => x.classList.remove('active'));
+  t.classList.add('active');
+  state.activeView = t.dataset.view;
+  renderView();
+}));
+$('exportCsv') && $('exportCsv').addEventListener('click', exportCSV);
+$('exportJson') && $('exportJson').addEventListener('click', exportJSON);
+$('exportHtml') && $('exportHtml').addEventListener('click', exportHTML);
+$('exportDce') && $('exportDce').addEventListener('click', exportDCE);
+document.addEventListener('keydown', e => {
+  if (e.key === '/' && ['INPUT','TEXTAREA','SELECT'].indexOf(e.target.tagName) < 0){
+    e.preventDefault();
+    if ($('queryInput')) $('queryInput').focus();
+  }
+});
+
+// ============================================================
+// CHARGEMENT AUTOMATIQUE VIA JSDELIVR
+// ============================================================
+async function chargerFichiersAuto(){
+  console.log('🔄 Chargement automatique via jsDelivr...');
+  const progress = $('loadProgress');
+  if (progress) progress.textContent = 'Lecture du manifeste…';
+
+  try {
+    const response = await fetch(CDN + 'manifest.json');
+    if (!response.ok) throw new Error('manifest.json : HTTP ' + response.status);
+    const manifest = await response.json();
+    const fichiers = manifest.files || [];
+
+    if (!fichiers.length){
+      console.log('ℹ️ Manifeste vide');
+      if (progress) progress.textContent = 'Manifeste vide';
+      return;
+    }
+
+    console.log('📂 ' + fichiers.length + ' fichier(s) à charger');
+    if (progress) progress.textContent = '0 / ' + fichiers.length;
+
+    const loadedBruts = [];
+    const fileReports = [];
+
+    for (let i = 0; i < fichiers.length; i++){
+      const fichier = fichiers[i];
+      try {
+        console.log('  ⏳ ' + fichier + '...');
+        if (progress) progress.textContent = (i+1) + ' / ' + fichiers.length + ' · ' + fichier;
+
+        const resp = await fetch(CDN + fichier);
+        if (!resp.ok) throw new Error('HTTP ' + resp.status);
+        const text = await resp.text();
+
+        // Vérifier si c'est un pointeur LFS
+        if (text.indexOf('version https://git-lfs') === 0){
+          throw new Error('Pointeur LFS (non résolu)');
+        }
+
+        const data = JSON.parse(text);
+        const bruts = extractBruts(data, fichier);
+        loadedBruts.push(...bruts);
+        fileReports.push({name:fichier, nbBrut:bruts.length, date:Date.now(), ok:true});
+        console.log('  ✅ ' + fichier + ' : ' + bruts.length.toLocaleString('fr-FR') + ' lignes');
+      } catch (err){
+        console.error('  ❌ ' + fichier + ' : ' + err.message);
+        fileReports.push({name:fichier, nbBrut:0, date:Date.now(), ok:false, error:err.message});
+      }
+    }
+
+    if (!loadedBruts.length){
+      console.warn('⚠️ Aucun fichier chargé');
+      if (progress) progress.textContent = 'Aucun fichier';
+      toast('⚠️ Aucun fichier chargé · Glissez-les manuellement', 'info', 5000);
+      return;
+    }
+
+    if (progress) progress.textContent = 'Agrégation…';
+    state.allDatasetsBruts = loadedBruts;
+    state.allDatasets = aggregateAllCaf(loadedBruts);
+    state.filteredDatasets = [...state.allDatasets];
+    state.filesHistory = fileReports.filter(f => f.ok);
+    state.source = state.filesHistory.length + ' fichiers (jsDelivr)';
+    state.loadedAt = new Date();
+
+    computeAll();
+    updateAllUI();
+
+    console.log('✅ ' + state.allDatasets.length + ' datasets · ' + Object.keys(state.seriesByTheme).length + ' séries');
+    toast('✅ ' + state.allDatasets.length + ' datasets chargés', 'success', 4000);
+
+  } catch (err){
+    console.error('❌ Erreur chargement auto :', err.message);
+    if (progress) progress.textContent = 'Erreur : ' + err.message;
+    toast('⚠️ Chargement auto impossible · Glissez les fichiers', 'info', 5000);
+  }
+}
+
+// ============================================================
+// INITIALISATION
+// ============================================================
+(async () => {
+  applyTheme();
+  setupDropZone();
+  await computeMicroRegions();
+  const dot = $('statusDot'); if (dot) dot.classList.add('offline');
+  renderScenarios(); renderFilesLoaded(); renderAll();
+  toast('🏛️ Monitor Social Expert+ v6.1 — Prêt', 'info', 3000);
+  setTimeout(chargerFichiersAuto, 1000);
+})();
+</script>
+</body>
+</html>
