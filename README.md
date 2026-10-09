@@ -345,6 +345,30 @@ Ouvrez une [issue](https://github.com/gunout/monitor-social-expert/issues) avec 
 5. Ouvrez une Pull Request
 
 ---
+## MISE A JOUR 2026-2027
+
+🎯 Pour ajouter les prochaines années
+
+Quand vous aurez les données 2026-2027 :
+bash
+
+cd ~/monitor-social-expert
+
+# 1. Télécharger les nouvelles données
+curl -sL "https://data.caf.fr/api/explore/v2.1/catalog/datasets/aah_s_complaah_age_5_dep/exports/json?limit=-1" -o /tmp/aah_full.json
+jq '[.[] | select(.numdep == "974")]' /tmp/aah_full.json > aah_s_complaah_age_5_dep_974.json
+rm /tmp/aah_full.json
+
+# 2. Commit + push
+git add aah_s_complaah_age_5_dep_974.json
+git commit -m "data: update AAH 2026"
+git push
+
+echo "✅ Données mises à jour"
+
+Le monitor chargera automatiquement les nouvelles données.
+
+---
 
 ## 📜 Licence
 
